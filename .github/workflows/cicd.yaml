@@ -1,0 +1,56 @@
+name: cicd.yaml
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+jobs:
+  train:
+    runs-on: ubuntu-latest
+    outputs:
+      job_id: ${{steps.create_job.outputs.job_id}}
+      job_url: ${{steps.create_job.outputs.job_url}}
+    steps:
+    - name: check out repo
+      uses: actions/checkout@v2
+    - name: azure login
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZ_CREDS}}
+    - name: setup
+      run: |
+        az extension add -n ml -y
+        az configure --defaults workspace="main" group="cody-mlops-v2-test"
+    - name: create_job
+      run: |
+        job_id=$(az ml job create -f job.yaml --query name -o tsv)
+        echo "::set-output name=job_id::$job_id"
+        job_url=$(az ml job show -n $job_id --query services.Studio.endpoint)
+        echo "::set-output name=job_url::$job_url"
+        az ml job stream -n $job_id
+      working-directory: project
+  deploy:
+    runs-on: ubuntu-latest
+    needs: train
+    steps:
+    - name: check out repo
+      uses: actions/checkout@v2
+    - name: azure login
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZ_CREDS}}
+    - name: setup
+      run: |
+        az extension add -n ml -y
+        az configure --defaults workspace="main" group="cody-mlops-v2-test"
+    - name: deploy_model
+      run: |
+        az ml job az ml job download -n $job_id
+        az ml model create -n mymodel -l $job_id/model/
+      with:
+        job_id: ${{needs.train.outputs.job_id}}
+      working-directory: project
+

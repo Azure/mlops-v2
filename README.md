@@ -1,18 +1,47 @@
-# Project
+# Azure MLOps (v2) solution accelerators
 
-> This repo has been populated by an initial template to help get you started. Please
-> make sure to update the content to build a great experience for community-building.
+*Work in progress*
 
-As the maintainer of this project, please make a few updates:
+This repository hosts the MLOps (v2) solution accelerators.
 
-- Improving this README.MD file to provide a great experience
-- Updating SUPPORT.MD with content about this project's support experience
-- Understanding the security reporting process in SECURITY.MD
-- Remove this section from the README
+## Getting started
+
+```bash
+gh repo fork azure/mlops-v2 --clone=true --remote=true
+cd mlops-v2
+make infra-default
+make project-classical-ml
+git add .
+git commit -m "setup mlops"
+git push
+```
+
+This will clone the infra repository into `infra` and the project repository into `project`, runnning CLI commands to provision the Azure resources, submit a model training job, and deploy the model to an endpoint. You can customize...
+
+You can also use the Azure Portal with the buttons in the list below.
+
+## MLOps infrastructure solution accelerators
+
+Name|Description|Try it out
+-|-|-
+[default](https://github.com/Azure/azureml-infra-default)|Default Azure Machine Learning infrastructure setup.|[DEPLOY BUTTON]
+
+### Infrastucture add-ons
+
+Name|Description|Try it out
+-|-|-
+[user-with-compute-instance]||
+
+## MLOps project solution accelerators
+
+Name|Description|Try it out
+-|-|-
+[classical-ml](https://github.com/Azure/azureml-project-classical-ml)|Classical machine learning solution accelerator demo.|[DEPLOY BUTTON]
 
 ## Contributing
 
-This project welcomes contributions and suggestions.  Most contributions require you to agree to a
+TBD. See [CONTRIBUTING.md](CONTRIBUTING.md) for details.
+
 Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us
 the rights to use your contribution. For details, visit https://cla.opensource.microsoft.com.
 
@@ -28,6 +57,11 @@ contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additio
 
 This project may contain trademarks or logos for projects, products, or services. Authorized use of Microsoft 
 trademarks or logos is subject to and must follow 
-[Microsoft's Trademark & Brand Guidelines](https://www.microsoft.com/en-us/legal/intellectualproperty/trademarks/usage/general).
+[Microsoft's Trademark & Brand Guidelines](https://www.microsoft.com/legal/intellectualproperty/trademarks/usage/general).
 Use of Microsoft trademarks or logos in modified versions of this project must not cause confusion or imply Microsoft sponsorship.
 Any use of third-party trademarks or logos are subject to those third-party's policies.
+
+## Reference
+
+- links to documentation here (and in sidebar)
+
