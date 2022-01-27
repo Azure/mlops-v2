@@ -24,7 +24,8 @@ jobs:
       run: |
         az extension add -n ml -y
         az configure --defaults workspace="main" group="cody-mlops-v2-test"
-    - name: create_job
+    - id: create_job
+      name: train model
       run: |
         job_id=$(az ml job create -f job.yaml --query name -o tsv)
         echo "::set-output name=job_id::$job_id"
