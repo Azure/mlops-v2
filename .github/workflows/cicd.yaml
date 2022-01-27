@@ -50,7 +50,7 @@ jobs:
       run: |
         az ml job az ml job download -n $job_id
         az ml model create -n mymodel -l $job_id/model/
-      with:
+      env:
         job_id: ${{needs.train.outputs.job_id}}
       working-directory: project
 
