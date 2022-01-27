@@ -7,8 +7,8 @@ This repository hosts the MLOps (v2) solution accelerators.
 ## Getting started
 
 ```bash
-gh repo fork azure/mlops-v2 --clone=true --remote=false
-cd mlops-v2
+gh repo create mlops-solution -p azure/mlops-v2
+cd mlops-solution
 make infra-default
 make project-classical-ml
 git add .
