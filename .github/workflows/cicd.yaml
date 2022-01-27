@@ -48,7 +48,7 @@ jobs:
         az configure --defaults workspace="main" group="cody-mlops-v2-test"
     - name: deploy_model
       run: |
-        az ml job az ml job download -n $job_id
+        az ml job download -n $job_id
         az ml model create -n mymodel -l $job_id/model/
       env:
         job_id: ${{needs.train.outputs.job_id}}
