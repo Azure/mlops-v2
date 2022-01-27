@@ -24,7 +24,7 @@ You can also use the Azure Portal with the buttons in the list below.
 
 Name|Description|Try it out
 -|-|-
-[default](https://github.com/Azure/azureml-infra-default)|Default Azure Machine Learning infrastructure setup.|[DEPLOY BUTTON]
+[default](https://github.com/Azure/mlops-infra-default)|Default Azure Machine Learning infrastructure setup.|[DEPLOY BUTTON]
 
 ### Infrastucture add-ons
 
@@ -36,7 +36,7 @@ Name|Description|Try it out
 
 Name|Description|Try it out
 -|-|-
-[classical-ml](https://github.com/Azure/azureml-project-classical-ml)|Classical machine learning solution accelerator demo.|[DEPLOY BUTTON]
+[classical-ml](https://github.com/Azure/mlops-project-classical-ml)|Classical machine learning solution accelerator demo.|[DEPLOY BUTTON]
 
 ## Contributing
 

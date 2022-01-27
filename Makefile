@@ -1,14 +1,16 @@
 all:
 
 infra-default:
-	git clone https://github.com/Azure/mlops-infra-default
-	rm -rf mlops-infra-default/.git
+	rm -rf infra
+	git clone https://github.com/Azure/mlops-infra-default infra
+	rm -rf infra/.git
 	@echo "Setting up Azure resources and GitHub secret..."
-	bash -x mlops-infra-default/setup.sh
+	bash -x infra/setup.sh
 
 project-classical-ml:
-	git clone https://github.com/Azure/mlops-project-classical-ml
-	rm -rf mlops-project-classical-ml/.git
+	rm -rf project
+	git clone https://github.com/Azure/mlops-project-classical-ml project
+	rm -rf project/.git
 
 clean:
 	rm -rf infra
@@ -17,3 +19,6 @@ clean:
 	echo "" > infra/.gitkeep
 	mkdir project
 	echo "" > project/.gitkeep
+
+clean-infra:
+	bash -x infra/cleanup.sh
