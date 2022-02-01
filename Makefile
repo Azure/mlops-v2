@@ -22,3 +22,6 @@ clean:
 
 clean-infra:
 	bash -x infra/cleanup.sh
+
+update:
+	python utils/update_cookiecutter.py
