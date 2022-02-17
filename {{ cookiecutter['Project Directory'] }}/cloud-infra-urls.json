@@ -1,4 +1,3 @@
 {
-    "AML - Standard": "https://github.com/ezwiefel/mlops-infra-default",
-    "AML - Secure": "https://github.com/ezwiefel/mlops-infra-default"
+    "AML - Standard": "https://github.com/Azure/mlops-infra-default"
 }
