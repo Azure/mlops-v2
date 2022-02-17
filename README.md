@@ -1,42 +1,41 @@
 # Azure MLOps (v2) solution accelerators
 
-*Work in progress*
+_Work in progress_
 
-This repository hosts the MLOps (v2) solution accelerators.
+This repository hosts the MLOps (v2) solution accelerators. It uses [Cookiecutter](https://cookiecutter.readthedocs.io/en/latest/) to generate files and folders based on user selections.
 
 ## Getting started
 
+To generate the template files on your local machine, run the following commands:
+
 ```bash
-gh repo create mlops-solution -p azure/mlops-v2
-cd mlops-solution
-make infra-default
-make project-classical-ml
-git add .
-git commit -m "setup mlops"
-git push
+pip install cookiecutter
+cookiecutter gh:Azure/mlops-v2
 ```
 
-This will clone the infra repository into `infra` and the project repository into `project`, runnning CLI commands to provision the Azure resources, submit a model training job, and deploy the model to an endpoint. You can customize...
+Then follow the prompts cookiecutter surfaces to generate files ready for your project.
+
+<!-- TODO: Update documentation further -->
 
 You can also use the Azure Portal with the buttons in the list below.
 
 ## MLOps infrastructure solution accelerators
 
-Name|Description|Try it out
--|-|-
-[default](https://github.com/Azure/mlops-infra-default)|Default Azure Machine Learning infrastructure setup.|[DEPLOY BUTTON]
+| Name                                                    | Description                                          | Try it out      |
+| ------------------------------------------------------- | ---------------------------------------------------- | --------------- |
+| [default](https://github.com/Azure/mlops-infra-default) | Default Azure Machine Learning infrastructure setup. | [DEPLOY BUTTON] |
 
 ### Infrastucture add-ons
 
-Name|Description|Try it out
--|-|-
-[user-with-compute-instance]||
+| Name                         | Description | Try it out |
+| ---------------------------- | ----------- | ---------- |
+| [user-with-compute-instance] |             |
 
 ## MLOps project solution accelerators
 
-Name|Description|Try it out
--|-|-
-[classical-ml](https://github.com/Azure/mlops-project-classical-ml)|Classical machine learning solution accelerator demo.|[DEPLOY BUTTON]
+| Name                                                                | Description                                           | Try it out      |
+| ------------------------------------------------------------------- | ----------------------------------------------------- | --------------- |
+| [classical-ml](https://github.com/Azure/mlops-project-classical-ml) | Classical machine learning solution accelerator demo. | [DEPLOY BUTTON] |
 
 ## Contributing
 
@@ -55,8 +54,8 @@ contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additio
 
 ## Trademarks
 
-This project may contain trademarks or logos for projects, products, or services. Authorized use of Microsoft 
-trademarks or logos is subject to and must follow 
+This project may contain trademarks or logos for projects, products, or services. Authorized use of Microsoft
+trademarks or logos is subject to and must follow
 [Microsoft's Trademark & Brand Guidelines](https://www.microsoft.com/legal/intellectualproperty/trademarks/usage/general).
 Use of Microsoft trademarks or logos in modified versions of this project must not cause confusion or imply Microsoft sponsorship.
 Any use of third-party trademarks or logos are subject to those third-party's policies.
@@ -64,4 +63,3 @@ Any use of third-party trademarks or logos are subject to those third-party's po
 ## Reference
 
 - links to documentation here (and in sidebar)
-
