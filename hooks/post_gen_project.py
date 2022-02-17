@@ -81,23 +81,29 @@ def process_submodule(module: Submodule) -> None:
     chosen_url = urls[module.choice]
 
     # Invoke cookiecutter
-    try:
-        print(f"Pulling {module.label} files")
-        cookiecutter(
-            template=chosen_url,
-            no_input=True,
-            default_config=True,
-            extra_context={'directory': module.target_directory}
-        )
-    except RepositoryCloneFailed:
+    if chosen_url:
+        try:
+            print(f"Pulling {module.label} files")
+            cookiecutter(
+                template=chosen_url,
+                no_input=True,
+                default_config=True,
+                extra_context={'directory': module.target_directory}
+            )
+        except RepositoryCloneFailed:
+            warnings.warn(
+                f"For '{module.label}': The cookiecutter repo at '{chosen_url}' failed to clone"
+            )
+
+        except RepositoryNotFound:
+            warnings.warn(
+                f"For '{module.label}': A cookiecutter repo wasn't found at '{chosen_url}'"
+            )
+    else:
         warnings.warn(
-            f"For '{module.label}': The cookiecutter repo at '{chosen_url}' failed to clone"
+            f"For '{module.label}': URL was not set, skipping '{module.label}'"
         )
 
-    except RepositoryNotFound:
-        warnings.warn(
-            f"For '{module.label}': A cookiecutter repo wasn't found at '{chosen_url}'"
-        )
 
 def add_submodules():
     # Remove empty folders

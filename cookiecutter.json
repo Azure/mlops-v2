@@ -1,21 +1,16 @@
 {
-    "Do you agree with the license terms for this template? [MIT License]": [
-        "No",
-        "Yes"
-    ],
-    "Project Name": "Azure MLOps Project",
+    "Project Name": "MLOps V2 Project",
     "Project Directory": "{{ cookiecutter['Project Name'].lower().replace(' ', '-') }}",
     "CI/CD Service": [
         "Azure DevOps",
         "Github Actions"
     ],
     "Infrastructure Template": [
-        "AML - Standard",
-        "AML - Secure"
+        "AML - Standard"
     ],
     "Project Template": [
         "Classical ML",
-        "NLP (Pytorch)",
-        "NLP (Tensorflow 2)"
+        "NLP (Pytorch) - NOT IMPLEMENTED",
+        "NLP (Tensorflow 2) - NOT IMPLEMENTED"
     ]
 }
