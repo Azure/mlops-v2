@@ -2,6 +2,49 @@
 
 _Work in progress_
 
+### MLOps 
+
+MLOps or Machine Learning Ops is a set of practices that aims to automate and operationalise the deployment and maintenance of machine learning models across various stages of the lifecycle of a Data Science process. The purpose of an MLOps process is to drive efficiency, increase repeatability and predictability, enable reuse of code and drive consistency across projects. This enables Data Science teams to deploy Machine Learning models to production reliably and efficiently.  
+
+While MLOps has many overlapping concepts with DevOps and can be seen as a derivation of DevOps, it varies significantly from DevOps due to the nature of Data Science projects. The following Microsoft articles provide a perspective on MLOps from various viewpoints: 
+
+Cloud Adoption Framework Guidance 
+
+MLOps with Azure Machine Learning 
+
+MLOps Infographic 
+
+MLOps Example Scenario 
+
+MLOps for Python models using Azure Machine Learning 
+
+
+## Overview of the Accelerator 
+
+The intention of this accelerator is to provide a templatised approach for MLOps in Azure with a recommended architecture. Each organization is unique, and we do not expect that this architecture will suit all organizations, however, this is based on our learning from working with various large and small organizations and can be an excellent starting point for a reference framework which can be used to develop an MLOps framework for the organization.  
+
+With the number of choices available today, it can be difficult for teams to assess all options and make decisions. Various design decisions have been made as part of the development of this accelerator. These decisions provide an opinionated view that reflect most commonly used architectural patterns and practices. By leveraging the tool and capability assessment that has been done as part of the development of this accelerator and only focussing on changes that are needed to meet the specific needs of your organization, you can help your organisation move faster in your journey towards MLOps.   
+
+Following are the key principles that have been applied while building the accelerator: 
+
+Simplicity 
+
+Segregation of duties 
+
+Reusability 
+
+End to end automation 
+
+Enterprise readiness 
+
+## Repository 
+
+This repo provides a templatised approach for the end-to-end Data Science process and focuses on driving efficiency at each stage. For example, it can take a significant amount of time to bootstrap a new Data Science project, hence the repo provides templates that can be reused to establish a cookie cutter approach for the bootstrapping process to shorten the process from days to hours or minutes. The bootstrapping process encapsulates key MLOps decisions like the various components of the repository, the structure of the repository, the link between model development and model deployment and technology choices for each of the phases of the Data Science process.   
+
+The best way to consume this accelerator will be to choose a complex use case that reflects most of your organisation’s needs from a Data Science perspective and start adjusting this accelerator to accommodate those requirements. The first use case may take longer to deliver, however, once the process has been ironed out, subsequent use cases can be onboarded in a matter of days if not hours.  
+
+The architecture for this accelerator, which has been described in more detail here <insert hyperlink> provides a framework for end-to-end MLOps, from provisioning of resources to the deployment and retraining of models in a production environment. The architecture highlights the key personas that are responsible for each of the stages and lists the key activities that are performed in each phase of a Data Science project. The architecture is based on the concepts of inner, middle and outer loops for a Data Science process which are explained in detail here <insert hyperlink> 
+
 This repository hosts the MLOps (v2) solution accelerators. It uses [Cookiecutter](https://cookiecutter.readthedocs.io/en/latest/) to generate files and folders based on user selections.
 
 ## Getting started
