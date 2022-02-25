@@ -1,4 +1,4 @@
-# Azure MLOps (v2) solution accelerators
+# Azure MLOps (v2) solution accelerator
 
 _Work in progress_
 
@@ -8,15 +8,11 @@ MLOps or Machine Learning Ops is a set of practices that aims to automate and op
 
 While MLOps has many overlapping concepts with DevOps and can be seen as a derivation of DevOps, it varies significantly from DevOps due to the nature of Data Science projects. The following Microsoft articles provide a perspective on MLOps from various viewpoints: 
 
-Cloud Adoption Framework Guidance 
-
-MLOps with Azure Machine Learning 
-
-MLOps Infographic 
-
-MLOps Example Scenario 
-
-MLOps for Python models using Azure Machine Learning 
+[Cloud Adoption Framework Guidance](https://docs.microsoft.com/en-us/azure/cloud-adoption-framework/ready/azure-best-practices/ai-machine-learning-mlops)
+[MLOps with Azure Machine Learning](https://docs.microsoft.com/en-us/azure/machine-learning/concept-model-management-and-deployment)
+[MLOps Infographic]
+[MLOps Example Scenario]
+[MLOps for Python models using Azure Machine Learning](https://docs.microsoft.com/en-us/azure/architecture/reference-architectures/ai/mlops-python)
 
 
 ## Overview of the Accelerator 
@@ -27,15 +23,11 @@ With the number of choices available today, it can be difficult for teams to ass
 
 Following are the key principles that have been applied while building the accelerator: 
 
-Simplicity 
-
-Segregation of duties 
-
-Reusability 
-
-End to end automation 
-
-Enterprise readiness 
+  Simplicity 
+  Segregation of duties 
+  Reusability 
+  End to end automation 
+  Enterprise readiness 
 
 ## Repository 
 
@@ -45,9 +37,10 @@ The best way to consume this accelerator will be to choose a complex use case th
 
 The architecture for this accelerator, which has been described in more detail here <insert hyperlink> provides a framework for end-to-end MLOps, from provisioning of resources to the deployment and retraining of models in a production environment. The architecture highlights the key personas that are responsible for each of the stages and lists the key activities that are performed in each phase of a Data Science project. The architecture is based on the concepts of inner, middle and outer loops for a Data Science process which are explained in detail here <insert hyperlink> 
 
-This repository hosts the MLOps (v2) solution accelerators. It uses [Cookiecutter](https://cookiecutter.readthedocs.io/en/latest/) to generate files and folders based on user selections.
 
 ## Getting started
+  
+This repository hosts the MLOps (v2) solution accelerators. It uses [Cookiecutter](https://cookiecutter.readthedocs.io/en/latest/) to generate files and folders based on user selections.
 
 To generate the template files on your local machine, run the following commands:
 
