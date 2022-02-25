@@ -8,11 +8,15 @@ MLOps or Machine Learning Ops is a set of practices that aims to automate and op
 
 While MLOps has many overlapping concepts with DevOps and can be seen as a derivation of DevOps, it varies significantly from DevOps due to the nature of Data Science projects. The following Microsoft articles provide a perspective on MLOps from various viewpoints: 
 
-[Cloud Adoption Framework Guidance](https://docs.microsoft.com/en-us/azure/cloud-adoption-framework/ready/azure-best-practices/ai-machine-learning-mlops)
-[MLOps with Azure Machine Learning](https://docs.microsoft.com/en-us/azure/machine-learning/concept-model-management-and-deployment)
-[MLOps Infographic]
-[MLOps Example Scenario]
-[MLOps for Python models using Azure Machine Learning](https://docs.microsoft.com/en-us/azure/architecture/reference-architectures/ai/mlops-python)
+[Cloud Adoption Framework Guidance](https://docs.microsoft.com/en-us/azure/cloud-adoption-framework/ready/azure-best-practices/ai-machine-learning-mlops) 
+
+[MLOps with Azure Machine Learning](https://docs.microsoft.com/en-us/azure/machine-learning/concept-model-management-and-deployment) 
+
+[MLOps Infographic] 
+
+[MLOps Example Scenario] 
+
+[MLOps for Python models using Azure Machine Learning](https://docs.microsoft.com/en-us/azure/architecture/reference-architectures/ai/mlops-python) 
 
 
 ## Overview of the Accelerator 
@@ -24,9 +28,13 @@ With the number of choices available today, it can be difficult for teams to ass
 Following are the key principles that have been applied while building the accelerator: 
 
   Simplicity 
+  
   Segregation of duties 
+  
   Reusability 
+  
   End to end automation 
+  
   Enterprise readiness 
 
 ## Repository 
