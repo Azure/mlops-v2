@@ -26,7 +26,7 @@ stages:
         path: s/
       - checkout: mlops-templates
         path: s/templates/
-      - template: templates/$(version)/install-az-cli.yml@mlops-templates
+      - template: templates/${{ variables.version }}/install-az-cli.yml@mlops-templates
       - template: templates/$(version)/install-aml-cli.yml@mlops-templates
       - template: templates/$(version)/connect-to-workspace.yml@mlops-templates
       - template: templates/$(version)/create-environment.yml@mlops-templates
