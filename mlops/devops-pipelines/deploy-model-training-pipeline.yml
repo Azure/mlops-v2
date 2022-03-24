@@ -24,19 +24,19 @@ stages:
         path: s/
       - checkout: mlops-templates
         path: s/templates/
-      - template: templates/install-az-cli.yml@mlops-templates
-      - template: templates/install-aml-cli.yml@mlops-templates
-      - template: templates/connect-to-workspace.yml@mlops-templates
-      - template: templates/create-environment.yml@mlops-templates
+      - template: templates/$(version)/install-az-cli.yml@mlops-templates
+      - template: templates/$(version)/install-aml-cli.yml@mlops-templates
+      - template: templates/$(version)/connect-to-workspace.yml@mlops-templates
+      - template: templates/$(version)/create-environment.yml@mlops-templates
         parameters:
           environment_name: $(training_environment_name)
           environment_conda_yaml: $(training_environment_conda_yaml)
-      - template: templates/register-dataset.yml@mlops-templates
+      - template: templates/$(version)/register-dataset.yml@mlops-templates
         parameters:
           data_type: training
-      - template: templates/get-compute.yml@mlops-templates
+      - template: templates/$(version)/get-compute.yml@mlops-templates
         parameters:
           compute_type: training
-      - template: templates/deploy-training-pipeline.yml@mlops-templates
-      - template: templates/add-pipeline-to-endpoint.yml@mlops-templates
-      - template: templates/run-pipeline.yml@mlops-templates
+      - template: templates/$(version)/deploy-training-pipeline.yml@mlops-templates
+      - template: templates/$(version)/add-pipeline-to-endpoint.yml@mlops-templates
+      - template: templates/$(version)/run-pipeline.yml@mlops-templates

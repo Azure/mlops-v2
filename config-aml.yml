@@ -5,6 +5,9 @@ variables:
   ml_workspace_name: main
   ml_workspace_rg: azureml-examples-rg
 
+# SDK or cli v2?
+  version: python-sdk #must be either 'python-sdk' or 'aml-cli-v2'
+
 # Training Dataset settings
   training_dataset_name: uci-credit
   training_dataset_description: uci_credit
