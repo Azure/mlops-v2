@@ -1,5 +1,5 @@
 variables:
-- template: ../controller-config.yml
+- template: ../../config.yml
 
 trigger:
 - none
@@ -9,8 +9,8 @@ pool:
 
 resources:
   repositories:
-    - repository: templates-mlops  # Template Repo
-      name: ai-factory-azure/templates-mlops
+    - repository: mlops-templates  # Template Repo
+      name: Azure/mlops-templates
       endpoint: Github-Service-Endpoint
       type: github
 
@@ -22,21 +22,21 @@ stages:
       steps:
       - checkout: self
         path: s/
-      - checkout: templates-mlops
+      - checkout: mlops-templates
         path: s/templates/
-      - template: templates/install-az-cli.yml@templates-mlops
-      - template: templates/install-aml-cli.yml@templates-mlops
-      - template: templates/connect-to-workspace.yml@templates-mlops
-      - template: templates/create-environment.yml@templates-mlops
+      - template: templates/install-az-cli.yml@mlops-templates
+      - template: templates/install-aml-cli.yml@mlops-templates
+      - template: templates/connect-to-workspace.yml@mlops-templates
+      - template: templates/create-environment.yml@mlops-templates
         parameters:
           environment_name: $(training_environment_name)
           environment_conda_yaml: $(training_environment_conda_yaml)
-      - template: templates/register-dataset.yml@templates-mlops
+      - template: templates/register-dataset.yml@mlops-templates
         parameters:
           data_type: training
-      - template: templates/get-compute.yml@templates-mlops
+      - template: templates/get-compute.yml@mlops-templates
         parameters:
           compute_type: training
-      - template: templates/deploy-training-pipeline.yml@templates-mlops
-      - template: templates/add-pipeline-to-endpoint.yml@templates-mlops
-      - template: templates/run-pipeline.yml@templates-mlops
+      - template: templates/deploy-training-pipeline.yml@mlops-templates
+      - template: templates/add-pipeline-to-endpoint.yml@mlops-templates
+      - template: templates/run-pipeline.yml@mlops-templates
