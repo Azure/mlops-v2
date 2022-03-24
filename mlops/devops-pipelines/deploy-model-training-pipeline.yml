@@ -1,5 +1,5 @@
 variables:
-- template: ../../config.yml
+- template: ../../config-aml.yml
 
 trigger:
 - none
@@ -11,7 +11,7 @@ resources:
   repositories:
     - repository: mlops-templates  # Template Repo
       name: Azure/mlops-templates
-      endpoint: Github-Service-Endpoint
+      endpoint: mlops-v2-tabular
       type: github
 
 stages:
