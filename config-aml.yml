@@ -11,7 +11,7 @@ variables:
 # Training Dataset settings
   training_dataset_name: uci-credit
   training_dataset_description: uci_credit
-  training_dataset_local_path: code/data/
+  training_dataset_local_path: data/
   training_dataset_path_on_datastore: data/
   training_dataset_type: local
   training_dataset_storage_url: 'https://azureaidemostorage.blob.core.windows.net/data/'
@@ -22,7 +22,7 @@ variables:
   training_environment_name: credit-training
 
   # Training AzureML Environment conda yaml
-  training_environment_conda_yaml: controller/environments/train.yml
+  training_environment_conda_yaml: mlops/environments/train.yml
 
   # Name for the training pipeline
   training_pipeline_name: credit-training
@@ -44,7 +44,7 @@ variables:
   batch_environment_name: credit-batch
 
   # Batch AzureML Environment conda yaml
-  batch_environment_conda_yaml: controller/environments/batch.yml
+  batch_environment_conda_yaml: mlops/environments/batch.yml
 
   # Name for the batch scoring pipeline
   batch_pipeline_name: credit-batch-scoring
