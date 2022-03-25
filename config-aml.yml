@@ -1,5 +1,7 @@
 variables:
 
+  gh_service_connection: mlops-v2-tabular
+
   version: python-sdk 
 
 # Training Dataset settings
