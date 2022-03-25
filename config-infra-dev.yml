@@ -7,14 +7,14 @@ variables:
 
   # Dev Environment
   environment: dev
-  resource_group: rg-mlops-template-dev-001
+  resource_group: azureml-examples-rg #rg-mlops-template-dev-001
   location: westeurope
   namespace: mlopsdevtmpl
-  aml_workspace: aml$(namespace)
+  aml_workspace: main #aml$(namespace)
   storage_account: sa$(namespace)
   key_vault: kv$(namespace)
   application_insights: ai$(namespace)
   container_registry: cr$(namespace)
   service_connection_rg: conn-mlops-sub-infra
-  service_connection_aml_ws: conn-mlops-aml-bsc-dev-tmpl
+  service_connection_aml_ws: Azure-ARM-Dev #conn-mlops-aml-bsc-dev-tmpl
   gh_service_connection: mlops-v2-tabular
