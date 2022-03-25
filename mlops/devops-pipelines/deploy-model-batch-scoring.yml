@@ -1,5 +1,16 @@
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License.
+
 variables:
-- template: ../controller-config.yml
+- template: ../../config-aml.yml
+- ${{ if eq(variables['Build.SourceBranchName'], 'main') }}:
+    # 'main' branch: PRD environment
+    - template: ../../config-infra-prod.yml
+- ${{ if ne(variables['Build.SourceBranchName'], 'main') }}:  
+    # 'develop' or feature branches: DEV environment
+    - template: ../../config-infra-dev.yml
+- name: version
+  value: python-sdk
 
 trigger:
 - none
@@ -9,13 +20,9 @@ pool:
 
 resources:
   repositories:
-    - repository: templates-mlops  # Template Repo
-      name: ai-factory-azure/templates-mlops
-      endpoint: ai-factory-azure
-      type: github
-    - repository: project-code  # Code Repo
-      name: ai-factory-azure/project-template-tabular-batch-code
-      endpoint: ai-factory-azure
+    - repository: mlops-templates  # Template Repo
+      name: Azure/mlops-templates
+      endpoint: mlops-v2-tabular
       type: github
 
 stages:
@@ -37,5 +44,5 @@ stages:
           environment_name: $(batch_environment_name)
           environment_conda_yaml: $(batch_environment_conda_yaml)
       - template: templates/deploy-batch-scoring-pipeline.yml@templates-mlops
-      # - template: templates/run-pipeline.yml@templates-mlops
       - template: templates/add-pipeline-to-endpoint.yml@templates-mlops
+      - template: templates/run-pipeline.yml@templates-mlops

@@ -1,5 +1,14 @@
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License.
+
 variables:
 - template: ../../config-aml.yml
+- ${{ if eq(variables['Build.SourceBranchName'], 'main') }}:
+    # 'main' branch: PRD environment
+    - template: ../../config-infra-prod.yml
+- ${{ if ne(variables['Build.SourceBranchName'], 'main') }}:  
+    # 'develop' or feature branches: DEV environment
+    - template: ../../config-infra-dev.yml
 - name: version
   value: python-sdk
 
@@ -13,7 +22,7 @@ resources:
   repositories:
     - repository: mlops-templates  # Template Repo
       name: Azure/mlops-templates
-      endpoint: mlops-v2-tabular
+      endpoint: $(gh_service_connection)
       type: github
 
 stages:
