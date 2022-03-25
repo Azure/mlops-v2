@@ -9,14 +9,14 @@ variables:
 - ${{ if ne(variables['Build.SourceBranchName'], 'main') }}:  
     # 'develop' or feature branches: DEV environment
     - template: ../../config-infra-dev.yml
-- name: version
-  value: python-sdk
+# - name: version
+#   value: python-sdk
 
 trigger:
 - none
 
 pool:
-  vmImage: ubuntu-20.04
+  vmImage: $(ap_vm_image)
 
 resources:
   repositories:

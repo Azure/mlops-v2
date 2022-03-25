@@ -3,6 +3,7 @@ variables:
   gh_service_connection: mlops-v2-tabular
 
   version: python-sdk 
+  ap_vm_image: ubuntu-20.04
 
 # Training Dataset settings
   training_dataset_name: uci-credit
