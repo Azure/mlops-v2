@@ -17,3 +17,4 @@ variables:
   container_registry: cr$(namespace)
   service_connection_rg: conn-mlops-sub-infra
   service_connection_aml_ws: conn-mlops-aml-bsc-dev-tmpl
+  gh_service_connection: mlops-v2-tabular

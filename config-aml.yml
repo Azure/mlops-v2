@@ -1,10 +1,5 @@
 variables:
 
-# Workspace settings
-  ml_workspace_connection: Azure-ARM-Dev
-  ml_workspace_name: main
-  ml_workspace_rg: azureml-examples-rg
-
   version: python-sdk 
 
 # Training Dataset settings
