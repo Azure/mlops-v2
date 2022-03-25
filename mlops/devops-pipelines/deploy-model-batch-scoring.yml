@@ -1,0 +1,41 @@
+variables:
+- template: ../controller-config.yml
+
+trigger:
+- none
+
+pool:
+  vmImage: ubuntu-20.04
+
+resources:
+  repositories:
+    - repository: templates-mlops  # Template Repo
+      name: ai-factory-azure/templates-mlops
+      endpoint: ai-factory-azure
+      type: github
+    - repository: project-code  # Code Repo
+      name: ai-factory-azure/project-template-tabular-batch-code
+      endpoint: ai-factory-azure
+      type: github
+
+stages:
+- stage: DeployBatchScoringPipeline
+  displayName: Deploy Batch Scoring Pipeline
+  jobs:
+    - job: DeployBatchScoringPipeline
+      steps:
+      - checkout: self
+        path: s/controller/
+      - checkout: templates-mlops
+        path: s/templates/
+      - checkout: project-code
+        path: s/code/
+      - template: templates/install-aml-cli.yml@templates-mlops
+      - template: templates/connect-to-workspace.yml@templates-mlops
+      - template: templates/create-environment.yml@templates-mlops
+        parameters:
+          environment_name: $(batch_environment_name)
+          environment_conda_yaml: $(batch_environment_conda_yaml)
+      - template: templates/deploy-batch-scoring-pipeline.yml@templates-mlops
+      # - template: templates/run-pipeline.yml@templates-mlops
+      - template: templates/add-pipeline-to-endpoint.yml@templates-mlops

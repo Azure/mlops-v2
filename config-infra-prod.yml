@@ -1,0 +1,19 @@
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License.
+
+# Definition of infra-related environment variables
+
+variables:
+
+  # PRD Environment
+  ENVIRONMENT: PRD
+  RESOURCE_GROUP: rg-mlops-template-prod-001
+  LOCATION: westeurope
+  NAMESPACE: mlopsprodtmpl
+  AMLWORKSPACE: aml$(NAMESPACE)
+  STORAGEACCOUNT: sa$(NAMESPACE)
+  KEYVAULT: kv$(NAMESPACE)
+  APPINSIGHTS: ai$(NAMESPACE)
+  CONTAINERREGISTRY: cr$(NAMESPACE)
+  SERVICECONNECTION_RG: conn-mlops-sub-infra
+  SERVICECONNECTION_WS: conn-mlops-aml-bsc-prod-tmpl

@@ -1,0 +1,19 @@
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License.
+
+# Definition of infra-related environment variables
+
+variables:
+
+  # DEV Environment
+  ENVIRONMENT: DEV
+  RESOURCE_GROUP: rg-mlops-template-dev-001
+  LOCATION: westeurope
+  NAMESPACE: mlopsdevtmpl
+  SERVICECONNECTION_RG: conn-mlops-sub-infra
+  SERVICECONNECTION_WS: conn-mlops-aml-bsc-dev-tmpl
+  AMLWORKSPACE: aml$(NAMESPACE)
+  STORAGEACCOUNT: sa$(NAMESPACE)
+  KEYVAULT: kv$(NAMESPACE)
+  APPINSIGHTS: ai$(NAMESPACE)
+  CONTAINERREGISTRY: cr$(NAMESPACE)
