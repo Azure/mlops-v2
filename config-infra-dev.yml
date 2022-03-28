@@ -4,7 +4,7 @@
 variables:
 
   # Global
-  namespace: mlops-tab
+  namespace: mlopstab
   postfix: 001 
   location: northeurope
   environment: dev
@@ -24,8 +24,12 @@ variables:
   application_insights: mlw-$(namespace)-$(postfix)
   key_vault: kv-$(namespace)-$(postfix)
   container_registry: cr$(namespace)$(postfix)
-  storage_account: st-$(namespace)-$(postfix)
+  storage_account: st$(namespace)$(postfix)
 
   # Terraform
   terraform_version: 0.14.7
   terraform_workingdir: infrastructure/terraform
+  terraform_st_resource_group: rg-$(namespace)-$(postfix)-tf-state
+  terraform_st_storage_account: st$(namespace)$(postfix)tfstate
+  terraform_st_container_name: default
+  terraform_st_key: mlops-tab
