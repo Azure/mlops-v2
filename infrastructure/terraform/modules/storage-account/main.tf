@@ -21,18 +21,6 @@ resource "azurerm_storage_account" "adl_st" {
   tags = var.tags
 }
 
-resource "azurerm_role_assignment" "st_role_admin_c" {
-  scope                = azurerm_storage_account.adl_st.id
-  role_definition_name = "Contributor"
-  principal_id         = data.azurerm_client_config.current.object_id
-}
-
-resource "azurerm_role_assignment" "st_role_admin_sbdc" {
-  scope                = azurerm_storage_account.adl_st.id
-  role_definition_name = "Storage Blob Data Contributor"
-  principal_id         = data.azurerm_client_config.current.object_id
-}
-
 # Virtual Network & Firewall configuration
 
 resource "azurerm_storage_account_network_rules" "firewall_rules" {
