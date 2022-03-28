@@ -6,7 +6,7 @@ module "resource_group" {
   location = var.location
 
   prefix  = var.prefix
-  postfix = random_string.postfix.result
+  postfix = var.postfix
 
   tags = local.tags
 }
@@ -20,7 +20,7 @@ module "aml_workspace" {
   location = module.resource_group.location
 
   prefix  = var.prefix
-  postfix = random_string.postfix.result
+  postfix = var.postfix
 
   storage_account_id      = module.storage_account_aml.id
   key_vault_id            = module.key_vault.id
@@ -39,7 +39,7 @@ module "storage_account_aml" {
   location = module.resource_group.location
 
   prefix  = var.prefix
-  postfix = "${random_string.postfix.result}aml"
+  postfix = "${var.postfix}aml"
 
   hns_enabled                         = false
   firewall_bypass                     = ["AzureServices"]
@@ -57,7 +57,7 @@ module "key_vault" {
   location = module.resource_group.location
 
   prefix  = var.prefix
-  postfix = random_string.postfix.result
+  postfix = var.postfix
 
   tags = local.tags
 }
@@ -71,7 +71,7 @@ module "application_insights" {
   location = module.resource_group.location
 
   prefix  = var.prefix
-  postfix = random_string.postfix.result
+  postfix = var.postfix
 
   tags = local.tags
 }
@@ -85,7 +85,7 @@ module "container_registry" {
   location = module.resource_group.location
 
   prefix  = var.prefix
-  postfix = random_string.postfix.result
+  postfix = var.postfix
 
   tags = local.tags
 }

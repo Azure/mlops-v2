@@ -8,8 +8,12 @@ variable "prefix" {
   description = "Prefix for module names"
 }
 
-resource "random_string" "postfix" {
-  length  = 6
-  special = false
-  upper   = false
+variable "environment" {
+  type        = string
+  description = "Environment information"
+}
+
+variable "postfix" {
+  type        = string
+  description = "Postfix for module names"
 }

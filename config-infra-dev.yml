@@ -1,19 +1,31 @@
 # Copyright (c) Microsoft Corporation. All rights reserved.
 # Licensed under the MIT License.
 
-# Definition of infra-related environment variables
-
 variables:
 
-  # DEV Environment
-  ENVIRONMENT: DEV
-  RESOURCE_GROUP: rg-mlops-template-dev-001
-  LOCATION: westeurope
-  NAMESPACE: mlopsdevtmpl
-  SERVICECONNECTION_RG: conn-mlops-sub-infra
-  SERVICECONNECTION_WS: conn-mlops-aml-bsc-dev-tmpl
-  AMLWORKSPACE: aml$(NAMESPACE)
-  STORAGEACCOUNT: sa$(NAMESPACE)
-  KEYVAULT: kv$(NAMESPACE)
-  APPINSIGHTS: ai$(NAMESPACE)
-  CONTAINERREGISTRY: cr$(NAMESPACE)
+  # Global
+  namespace: mlops-tab
+  postfix: 001 
+  location: northeurope
+  environment: dev
+
+  # Azure DevOps 
+  ado_service_connection_rg: am-msft1000-arm
+  ado_service_connection_aml_ws:
+
+  # Github
+  gh_service_endpoint: 
+  gh_org_name:
+  gh_org_url:
+
+  # IaC
+  resource_group: rg-$(namespace)-$(postfix)
+  aml_workspace: mlw-$(namespace)-$(postfix)
+  application_insights: mlw-$(namespace)-$(postfix)
+  key_vault: kv-$(namespace)-$(postfix)
+  container_registry: cr$(namespace)$(postfix)
+  storage_account: st-$(namespace)-$(postfix)
+
+  # Terraform
+  terraform_version: 0.14.7
+  terraform_workingdir: infrastructure/terraform
