@@ -11,7 +11,7 @@ variables:
 
   # Azure DevOps 
   ado_service_connection_rg: am-msft1000-arm
-  ado_service_connection_aml_ws:
+  ado_service_connection_aml_ws: am-msft1000-arm
 
   # Github
   gh_service_endpoint: 
