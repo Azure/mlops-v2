@@ -32,7 +32,7 @@ stages:
     - job: DeployBatchScoringPipeline
       steps:
       - checkout: self
-        path: s/controller/
+        path: s/
       - checkout: mlops-templates
         path: s/templates/
       - template: templates/${{ variables.version }}/install-aml-cli.yml@mlops-templates
