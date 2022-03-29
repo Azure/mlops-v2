@@ -1,5 +1,0 @@
-# Resource name prefix
-prefix = "mlops-tab"
-
-# Deployment location
-location = "North Europe"
