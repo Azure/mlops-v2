@@ -37,12 +37,12 @@ stages:
         path: s/templates/
       - checkout: project-code
         path: s/code/
-      - template: templates/${{ variables.version }}/install-aml-cli.yml@templates-mlops
-      - template: templates/${{ variables.version }}/connect-to-workspace.yml@templates-mlops
-      - template: templates/${{ variables.version }}/create-environment.yml@templates-mlops
+      - template: templates/${{ variables.version }}/install-aml-cli.yml@mlops-templates
+      - template: templates/${{ variables.version }}/connect-to-workspace.yml@mlops-templates
+      - template: templates/${{ variables.version }}/create-environment.yml@mlops-templates
         parameters:
           environment_name: $(batch_env_name)
           environment_conda_yaml: $(batch_env_conda_yaml)
-      - template: templates/${{ variables.version }}/deploy-batch-scoring-pipeline.yml@templates-mlops
-      - template: templates/${{ variables.version }}/add-pipeline-to-endpoint.yml@templates-mlops
-      - template: templates/${{ variables.version }}/run-pipeline.yml@templates-mlops
+      - template: templates/${{ variables.version }}/deploy-batch-scoring-pipeline.yml@mlops-templates
+      - template: templates/${{ variables.version }}/add-pipeline-to-endpoint.yml@mlops-templates
+      - template: templates/${{ variables.version }}/run-pipeline.yml@mlops-templates
