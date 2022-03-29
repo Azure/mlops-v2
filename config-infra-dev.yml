@@ -14,7 +14,7 @@ variables:
   ado_service_connection_aml_ws: Azure-ARM-Dev #am-msft1000-arm
 
   # Github
-  gh_service_endpoint: mlops-v2-tabular
+  gh_service_endpoint: mlops-v2-tabular  #this isn't allowed to be a variable in the devops yaml :( 
   gh_org_name:
   gh_org_url:
 
