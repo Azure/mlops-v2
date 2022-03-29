@@ -5,7 +5,7 @@ variables:
 
   # Global
   namespace: mlopstab
-  postfix: 001 
+  postfix: 051 
   location: northeurope
   environment: dev
 
