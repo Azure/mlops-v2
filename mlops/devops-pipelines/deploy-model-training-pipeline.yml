@@ -1,13 +1,22 @@
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License.
+
 variables:
 - template: ../../config-aml.yml
-- name: version
-  value: python-sdk
+- ${{ if eq(variables['Build.SourceBranchName'], 'main') }}:
+    # 'main' branch: PRD environment
+    - template: ../../config-infra-prod.yml
+- ${{ if ne(variables['Build.SourceBranchName'], 'main') }}:  
+    # 'develop' or feature branches: DEV environment
+    - template: ../../config-infra-dev.yml
+# - name: version
+#   value: python-sdk
 
 trigger:
 - none
 
 pool:
-  vmImage: ubuntu-20.04
+  vmImage: $(ap_vm_image)
 
 resources:
   repositories:
@@ -31,8 +40,8 @@ stages:
       - template: templates/${{ variables.version }}/connect-to-workspace.yml@mlops-templates
       - template: templates/${{ variables.version }}/create-environment.yml@mlops-templates
         parameters:
-          environment_name: $(training_environment_name)
-          environment_conda_yaml: $(training_environment_conda_yaml)
+          environment_name: $(training_env_name)
+          environment_conda_yaml: $(training_env_conda_yaml)
       - template: templates/${{ variables.version }}/register-dataset.yml@mlops-templates
         parameters:
           data_type: training

@@ -1,19 +1,20 @@
 # Copyright (c) Microsoft Corporation. All rights reserved.
 # Licensed under the MIT License.
 
-# Definition of infra-related environment variables
+# Definition of production infra-related environment variables
 
 variables:
 
-  # PRD Environment
-  ENVIRONMENT: PRD
-  RESOURCE_GROUP: rg-mlops-template-prod-001
-  LOCATION: westeurope
-  NAMESPACE: mlopsprodtmpl
-  AMLWORKSPACE: aml$(NAMESPACE)
-  STORAGEACCOUNT: sa$(NAMESPACE)
-  KEYVAULT: kv$(NAMESPACE)
-  APPINSIGHTS: ai$(NAMESPACE)
-  CONTAINERREGISTRY: cr$(NAMESPACE)
-  SERVICECONNECTION_RG: conn-mlops-sub-infra
-  SERVICECONNECTION_WS: conn-mlops-aml-bsc-prod-tmpl
+  # Prod Environment
+  environment: prod
+  resource_group: azureml-examples-rg #rg-mlops-template-prod-001
+  location: westeurope
+  namespace: mlopsprodtmpl
+  aml_workspace: main #aml$(namespace)
+  storage_account: sa$(namespace)
+  key_vault: kv$(namespace)
+  application_insights: ai$(namespace)
+  container_registry: cr$(namespace)
+  service_connection_rg: conn-mlops-sub-infra
+  service_connection_aml_ws: conn-mlops-aml-bsc-prod-tmpl
+  gh_service_connection: mlops-v2-tabular
