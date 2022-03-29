@@ -20,7 +20,7 @@ resources:
   repositories:
     - repository: mlops-templates  # Template Repo
       name: Azure/mlops-templates
-      endpoint: mlops-v2-tabular
+      endpoint: ${{ variables.gh_service_endpoint }} #mlops-v2-tabular 
       type: github
 
 stages:
