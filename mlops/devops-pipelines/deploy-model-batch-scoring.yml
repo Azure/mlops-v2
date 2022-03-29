@@ -35,8 +35,6 @@ stages:
         path: s/controller/
       - checkout: mlops-templates
         path: s/templates/
-      - checkout: project-code
-        path: s/code/
       - template: templates/${{ variables.version }}/install-aml-cli.yml@mlops-templates
       - template: templates/${{ variables.version }}/connect-to-workspace.yml@mlops-templates
       - template: templates/${{ variables.version }}/create-environment.yml@mlops-templates
