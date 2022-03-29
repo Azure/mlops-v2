@@ -9,8 +9,6 @@ variables:
 - ${{ if ne(variables['Build.SourceBranchName'], 'main') }}:  
     # 'develop' or feature branches: DEV environment
     - template: ../../config-infra-dev.yml
-# - name: version
-#   value: python-sdk
 
 trigger:
 - none
