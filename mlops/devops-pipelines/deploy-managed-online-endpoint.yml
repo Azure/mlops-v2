@@ -1,8 +1,17 @@
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License.
+
 variables:
-- template: ../controller-config.yml
+- template: ../../config-aml.yml
+- ${{ if eq(variables['Build.SourceBranchName'], 'main') }}:
+    # 'main' branch: PRD environment
+    - template: ../../config-infra-prod.yml
+- ${{ if ne(variables['Build.SourceBranchName'], 'main') }}:  
+    # 'develop' or feature branches: DEV environment
+    - template: ../../config-infra-dev.yml
 
 trigger:
-- main
+- none
 
 pool:
   vmImage: ubuntu-20.04
