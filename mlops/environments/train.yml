@@ -13,3 +13,8 @@ dependencies:
     - pandas==1.2.1
     - joblib==1.0.0
     - matplotlib==3.3.3
+    - fairlearn==0.7.0
+    - azureml-contrib-fairness==1.32.0
+    - interpret-community==0.18.1
+    - interpret-core==0.2.4
+    - azureml-interpret==1.32.0
