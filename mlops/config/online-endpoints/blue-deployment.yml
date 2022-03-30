@@ -5,7 +5,7 @@ model:
   local_path: ../../data/managed-endpoints/models/sklearn_regression_model.pkl
 code_configuration:
   code: 
-    local_path: ../../data-science/src/
+    local_path: ../../../data-science/src/
   scoring_script: managed_online_endpoint.py
 environment: 
   conda_file: ../../environments/online-endpoints/blue-env.yml
