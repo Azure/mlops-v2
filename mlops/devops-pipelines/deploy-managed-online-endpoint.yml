@@ -1,0 +1,33 @@
+variables:
+- template: ../controller-config.yml
+
+trigger:
+- main
+
+pool:
+  vmImage: ubuntu-20.04
+
+resources:
+  repositories:
+    - repository: templates-mlops  # Template Repo
+      name: AI-Factory Managed Endpoints/ado-templates-mlops
+      type: git
+
+stages:
+- stage: DeployTrainingPipeline
+  displayName: Deploy Training Pipeline
+  jobs:
+    - job: DeployManagedOnlineEndpoint
+      steps:
+      - checkout: self
+        path: s/
+      - checkout: templates-mlops
+        path: s/templates/
+      - template: templates/aml-cli-v2/install-aml-cli-v2.yml@templates-mlops
+      - template: templates/aml-cli-v2/connect-to-workspace-v2.yml@templates-mlops
+      - template: templates/aml-cli-v2/deploy-managed-online-endpoint.yml@templates-mlops
+        parameters:
+          job_type: create-deployment
+      - template: templates/aml-cli-v2/deploy-managed-online-endpoint.yml@templates-mlops
+        parameters:
+          job_type: traffic_allocation

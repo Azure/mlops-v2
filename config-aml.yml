@@ -1,6 +1,6 @@
 variables:
 
-  gh_service_connection: mlops-v2-tabular
+  # gh_service_connection: mlops-v2-tabular
 
   version: python-sdk 
   ap_vm_image: ubuntu-20.04
@@ -77,3 +77,21 @@ variables:
   batch_error_threshold: 1
   batch_process_count_per_node: 1
   batch_node_count: 1
+
+# Managed Online Endpoint pipeline settings
+  moe_endpoint_name: testEndpoint1  #no spaces or _ allowed; only lowercase, caps, and -
+  
+  # Blue deployment
+  moe_deployment_name: blue
+  moe_deployment_file: mlops/config/online-endpoints/blue-deployment.yml #shall we replace with the below? or keep the file? 
+  # moe_deployed_model: data/managed-endpoints/models/sklearn_regression_model.pkl
+  # moe_scoring_script: managed_online_endpoint.py
+  # moe_scoring_script_path: ../../model-1/onlinescoring/
+  # moe_env_conda_file: mlops/environments/online-endpoints/blue.yml
+  # moe_env_image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04:20210727.v1
+  # moe_instance_type: Standard_F2s_v2
+  # moe_instance_count: 1
+
+  traffic_allocation: blue=100
+
+  # safe rollout placeholder
