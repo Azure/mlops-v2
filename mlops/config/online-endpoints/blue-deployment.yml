@@ -8,7 +8,7 @@ code_configuration:
     local_path: ../../data-science/src/
   scoring_script: managed_online_endpoint.py
 environment: 
-  conda_file: ../environments/blue-env.yml
+  conda_file: ../../environments/blue-env.yml
   image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04:20210727.v1
 instance_type: Standard_F2s_v2
 instance_count: 1
