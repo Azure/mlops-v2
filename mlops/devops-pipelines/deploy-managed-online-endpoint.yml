@@ -9,9 +9,10 @@ pool:
 
 resources:
   repositories:
-    - repository: templates-mlops  # Template Repo
-      name: AI-Factory Managed Endpoints/ado-templates-mlops
-      type: git
+    - repository: mlops-templates  # Template Repo
+      name: Azure/mlops-templates # need to change org name from Azure when pulling the template
+      endpoint: mlops-v2-tabular # need to hardcode!
+      type: github
 
 stages:
 - stage: DeployTrainingPipeline
@@ -21,13 +22,13 @@ stages:
       steps:
       - checkout: self
         path: s/
-      - checkout: templates-mlops
+      - checkout: mlops-templates
         path: s/templates/
-      - template: templates/aml-cli-v2/install-aml-cli-v2.yml@templates-mlops
-      - template: templates/aml-cli-v2/connect-to-workspace-v2.yml@templates-mlops
-      - template: templates/aml-cli-v2/deploy-managed-online-endpoint.yml@templates-mlops
+      - template: templates/aml-cli-v2/install-aml-cli-v2.yml@mlops-templates
+      - template: templates/aml-cli-v2/connect-to-workspace-v2.yml@mlops-templates
+      - template: templates/aml-cli-v2/deploy-managed-online-endpoint.yml@mlops-templates
         parameters:
           job_type: create-deployment
-      - template: templates/aml-cli-v2/deploy-managed-online-endpoint.yml@templates-mlops
+      - template: templates/aml-cli-v2/deploy-managed-online-endpoint.yml@mlops-templates
         parameters:
           job_type: traffic_allocation
