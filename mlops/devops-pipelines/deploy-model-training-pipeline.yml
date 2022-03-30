@@ -19,7 +19,7 @@ pool:
 resources:
   repositories:
     - repository: mlops-templates  # Template Repo
-      name: Azure/mlops-templates
+      name: Azure/mlops-templates # need to change org name from Azure when pulling the template
       endpoint: mlops-v2-tabular # need to hardcode!
       type: github
 
