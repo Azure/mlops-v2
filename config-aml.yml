@@ -38,15 +38,15 @@ variables:
   model_name: credit-ci
 
 
-# Batch scoring dataset settings
-scoring_dataset_name: credit-batch-input
-scoring_dataset_description: credit-batch-input
-scoring_dataset_local_path: data/scoring/
-scoring_dataset_path_on_datastore: data/scoring/
-scoring_dataset_type: local
-scoring_dataset_storage_url: 'https://azureaidemostorage.blob.core.windows.net/data/'
+  # Batch scoring dataset settings
+  scoring_dataset_name: credit-batch-input
+  scoring_dataset_description: credit-batch-input
+  scoring_dataset_local_path: data/scoring/
+  scoring_dataset_path_on_datastore: data/scoring/
+  scoring_dataset_type: local
+  scoring_dataset_storage_url: 'https://azureaidemostorage.blob.core.windows.net/data/'
 
-# Batch pipeline settings
+  # Batch pipeline settings
 
   # Batch AzureML Environment name
   batch_env_name: credit-batch
