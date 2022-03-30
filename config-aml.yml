@@ -5,16 +5,17 @@ variables:
   version: python-sdk 
   ap_vm_image: ubuntu-20.04
 
-# Training dataset settings
+
+# Training pipeline settings
+
+  # Training dataset settings
   training_dataset_name: uci-credit
   training_dataset_description: uci_credit
   training_dataset_local_path: data/training/
   training_dataset_path_on_datastore: data/training/
   training_dataset_type: local
   training_dataset_storage_url: 'https://azureaidemostorage.blob.core.windows.net/data/'
-
-# Training pipeline settings
-
+  
   # Training AzureML Environment name
   training_env_name: credit-training
 
@@ -37,6 +38,7 @@ variables:
   # Name under which the model will be registered
   model_name: credit-ci
 
+# Batch pipeline settings
 
   # Batch scoring dataset settings
   scoring_dataset_name: credit-batch-input
@@ -45,8 +47,6 @@ variables:
   scoring_dataset_path_on_datastore: data/scoring/
   scoring_dataset_type: local
   scoring_dataset_storage_url: 'https://azureaidemostorage.blob.core.windows.net/data/'
-
-  # Batch pipeline settings
 
   # Batch AzureML Environment name
   batch_env_name: credit-batch
