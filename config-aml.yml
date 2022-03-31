@@ -31,9 +31,12 @@ variables:
   training_target_min_nodes: 0
   training_target_max_nodes: 4
 
-  # Command to run for training, use azureml:dataset_name:version to reference a dataset
+  # Training script specification; use azureml:dataset_name:version to reference an AML Dataset for --data_path
   training_script: train.py
   training_arguments: --data_path azureml:uci-credit:1
+
+  # Evaluate script specification
+  evaluate_script: evaluate.py
 
   # Name under which the model will be registered
   model_name: credit-ci
@@ -81,16 +84,15 @@ variables:
 # Managed Online Endpoint pipeline settings
   moe_endpoint_name: testEndpoint2  #no spaces or _ allowed; only lowercase, caps, and -
   
-  # Blue deployment
+  # Blue sample deployment
   moe_deployment_name: blue
-  moe_deployment_file: mlops/config/online-endpoints/blue-deployment.yml #shall we replace with the below? or keep the file? 
-  # moe_deployed_model: data/managed-endpoints/models/sklearn_regression_model.pkl
-  # moe_scoring_script: managed_online_endpoint.py
-  # moe_scoring_script_path: ../../model-1/onlinescoring/
-  # moe_env_conda_file: mlops/environments/online-endpoints/blue.yml
-  # moe_env_image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04:20210727.v1
-  # moe_instance_type: Standard_F2s_v2
-  # moe_instance_count: 1
+  moe_model: data/managed-endpoints/models/sklearn_regression_model.pkl #to point to azureml later
+  moe_scoring_script: managed_online_endpoint.py
+  moe_scoring_script_path: data-science/src/
+  moe_env_conda_file: mlops/environments/online-endpoints/blue.yml
+  moe_env_image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04:20210727.v1
+  moe_instance_type: Standard_F2s_v2
+  moe_instance_count: 1
 
   traffic_allocation: blue=100
 
