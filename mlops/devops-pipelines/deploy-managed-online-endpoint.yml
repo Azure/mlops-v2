@@ -22,6 +22,7 @@ resources:
       name: Azure/mlops-templates # need to change org name from Azure when pulling the template
       endpoint: mlops-v2-tabular # need to hardcode!
       type: github
+      ref: variables['Build.SourceBranchName']
 
 stages:
 - stage: DeployTrainingPipeline
