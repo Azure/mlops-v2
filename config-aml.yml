@@ -82,7 +82,7 @@ variables:
   batch_node_count: 1
 
 # Managed Online Endpoint pipeline settings
-  moe_endpoint_name: testEndpoint2  #no spaces or _ allowed; only lowercase, caps, and -
+  moe_endpoint_name: testEndpoint1  #no spaces or _ allowed; only lowercase, caps, and -
   
   # Blue sample deployment
   moe_deployment_name: blue
