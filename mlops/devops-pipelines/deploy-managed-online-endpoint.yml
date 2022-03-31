@@ -22,7 +22,6 @@ resources:
       name: Azure/mlops-templates # need to change org name from Azure when pulling the template
       endpoint: mlops-v2-tabular # need to hardcode!
       type: github
-      ref: main
 
 stages:
 - stage: DeployTrainingPipeline
@@ -34,8 +33,8 @@ stages:
         path: s/
       - checkout: mlops-templates
         path: s/templates/
-      - template: templates/aml-cli-v2/install-aml-cli-v2.yml@mlops-templates
-      - template: templates/aml-cli-v2/connect-to-workspace-v2.yml@mlops-templates
+      - template: templates/aml-cli-v2/install-aml-cli.yml@mlops-templates
+      - template: templates/aml-cli-v2/connect-to-workspace.yml@mlops-templates
       - template: templates/aml-cli-v2/deploy-managed-online-endpoint.yml@mlops-templates
         parameters:
           job_type: create-endpoint
