@@ -6,13 +6,9 @@ variables:
 - ${{ if eq(variables['Build.SourceBranchName'], 'main') }}:
     # 'main' branch: PRD environment
     - template: ../../config-infra-prod.yml
-    - name: mlops_templates
-      value: mlops-templates-main
 - ${{ if ne(variables['Build.SourceBranchName'], 'main') }}:  
     # 'develop' or feature branches: DEV environment
     - template: ../../config-infra-dev.yml
-    - name: mlops-templates
-      value: mlops-templates-dev
 
 trigger:
 - none
@@ -22,16 +18,11 @@ pool:
 
 resources:
   repositories:
-    - repository: mlops-templates-main  # Template Repo
+    - repository: mlops-templates  # Template Repo
       name: Azure/mlops-templates # need to change org name from Azure when pulling the template
       endpoint: mlops-v2-tabular # need to hardcode!
       type: github
       ref: main
-    - repository: mlops-templates-dev  # Template Repo
-      name: Azure/mlops-templates # need to change org name from Azure when pulling the template
-      endpoint: mlops-v2-tabular # need to hardcode!
-      type: github
-      ref: dev
 
 stages:
 - stage: DeployTrainingPipeline
@@ -41,16 +32,16 @@ stages:
       steps:
       - checkout: self
         path: s/
-      - checkout: $(mlops_templates)
+      - checkout: mlops-templates
         path: s/templates/
-      - template: templates/aml-cli-v2/install-aml-cli-v2.yml@$(mlops_templates)
-      - template: templates/aml-cli-v2/connect-to-workspace-v2.yml$(mlops_templates)
-      - template: templates/aml-cli-v2/deploy-managed-online-endpoint.yml@$(mlops_templates)
+      - template: templates/aml-cli-v2/install-aml-cli-v2.yml@mlops-templates
+      - template: templates/aml-cli-v2/connect-to-workspace-v2.yml@mlops-templates
+      - template: templates/aml-cli-v2/deploy-managed-online-endpoint.yml@mlops-templates
         parameters:
           job_type: create-endpoint
-      - template: templates/aml-cli-v2/deploy-managed-online-endpoint.yml@$(mlops_templates)
+      - template: templates/aml-cli-v2/deploy-managed-online-endpoint.yml@mlops-templates
         parameters:
           job_type: create-deployment
-      - template: templates/aml-cli-v2/deploy-managed-online-endpoint.yml@$(mlops_templates)
+      - template: templates/aml-cli-v2/deploy-managed-online-endpoint.yml@mlops-templates
         parameters:
           job_type: traffic_allocation
