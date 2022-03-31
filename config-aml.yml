@@ -86,7 +86,7 @@ variables:
   
   # Blue sample deployment
   moe_deployment_name: blue
-  moe_model: data/managed-endpoints/models/sklearn_regression_model.pkl #to point to azureml later
+  moe_model: ../../../data/managed-endpoints/models/sklearn_regression_model.pkl #to point to azureml later
   moe_scoring_script: managed_online_endpoint.py
   moe_env_conda_file: blue.yml
   moe_env_image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04:20210727.v1
