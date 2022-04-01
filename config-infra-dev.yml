@@ -11,7 +11,7 @@ variables:
   enable_aml_computecluster: true
 
   # Azure DevOps 
-  ado_service_connection_rg: am-msft1000-arm
+  ado_service_connection_rg: Azure-ARM-Dev #am-msft1000-arm
   ado_service_connection_aml_ws: Azure-ARM-Dev #am-msft1000-arm
 
   # Github
@@ -20,8 +20,8 @@ variables:
   gh_org_url:
 
   # IaC
-  resource_group: azureml-examples-rg #rg-$(namespace)-$(postfix)
-  aml_workspace: main #mlw-$(namespace)-$(postfix)
+  resource_group: rg-$(namespace)-$(postfix) #azureml-examples-rg
+  aml_workspace: mlw-$(namespace)-$(postfix) #main
   application_insights: mlw-$(namespace)-$(postfix)
   key_vault: kv-$(namespace)-$(postfix)
   container_registry: cr$(namespace)$(postfix)
