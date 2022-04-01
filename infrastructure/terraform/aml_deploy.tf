@@ -27,6 +27,9 @@ module "aml_workspace" {
   application_insights_id = module.application_insights.id
   container_registry_id   = module.container_registry.id
 
+  enable_aml_computecluster = var.enable_aml_computecluster
+  storage_account_name      = module.storage_account_aml.name
+
   tags = local.tags
 }
 
