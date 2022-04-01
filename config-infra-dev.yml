@@ -5,9 +5,10 @@ variables:
 
   # Global
   namespace: mlopstab
-  postfix: $(DayOfYear)$(Rev:rr)
+  postfix: $[counter(variables['namespace'], 101)]
   location: northeurope
   environment: dev
+  enable_aml_computecluster: true
 
   # Azure DevOps 
   ado_service_connection_rg: am-msft1000-arm

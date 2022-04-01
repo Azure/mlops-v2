@@ -45,8 +45,8 @@ stages :
             scriptType: 'bash'
             scriptLocation: 'inlineScript'
             inlineScript: 'az storage container create --account-name $(terraform_st_storage_account) --name $(terraform_st_container_name)'
-  - stage: TerraformValidateAndApply
-    displayName: Terraform Validate & Apply
+  - stage: DeployAzureMachineLearningRG
+    displayName: Deploy AML Resource Group
     jobs:
     - job:  DeployAMLWorkspace
       displayName: 'Deploy AML Workspace'
@@ -79,7 +79,7 @@ stages :
           provider: 'azurerm'
           command: 'plan'
           workingDirectory: '$(System.DefaultWorkingDirectory)/$(terraform_workingdir)'
-          commandOptions: '-var "location=$(location)" -var "prefix=$(namespace)" -var "postfix=$(postfix)" -var "environment=$(environment)"'
+          commandOptions: '-var "location=$(location)" -var "prefix=$(namespace)" -var "postfix=$(postfix)" -var "environment=$(environment)" -var "enable_aml_computecluster=$(enable_aml_computecluster)"'
           environmentServiceNameAzureRM: '$(ado_service_connection_rg)'
       - task: TerraformTaskV2@2
         displayName: 'Terraform apply'
@@ -87,5 +87,5 @@ stages :
           provider: 'azurerm'
           command: 'apply'
           workingDirectory: '$(System.DefaultWorkingDirectory)/$(terraform_workingdir)'
-          commandOptions: '-var "location=$(location)" -var "prefix=$(namespace)" -var "postfix=$(postfix)" -var "environment=$(environment)"'
+          commandOptions: '-var "location=$(location)" -var "prefix=$(namespace)" -var "postfix=$(postfix)" -var "environment=$(environment)" -var "enable_aml_computecluster=$(enable_aml_computecluster)"'
           environmentServiceNameAzureRM: '$(ado_service_connection_rg)'

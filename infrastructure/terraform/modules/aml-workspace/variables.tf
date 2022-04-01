@@ -43,3 +43,13 @@ variable "container_registry_id" {
   type        = string
   description = "The ID of the Container Registry linked to AML workspace"
 }
+
+variable "enable_aml_computecluster" {
+  description = "Variable to enable or disable AML compute cluster"
+  default     = false
+}
+
+variable "storage_account_name" {
+  type        = string
+  description = "The Name of the Storage Account linked to AML workspace"
+}

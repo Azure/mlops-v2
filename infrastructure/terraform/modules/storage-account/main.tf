@@ -27,8 +27,8 @@ resource "azurerm_storage_account_network_rules" "firewall_rules" {
   resource_group_name  = var.rg_name
   storage_account_name = azurerm_storage_account.adl_st.name
 
-  default_action             = "Deny"
-  ip_rules                   = [data.http.ip.body]
+  default_action             = "Allow"
+  ip_rules                   = [] # [data.http.ip.body]
   virtual_network_subnet_ids = var.firewall_virtual_network_subnet_ids
   bypass                     = var.firewall_bypass
 }

@@ -17,3 +17,7 @@ variable "postfix" {
   type        = string
   description = "Postfix for module names"
 }
+
+variable "enable_aml_computecluster" {
+  description = "Variable to enable or disable AML compute cluster"
+}
