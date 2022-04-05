@@ -30,20 +30,19 @@ def main():
     # Parse command-line arguments
     args = parse_args()
 
-    # Make sure model output path exists
-    if not os.path.exists(args.model_path):
-        os.makedirs(args.model_path)
+    transformed_data_path = os.path.join(args.transformed_data_path, run.parent.id)
+    model_path = os.path.join(args.model_path, run.parent.id)
 
-    print(args.transformed_data_path)
-    os.listdir(os.getcwd())
-    print(os.getcwd())    
-        
+    # Make sure model output path exists
+    if not os.path.exists(model_path):
+        os.makedirs(model_path)
+
     # Enable auto logging
     mlflow.sklearn.autolog()
     
     # Read training data
-    train = pd.read_csv(os.path.join(args.transformed_data_path, 'train.csv'))
-    val = pd.read_csv(os.path.join(args.transformed_data_path, 'val.csv'))
+    train = pd.read_csv(os.path.join(transformed_data_path, 'train.csv'))
+    val = pd.read_csv(os.path.join(transformed_data_path, 'val.csv'))
     
     run.log('TRAIN SIZE', train.shape[0])
     run.log('VAL SIZE', val.shape[0])
@@ -52,7 +51,7 @@ def main():
     model = model_train(train, val)
 
     #copying model to "outputs" directory, this will automatically upload it to Azure ML
-    joblib.dump(value=model, filename=os.path.join(args.model_path, 'model.pkl'))
+    joblib.dump(value=model, filename=os.path.join(model_path, 'model.pkl'))
 
 def model_train(train, val):
     

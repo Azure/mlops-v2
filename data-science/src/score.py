@@ -24,28 +24,14 @@ def init():
 
 def run(file_list):
     print(f"Files to process: {file_list}")
-    try:
-        results = pd.DataFrame(columns=["Sno", "ProbaGoodCredit", "ProbaBadCredit"])
-        for filename in file_list:
-            df = pd.read_csv(filename)
-            sno = df["Sno"]
-            df = df.drop("Sno", axis=1)
-            proba = model.predict_proba(df)
-            proba = pd.DataFrame(data=proba, columns=["ProbaGoodCredit", "ProbaBadCredit"])
-            result = pd.concat([sno, proba], axis=1)
-            results = results.append(result)
-            print(f"Batch scored: {filename}")
-        return results
-    except Exception as e:
-        error = str(e)
-        return error
-
-def test():
-    global model
-    model = joblib.load("./outputs/model.pkl")
-    files = ['data/credit_batch.csv']
-    result = run(files)
-    print(result)
-
-if __name__ == "__main__":
-    test()
+    results = pd.DataFrame(columns=["Sno", "ProbaGoodCredit", "ProbaBadCredit"])
+    for filename in file_list:
+        df = pd.read_csv(filename)
+        sno = df["Sno"]
+        df = df.drop("Sno", axis=1)
+        proba = model.predict_proba(df)
+        proba = pd.DataFrame(data=proba, columns=["ProbaGoodCredit", "ProbaBadCredit"])
+        result = pd.concat([sno, proba], axis=1)
+        results = results.append(result)
+        print(f"Batch scored: {filename}")
+    return results

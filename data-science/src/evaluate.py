@@ -3,6 +3,7 @@ import sys
 import argparse
 import joblib
 import pandas as pd
+import pickle 
 
 import mlflow
 import mlflow.sklearn
@@ -15,6 +16,7 @@ from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import LabelEncoder
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.preprocessing import StandardScaler
+from sklearn import metrics
 
 from fairlearn.metrics._group_metric_set import _create_group_metric_set
 from azureml.contrib.fairness import upload_dashboard_dictionary, download_dashboard_by_upload_id
@@ -31,27 +33,31 @@ def parse_args():
     parser.add_argument("--transformed_data_path", type=str, default='transformed_data/', help="Directory path to training data")
     parser.add_argument('--model_name', type=str, help='Name under which model is registered')
     parser.add_argument("--model_path", type=str, default='trained_model/', help="Model output directory")
+    parser.add_argument("--evaluation_path", type=str, default='evaluation_results/', help="Evaluation results output directory")
     parser.add_argument('--deploy_flag', type=str, help='A deploy flag whether to deploy or no')
     return parser.parse_args()
 
 def main():
     # Parse command-line arguments
     args = parse_args()
+    transformed_data_path = os.path.join(args.transformed_data_path, run.parent.id)
+    model_path = os.path.join(args.model_path, run.parent.id)
+    evaluation_path = os.path.join(args.evaluation_path, run.parent.id)
 
-    print(args.transformed_data_path)
-    os.listdir(os.getcwd())
-    print(os.getcwd())    
+    # Make sure model output path exists
+    if not os.path.exists(evaluation_path):
+        os.makedirs(evaluation_path)
         
     # Enable auto logging
     mlflow.sklearn.autolog()
     
     # Read training & testing data
-    train = pd.read_csv(os.path.join(args.transformed_data_path, 'train.csv'))
+    train = pd.read_csv(os.path.join(transformed_data_path, 'train.csv'))
     train.drop("Sno", axis=1, inplace=True)
     y_train = train['Risk']
     X_train = train.drop('Risk', axis=1)
     
-    test = pd.read_csv(os.path.join(args.transformed_data_path, 'test.csv'))
+    test = pd.read_csv(os.path.join(transformed_data_path, 'test.csv'))
     test.drop("Sno", axis=1, inplace=True)
     y_test = test['Risk']
     X_test = test.drop('Risk', axis=1)
@@ -59,16 +65,36 @@ def main():
     run.log('TEST SIZE', test.shape[0])
     
     # Load model
-    model = joblib.load(os.path.join(args.model_path, 'model.pkl'))
+    model = joblib.load(os.path.join(model_path, 'model.pkl'))
 
     # ---------------- Model Evaluation ---------------- #
     # Evaluate model using testing set
     
-    # Capture metrics
+    # Capture Accuracy Score
     test_acc = model.score(X_test, y_test)
-    
+
+    # Capture ML Metrics
+    test_metrics = {
+        "Test Accuracy": metrics.accuracy_score(y_test, model.predict(X_test)),
+        "Test Recall": metrics.recall_score(y_test, model.predict(X_test), pos_label="good"),
+        "Test Precison": metrics.precision_score(y_test, model.predict(X_test), pos_label="good"),
+        "Test F1 Score": metrics.f1_score(y_test, model.predict(X_test), pos_label="good")
+    }
+
+    # Capture Confusion Matrix
+    test_cm = metrics.plot_confusion_matrix(model, X_test, y_test)
+
+    # Save and test eval metrics
     print("Testing accuracy: %.3f" % test_acc)
     run.log('Testing accuracy', test_acc)
+    run.parent.log('Testing accuracy', test_acc)
+    with open(os.path.join(evaluation_path, "metrics.json"), 'w+') as f:
+        json.dump(test_metrics, f)
+    test_cm.figure_.savefig(os.path.join(evaluation_path, "confusion_matrix.jpg"))
+    test_cm.figure_.savefig("confusion_matrix.jpg")
+    run.log_image(name='Confusion Matrix Test Dataset', path="confusion_matrix.jpg")
+    run.parent.log_image(name='Confusion Matrix Test Dataset', path="confusion_matrix.jpg")
+
     
     # -------------------- Promotion ------------------- #
     test_accuracies = {}
@@ -97,9 +123,11 @@ def main():
         
     test_accuracies["current model"] = test_acc
     model_runs_metrics_plot = pd.DataFrame(test_accuracies, index=["accuracy"]).plot(kind='bar', figsize=(15, 10))
+    model_runs_metrics_plot.figure.savefig(os.path.join(evaluation_path, "model_runs_metrics_plot.png"))    
     model_runs_metrics_plot.figure.savefig("model_runs_metrics_plot.png")    
     run.log_image(name='MODEL RUNS METRICS COMPARISON', path="model_runs_metrics_plot.png")
-    
+    run.parent.log_image(name='MODEL RUNS METRICS COMPARISON', path="model_runs_metrics_plot.png")
+
     # -------------------- FAIRNESS ------------------- #
     # Calculate Fairness Metrics over Sensitive Features
     # Create a dictionary of model(s) you want to assess for fairness 
@@ -136,10 +164,11 @@ def main():
                                      features=X_train.columns,
                                      classes=[0, 1],
                                      transformations=model.steps[0][1])
+                                     
 
-    #filehandler = open(EXPLAINER_PATH,"wb")
-    #pickle.dump(tabular_explainer, filehandler)
-    #filehandler.close()
+    filehandler = open(os.path.join(evaluation_path, "explainer"),"wb")
+    pickle.dump(tabular_explainer, filehandler)
+    filehandler.close()
 
     # you can use the training data or the test data here, but test data would allow you to use Explanation Exploration
     global_explanation = tabular_explainer.explain_global(X_test)

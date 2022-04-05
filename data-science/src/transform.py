@@ -24,14 +24,11 @@ def parse_args():
 def main():
     # Parse command-line arguments
     args = parse_args()
+    transformed_data_path = os.path.join(args.transformed_data_path, run.parent.id)
 
-    # Make sure model output path exists
-    if not os.path.exists(args.transformed_data_path):
-        os.makedirs(args.transformed_data_path)
-
-    print(args.data_path)
-    os.listdir(os.getcwd())
-    print(os.getcwd())    
+    # Make sure data output path exists
+    if not os.path.exists(transformed_data_path):
+        os.makedirs(transformed_data_path)
         
     # Enable auto logging
     mlflow.sklearn.autolog()
@@ -57,9 +54,9 @@ def main():
     run.parent.log('VAL SIZE', val.shape[0])
     run.parent.log('TEST SIZE', test.shape[0])
     
-    TRAIN_PATH = os.path.join(args.transformed_data_path, "train.csv")
-    VAL_PATH = os.path.join(args.transformed_data_path, "val.csv")
-    TEST_PATH = os.path.join(args.transformed_data_path, "test.csv")
+    TRAIN_PATH = os.path.join(transformed_data_path, "train.csv")
+    VAL_PATH = os.path.join(transformed_data_path, "val.csv")
+    TEST_PATH = os.path.join(transformed_data_path, "test.csv")
     
     train.to_csv(TRAIN_PATH, index=False)
     val.to_csv(VAL_PATH, index=False)
