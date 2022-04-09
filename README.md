@@ -11,7 +11,7 @@ While MLOps has many overlapping concepts with DevOps and can be seen as a deriv
 [How: Machine Learning Operations](https://docs.microsoft.com/en-us/azure/machine-learning/concept-model-management-and-deployment) 
 
 
-## Prerequisites: Repository Overview of the MLOps Solution Accelerator 
+## Prerequisites: Repository Overview
 
 The solution accelerator provides a modular end-to-end approach for MLOps in Azure based on pattern architectures. As each organization is unique, we do not expect that each pattern architecture will suit all organizations, however, Digital Natives or enterprises will be able to deploy an MLOps ecosystem fast, simple, reliable, modular, and secure. The time to product is measurable shorter under incerased scalability.
 
