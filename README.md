@@ -36,7 +36,7 @@ The best way to consume this accelerator will be to choose a complex use case th
 Following the demo helps to understand the concept of the solution accelerator, architectual pattern, and ongoing work extending the solution accelerator to other patterns. Feel free to replace the inner loop model with your model and rerun accordingly.
 
  
-## 👤 Getting started: AML Classical ML Demo
+## 👤 Getting started: Azure Machine Learning - Classical Machine Learning Demo
   
 The demo follows the Classical Machine Learning Pattern with Azure Machine Learning.
   
