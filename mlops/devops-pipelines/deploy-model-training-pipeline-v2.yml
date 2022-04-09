@@ -37,6 +37,8 @@ stages:
       - template: templates/${{ variables.version }}/install-aml-cli.yml@mlops-templates
       - template: templates/${{ variables.version }}/connect-to-workspace.yml@mlops-templates
       - template: templates/${{ variables.version }}/run-pipeline.yml@mlops-templates
+  condition: ne(variables['build.sourceBranchName'], 'cli-v2') # Skip for cli-v2
+
 - stage: CreateOnlineEndpoint
   displayName: Create Online Endpoint
   jobs:
