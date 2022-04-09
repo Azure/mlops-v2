@@ -1,6 +1,5 @@
 # Azure MLOps (v2) solution accelerator
 
-_Work in progress_
 
 ### Microsoft's State of MLOps 
 
@@ -8,20 +7,16 @@ MLOps or Machine Learning Ops is a set of practices that aims to automate and op
 
 While MLOps has many overlapping concepts with DevOps and can be seen as a derivation of DevOps, it varies significantly from DevOps due to the nature of Data Science projects. The following Microsoft articles provide a perspective on MLOps from various viewpoints: 
 
+[MLOps using Azure Machine Learning](https://azure.microsoft.com/en-us/services/machine-learning/mlops/#features) 
+
 [Cloud Adoption Framework Guidance](https://docs.microsoft.com/en-us/azure/cloud-adoption-framework/ready/azure-best-practices/ai-machine-learning-mlops) 
 
-[MLOps with Azure Machine Learning](https://docs.microsoft.com/en-us/azure/machine-learning/concept-model-management-and-deployment) 
-
-[MLOps Infographic] 
-
-[MLOps Example Scenario] 
-
-[MLOps for Python models using Azure Machine Learning](https://docs.microsoft.com/en-us/azure/architecture/reference-architectures/ai/mlops-python) 
+[How: Machine Learning Operations](https://docs.microsoft.com/en-us/azure/machine-learning/concept-model-management-and-deployment) 
 
 
 ## Overview of the MLOps Solution Accelerator 
 
-The accelerator provides a modular end-to-end approach for MLOps in Azure based on pattern architectures. As each organization is unique, we do not expect that each pattern architecture will suit all organizations, however, Digital Natives or enterprises will be able to deploy an MLOps ecosystem fast, simple, reliable, modular, and secure. The time to product is measurable shorter under incerased scalability.
+The solution accelerator provides a modular end-to-end approach for MLOps in Azure based on pattern architectures. As each organization is unique, we do not expect that each pattern architecture will suit all organizations, however, Digital Natives or enterprises will be able to deploy an MLOps ecosystem fast, simple, reliable, modular, and secure. The time to product is measurable shorter under incerased scalability.
 
 Following are the key principles that have been applied while building the accelerator: 
 
@@ -38,7 +33,24 @@ Following are the key principles that have been applied while building the accel
 
 ## Repository 
 
-This repo provides a templatised approach for the end-to-end Data Science process and focuses on driving efficiency at each stage. For example, it can take a significant amount of time to bootstrap a new Data Science project, hence the repo provides templates that can be reused to establish a cookie cutter approach for the bootstrapping process to shorten the process from days to hours or minutes. The bootstrapping process encapsulates key MLOps decisions like the various components of the repository, the structure of the repository, the link between model development and model deployment and technology choices for each of the phases of the Data Science process.   
+This repo provides a templatised approach for the end-to-end Data Science process and focuses on driving efficiency at each stage. For example, it can take a significant amount of time to bootstrap a new Data Science project, hence the repo provides templates that can be reused to establish a cookie cutter approach for the bootstrapping process to shorten the process from days to hours or minutes. 
+
+
+## Pattern Archictectures
+
+| Link                                                    | AI Pattern                                                              |
+| ------------------------------------------------------- | ----------------------------------------------------------------------- |
+| [Pattern AML CML](https://github.com/Azure/mlops-v2/blob/main/documentation/architecturepattern/AzureML_CML_Architecture_v0.7.jpg) | Azure Machine Learning - Classical Machine Learning                     |
+| [Pattern AML CV](https://github.com/Azure/mlops-v2/blob/main/documentation/architecturepattern/AzureML_SupervisedCV_Architecture_v0.5.jpg)                                                 | Azure Machine Learning - Computer Vision                                |
+| [TBD]                                                   | Azure Machine Learning - Natural Language Provessing                    |
+| [TBD]                                                   | Azure Machine Learning / Azure Databricks - Classical Machine Learning  |
+| [TBD]                                                   | Azure Machine Learning / Azure Databricks - Computer Vision             |
+| [TBD]                                                   | Azure Machine Learning / Azure Databricks - Natural Language Provessing |
+| [TBD]                                                   | Azure Machine Learning - Classical Machine Learning using R             |
+| [TBD]                                                   | Azure Machine Learning - Edge AI                                        |
+
+
+The bootstrapping process encapsulates key MLOps decisions like the various components of the repository, the structure of the repository, the link between model development and model deployment and technology choices for each of the phases of the Data Science process.   
 
 The best way to consume this accelerator will be to choose a complex use case that reflects most of your organisation’s needs from a Data Science perspective and start adjusting this accelerator to accommodate those requirements. The first use case may take longer to deliver, however, once the process has been ironed out, subsequent use cases can be onboarded in a matter of days if not hours.  
 
@@ -54,8 +66,11 @@ The demo follows the Classical Machine Learning Pattern with Azure Machine Learn
 Please follow the instructions to execute the demo accordingly:
   
 &nbsp;&nbsp;1.
+  
 &nbsp;&nbsp;2.
+  
 &nbsp;&nbsp;3.
+  
 &nbsp;&nbsp;...
 
 Following the demo helps to understand the concept of the solution accelerator, architectual pattern, and ongoing work extending the solution accelerator to other patterns. Feel free to replace the inner loop model with your model and rerun accordingly.
