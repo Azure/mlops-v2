@@ -39,7 +39,6 @@ stages:
       - template: templates/${{ variables.version }}/run-pipeline.yml@mlops-templates
 - stage: CreateOnlineEndpoint
   displayName: Create Online Endpoint
-  environment: 'development'
   jobs:
     - job: DeployOnlineEndpoint
       steps:
