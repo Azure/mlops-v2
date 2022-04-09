@@ -2,7 +2,7 @@
 
 _Work in progress_
 
-### MLOps 
+### Microsoft's State of MLOps 
 
 MLOps or Machine Learning Ops is a set of practices that aims to automate and operationalise the deployment and maintenance of machine learning models across various stages of the lifecycle of a Data Science process. The purpose of an MLOps process is to drive efficiency, increase repeatability and predictability, enable reuse of code and drive consistency across projects. This enables Data Science teams to deploy Machine Learning models to production reliably and efficiently.  
 
@@ -19,23 +19,22 @@ While MLOps has many overlapping concepts with DevOps and can be seen as a deriv
 [MLOps for Python models using Azure Machine Learning](https://docs.microsoft.com/en-us/azure/architecture/reference-architectures/ai/mlops-python) 
 
 
-## Overview of the Accelerator 
+## Overview of the MLOps Solution Accelerator 
 
-The intention of this accelerator is to provide a templatised approach for MLOps in Azure with a recommended architecture. Each organization is unique, and we do not expect that this architecture will suit all organizations, however, this is based on our learning from working with various large and small organizations and can be an excellent starting point for a reference framework which can be used to develop an MLOps framework for the organization.  
-
-With the number of choices available today, it can be difficult for teams to assess all options and make decisions. Various design decisions have been made as part of the development of this accelerator. These decisions provide an opinionated view that reflect most commonly used architectural patterns and practices. By leveraging the tool and capability assessment that has been done as part of the development of this accelerator and only focussing on changes that are needed to meet the specific needs of your organization, you can help your organisation move faster in your journey towards MLOps.   
+The accelerator provides a modular end-to-end approach for MLOps in Azure based on pattern architectures. As each organization is unique, we do not expect that each pattern architecture will suit all organizations, however, Digital Natives or enterprises will be able to deploy an MLOps ecosystem fast, simple, reliable, modular, and secure. The time to product is measurable shorter under incerased scalability.
 
 Following are the key principles that have been applied while building the accelerator: 
 
-&nbsp;Simplicity 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Simplicity 
   
-&nbsp;Segregation of duties 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Segregation of duties 
   
-&nbsp;Reusability 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Reusability 
   
-&nbsp;Modularity
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Modularity
   
-&nbsp;Enterprise readiness 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Enterprise readiness 
+
 
 ## Repository 
 
@@ -49,10 +48,11 @@ The architecture for this accelerator, which has been described in more detail h
 ## Getting started with AML Classical ML Demo
   
 This repository hosts the MLOps (v2) solution accelerators. Please follow the instructions to execute the demo accordingly:
-  1.
-  2.
-  3.
-  ...
+  
+&nbsp;&nbsp;1.
+&nbsp;&nbsp;2.
+&nbsp;&nbsp;3.
+&nbsp;&nbsp;...
 
 Following the demo helps to understand the concept of the solution accelerator, architectual pattern, and ongoing work extending the solution accelerator to other patterns. Feel free to replace the inner loop model with your model and rerun accordingly.
 
@@ -77,7 +77,8 @@ Following the demo helps to understand the concept of the solution accelerator, 
 |                                                                     | Natural Language Processing        | Azure Machine Learning, Azure Databricks | [DEPLOY BUTTON] |
 |                                                                     | Classical machine learning with R  | Azure Machine Learning                   | [DEPLOY BUTTON] |  
 |                                                                     | Edge AI                            | Azure Machine Learning                   | [DEPLOY BUTTON] |  
-  
+
+
 ## Contributing
 
 TBD. See [CONTRIBUTING.md](CONTRIBUTING.md) for details.
@@ -93,6 +94,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or
 contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
 
+
 ## Trademarks
 
 This project may contain trademarks or logos for projects, products, or services. Authorized use of Microsoft
@@ -100,7 +102,8 @@ trademarks or logos is subject to and must follow
 [Microsoft's Trademark & Brand Guidelines](https://www.microsoft.com/legal/intellectualproperty/trademarks/usage/general).
 Use of Microsoft trademarks or logos in modified versions of this project must not cause confusion or imply Microsoft sponsorship.
 Any use of third-party trademarks or logos are subject to those third-party's policies.
-
+  
+ 
 ## Reference
 
 - links to documentation here (and in sidebar)
