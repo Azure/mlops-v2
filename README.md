@@ -23,11 +23,11 @@ Following are the key principles that have been applied while building the accel
   
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**Segregation of duties & Security**
   
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**Reusability **
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**Reusability**
   
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**Modularity**
   
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**Enterprise readiness **
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**Enterprise readiness**
 
 This repo provides a templatised approach for the end-to-end Data Science process and focuses on driving efficiency at each stage. For example, it can take a significant amount of time to bootstrap a new Data Science project, hence the repo provides templates that can be reused to establish a cookie cutter approach for the bootstrapping process to shorten the process from days to hours or minutes.
 
