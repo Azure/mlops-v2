@@ -37,7 +37,7 @@ stages:
         inputs:
           script: |
             echo "Structure of work folder of this pipeline:"
-            tree $(Agent.WorkFolder)\1 /f
+            tree $(Agent.WorkFolder) /f
       - template: templates/${{ variables.version }}/install-az-cli.yml@mlops-templates
       - template: templates/${{ variables.version }}/install-aml-cli.yml@mlops-templates
       - template: templates/${{ variables.version }}/connect-to-workspace.yml@mlops-templates
