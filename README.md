@@ -27,15 +27,15 @@ With the number of choices available today, it can be difficult for teams to ass
 
 Following are the key principles that have been applied while building the accelerator: 
 
-  Simplicity 
+&nbsp;Simplicity 
   
-  Segregation of duties 
+&nbsp;Segregation of duties 
   
-  Reusability 
+&nbsp;Reusability 
   
-  End to end automation 
+&nbsp;Modularity
   
-  Enterprise readiness 
+&nbsp;Enterprise readiness 
 
 ## Repository 
 
@@ -46,41 +46,38 @@ The best way to consume this accelerator will be to choose a complex use case th
 The architecture for this accelerator, which has been described in more detail here <insert hyperlink> provides a framework for end-to-end MLOps, from provisioning of resources to the deployment and retraining of models in a production environment. The architecture highlights the key personas that are responsible for each of the stages and lists the key activities that are performed in each phase of a Data Science project. The architecture is based on the concepts of inner, middle and outer loops for a Data Science process which are explained in detail here <insert hyperlink> 
 
 
-## Getting started
+## Getting started with AML Classical ML Demo
   
-This repository hosts the MLOps (v2) solution accelerators. It uses [Cookiecutter](https://cookiecutter.readthedocs.io/en/latest/) to generate files and folders based on user selections.
+This repository hosts the MLOps (v2) solution accelerators. Please follow the instructions to execute the demo accordingly:
+  1.
+  2.
+  3.
+  ...
 
-To generate the template files on your local machine, run the following commands:
+Following the demo helps to understand the concept of the solution accelerator, architectual pattern, and ongoing work extending the solution accelerator to other patterns. Feel free to replace the inner loop model with your model and rerun accordingly.
 
-```bash
-pip install cookiecutter
-cookiecutter gh:Azure/mlops-v2
-```
-
-Then follow the prompts cookiecutter surfaces to generate files ready for your project.
-
-<!-- TODO: Update documentation further -->
-
-You can also use the Azure Portal with the buttons in the list below.
-
-## MLOps infrastructure solution accelerators
+  
+## (Coming Soon) One-click Deployments:
+  
+## MLOps infrastructure deployment
 
 | Name                                                    | Description                                          | Try it out      |
 | ------------------------------------------------------- | ---------------------------------------------------- | --------------- |
 | [default](https://github.com/Azure/mlops-infra-default) | Default Azure Machine Learning infrastructure setup. | [DEPLOY BUTTON] |
 
-### Infrastucture add-ons
+## MLOps use case deployment
 
-| Name                         | Description | Try it out |
-| ---------------------------- | ----------- | ---------- |
-| [user-with-compute-instance] |             |
-
-## MLOps project solution accelerators
-
-| Name                                                                | Description                                           | Try it out      |
-| ------------------------------------------------------------------- | ----------------------------------------------------- | --------------- |
-| [classical-ml](https://github.com/Azure/mlops-project-classical-ml) | Classical machine learning solution accelerator demo. | [DEPLOY BUTTON] |
-
+| Name                                                                | AI Workload Type                   | Services                                 | Try it out      |
+|-------------------------------------------------------------------- | -----------------------------------| ---------------------------------------- | --------------- |
+| [classical-ml](https://github.com/Azure/mlops-project-classical-ml) | Classical machine learning         | Azure Machine Learning                   | [DEPLOY BUTTON] |
+|                                                                     | Computer Vision                    | Azure Machine Learning                   | [DEPLOY BUTTON] |
+|                                                                     | Natural Language Processing        | Azure Machine Learning                   | [DEPLOY BUTTON] |
+|                                                                     | Classical machine learning         | Azure Machine Learning, Azure Databricks | [DEPLOY BUTTON] |
+|                                                                     | Computer Vision                    | Azure Machine Learning, Azure Databricks | [DEPLOY BUTTON] |
+|                                                                     | Natural Language Processing        | Azure Machine Learning, Azure Databricks | [DEPLOY BUTTON] |
+|                                                                     | Classical machine learning with R  | Azure Machine Learning                   | [DEPLOY BUTTON] |  
+|                                                                     | Edge AI                            | Azure Machine Learning                   | [DEPLOY BUTTON] |  
+  
 ## Contributing
 
 TBD. See [CONTRIBUTING.md](CONTRIBUTING.md) for details.
