@@ -47,7 +47,11 @@ The architecture for this accelerator, which has been described in more detail h
 
 ## Getting started with AML Classical ML Demo
   
-This repository hosts the MLOps (v2) solution accelerators. Please follow the instructions to execute the demo accordingly:
+The demo follows the Classical Machine Learning Pattern with Azure Machine Learning.
+  
+[AML CML](https://github.com/Azure/mlops-v2/blob/e6f47622d7d3e8a66074ec49bd6268545fad1f56/documentation/architecturepattern/AzureML_CML_Architecture_v0.7.jpg)
+  
+Please follow the instructions to execute the demo accordingly:
   
 &nbsp;&nbsp;1.
 &nbsp;&nbsp;2.
