@@ -20,7 +20,7 @@ resources:
   repositories:
     - repository: mlops-templates  # Template Repo
       name: Azure/mlops-templates # need to change org name from Azure when pulling the template
-      endpoint: mlops-v2-tabular # need to hardcode!
+      endpoint: mlops-v2-service-connection  # need to hardcode!
       type: github
 
 stages:
@@ -37,7 +37,7 @@ stages:
           inputs:
             script: tree $(Agent.WorkFolder)\1 /f
       - template: templates/${{ variables.version }}/install-az-cli.yml@mlops-templates
-      - template: templates/${{ variables.version }}/install-aml-cli-v2.yml@mlops-templates
+      - template: templates/${{ variables.version }}/install-aml-cli.yml@mlops-templates
       - template: templates/${{ variables.version }}/connect-to-workspace.yml@mlops-templates
       - template: templates/${{ variables.version }}/run-pipeline.yml@mlops-templates
 
