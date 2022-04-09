@@ -24,24 +24,29 @@ resources:
       type: github
 
 stages:
-- stage: SetupEnvironment
-  displayName: Setup the AZ and AZ ML CLIs
+- stage: DeployTrainingPipeline
+  displayName: Deploy Training Pipeline
   jobs:
-    - job: SetupAzMLCLI
+    - job: DeployTrainingPipeline
       steps:
       - checkout: self
         path: s/
       - checkout: mlops-templates
         path: s/templates/
+      - task: CmdLine@2
+        inputs:
+          script: |
+            echo "Structure of work folder of this pipeline:"
+            tree $(Agent.WorkFolder) /f
+            echo "Build.ArtifactStagingDirectory:" 
+            echo "$(Build.ArtifactStagingDirectory)"
+            echo "Build.BinariesDirectory:" 
+            echo "$(Build.BinariesDirectory)"
+            echo "Build.SourcesDirectory:"
+            echo "$(Build.SourcesDirectory)"
       - template: templates/${{ variables.version }}/install-az-cli.yml@mlops-templates
       - template: templates/${{ variables.version }}/install-aml-cli.yml@mlops-templates
       - template: templates/${{ variables.version }}/connect-to-workspace.yml@mlops-templates
-      - template: templates/${{ variables.version }}/run-pipeline.yml@mlops-templates
-- stage: RunMLModel
-  displayName: Run the machine learning model
-  jobs:
-    - job: RunTrainingPipeline
-      steps:
       - template: templates/${{ variables.version }}/run-pipeline.yml@mlops-templates
 
 
