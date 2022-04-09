@@ -1,8 +1,5 @@
 # Azure MLOps (v2) solution accelerator
 
-
-### Microsoft's State of MLOps 
-
 MLOps or Machine Learning Ops is a set of practices that aims to automate and operationalise the deployment and maintenance of machine learning models across various stages of the lifecycle of a Data Science process. The purpose of an MLOps process is to drive efficiency, increase repeatability and predictability, enable reuse of code and drive consistency across projects. This enables Data Science teams to deploy Machine Learning models to production reliably and efficiently.  
 
 While MLOps has many overlapping concepts with DevOps and can be seen as a derivation of DevOps, it varies significantly from DevOps due to the nature of Data Science projects. The following Microsoft articles provide a perspective on MLOps from various viewpoints: 
@@ -14,7 +11,7 @@ While MLOps has many overlapping concepts with DevOps and can be seen as a deriv
 [How: Machine Learning Operations](https://docs.microsoft.com/en-us/azure/machine-learning/concept-model-management-and-deployment) 
 
 
-## Repository Overview of the MLOps Solution Accelerator 
+### Prerequisites: Repository Overview of the MLOps Solution Accelerator 
 
 The solution accelerator provides a modular end-to-end approach for MLOps in Azure based on pattern architectures. As each organization is unique, we do not expect that each pattern architecture will suit all organizations, however, Digital Natives or enterprises will be able to deploy an MLOps ecosystem fast, simple, reliable, modular, and secure. The time to product is measurable shorter under incerased scalability.
 
@@ -37,7 +34,7 @@ The best way to consume this accelerator will be to choose a complex use case th
 Following the demo helps to understand the concept of the solution accelerator, architectual pattern, and ongoing work extending the solution accelerator to other patterns. Feel free to replace the inner loop model with your model and rerun accordingly.
 
  
-## Getting started with AML Classical ML Demo
+## 👤 Getting started with AML Classical ML Demo
   
 The demo follows the Classical Machine Learning Pattern with Azure Machine Learning.
   
@@ -54,7 +51,7 @@ Please follow the instructions to execute the demo accordingly:
 &nbsp;&nbsp;...
 
 
-## Pattern Architectures
+## 📐 Pattern Architectures
 
 | Link                                                    | AI Pattern                                                              |
 | ------------------------------------------------------- | ----------------------------------------------------------------------- |
@@ -70,13 +67,13 @@ Please follow the instructions to execute the demo accordingly:
   
 ## (Coming Soon) One-click Deployments:
   
-## MLOps infrastructure deployment
+## 📯 MLOps infrastructure deployment
 
 | Name                                                    | Description                                          | Try it out      |
 | ------------------------------------------------------- | ---------------------------------------------------- | --------------- |
 | [default](https://github.com/Azure/mlops-infra-default) | Default Azure Machine Learning infrastructure setup. | [DEPLOY BUTTON] |
 
-## MLOps use case deployment
+## 📯 MLOps use case deployment
 
 | Name                                                                | AI Workload Type                   | Services                                 | Try it out      |
 |-------------------------------------------------------------------- | -----------------------------------| ---------------------------------------- | --------------- |
