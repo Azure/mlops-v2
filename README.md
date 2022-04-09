@@ -49,7 +49,7 @@ The architecture for this accelerator, which has been described in more detail h
   
 The demo follows the Classical Machine Learning Pattern with Azure Machine Learning.
   
-[AML CML](/documentation/architecturepattern/AzureML_CML_Architecture_v0.7.jpg)
+![AML CML](/documentation/architecturepattern/AzureML_CML_Architecture_v0.7.jpg)
   
 Please follow the instructions to execute the demo accordingly:
   
