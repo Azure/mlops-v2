@@ -72,6 +72,8 @@ Please follow the instructions to execute the demo accordingly:
 | Name                                                    | Description                                          | Try it out      |
 | ------------------------------------------------------- | ---------------------------------------------------- | --------------- |
 | [default](https://github.com/Azure/mlops-infra-default) | Default Azure Machine Learning infrastructure setup. | [DEPLOY BUTTON] |
+| [TBD]                                                   | Default Responsible AI for Classical ML.             | [DEPLOY BUTTON] |
+| [TBD]                                                   | Default Feature Store using FEAST.                   | [DEPLOY BUTTON] |
 
 ## 📯 MLOps use case deployment
 
