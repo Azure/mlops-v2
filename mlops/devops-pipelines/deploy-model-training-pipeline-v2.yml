@@ -38,6 +38,12 @@ stages:
           script: |
             echo "Structure of work folder of this pipeline:"
             tree $(Agent.WorkFolder) /f
+            echo "Build.ArtifactStagingDirectory:" 
+            echo "$(Build.ArtifactStagingDirectory)"
+            echo "Build.BinariesDirectory:" 
+            echo "$(Build.BinariesDirectory)"
+            echo "Build.SourcesDirectory:"
+            echo "$(Build.SourcesDirectory)"
       - template: templates/${{ variables.version }}/install-az-cli.yml@mlops-templates
       - template: templates/${{ variables.version }}/install-aml-cli.yml@mlops-templates
       - template: templates/${{ variables.version }}/connect-to-workspace.yml@mlops-templates
