@@ -1,4 +1,4 @@
-![Header](documentation/repositoryfiles/mlopsheader.jpg
+![Header](documentation/repositoryfiles/mlopsheader.jpg)
 
 # Azure MLOps (v2) solution accelerator
 
