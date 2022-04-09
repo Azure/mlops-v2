@@ -37,5 +37,18 @@ stages:
       - template: templates/${{ variables.version }}/install-aml-cli.yml@mlops-templates
       - template: templates/${{ variables.version }}/connect-to-workspace.yml@mlops-templates
       - template: templates/${{ variables.version }}/run-pipeline.yml@mlops-templates
-
+- stage: CreateOnlineEndpoint
+  displayName: Create Online Endpoint
+  environment: 'development'
+  jobs:
+    - job: DeployOnlineEndpoint
+      steps:
+      - checkout: self
+        path: s/
+      - checkout: mlops-templates
+        path: s/templates/
+      - template: templates/${{ variables.version }}/install-az-cli.yml@mlops-templates
+      - template: templates/${{ variables.version }}/install-aml-cli.yml@mlops-templates
+      - template: templates/${{ variables.version }}/connect-to-workspace.yml@mlops-templates
+      - template: templates/${{ variables.version }}/create-endpoint.yml@mlops-templates
 
