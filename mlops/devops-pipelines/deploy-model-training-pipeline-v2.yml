@@ -51,6 +51,6 @@ stages:
       - template: templates/${{ variables.version }}/install-az-cli.yml@mlops-templates
       - template: templates/${{ variables.version }}/install-aml-cli.yml@mlops-templates
       - template: templates/${{ variables.version }}/connect-to-workspace.yml@mlops-templates
-      - template: templates/${{ variables.version }}/create-endpoint.yml@mlops-templates
-      - template: templates/${{ variables.version }}/create-deployment.yml@mlops-templates
+      # - template: templates/${{ variables.version }}/create-endpoint.yml@mlops-templates
+      # - template: templates/${{ variables.version }}/create-deployment.yml@mlops-templates
       - template: templates/${{ variables.version }}/test-deployment.yml@mlops-templates
