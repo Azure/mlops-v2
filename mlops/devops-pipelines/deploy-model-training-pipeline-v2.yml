@@ -34,8 +34,10 @@ stages:
       - checkout: mlops-templates
         path: s/templates/
       - task: CmdLine@2
-          inputs:
-            script: tree $(Agent.WorkFolder)\1 /f
+        inputs:
+          script: |
+            echo "Structure of work folder of this pipeline:"
+            tree $(Agent.WorkFolder)\1 /f
       - template: templates/${{ variables.version }}/install-az-cli.yml@mlops-templates
       - template: templates/${{ variables.version }}/install-aml-cli.yml@mlops-templates
       - template: templates/${{ variables.version }}/connect-to-workspace.yml@mlops-templates
