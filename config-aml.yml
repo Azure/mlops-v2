@@ -6,6 +6,13 @@ variables:
   ap_vm_image: ubuntu-20.04
 
 
+# Training pipeline settings - Regression
+
+  # Training dataset settings
+  training_folder_name: data-science-regression
+  training_script_filename: pipeline.yml
+
+
 # Training pipeline settings
 
   # Training dataset settings
