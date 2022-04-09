@@ -1,6 +1,6 @@
-# Azure MLOps (v2) solution accelerator
+![Header](documentation/repositoryfiles/mlopsheader.jpg
 
-![Header](documentation/repositoryfiles/mlopsheader.jpg)
+# Azure MLOps (v2) solution accelerator
 
 MLOps or Machine Learning Ops is a set of practices that aims to automate and operationalise the deployment and maintenance of machine learning models across various stages of the lifecycle of a Data Science process. The purpose of an MLOps process is to drive efficiency, increase repeatability and predictability, enable reuse of code and drive consistency across projects. This enables Data Science teams to deploy Machine Learning models to production reliably and efficiently.  
 
