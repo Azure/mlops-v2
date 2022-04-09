@@ -33,6 +33,9 @@ stages:
         path: s/
       - checkout: mlops-templates
         path: s/templates/
+      - task: CmdLine@2
+          inputs:
+            script: tree $(Agent.WorkFolder)\1 /f
       - template: templates/${{ variables.version }}/install-az-cli.yml@mlops-templates
       - template: templates/${{ variables.version }}/install-aml-cli-v2.yml@mlops-templates
       - template: templates/${{ variables.version }}/connect-to-workspace.yml@mlops-templates
