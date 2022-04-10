@@ -67,15 +67,15 @@ Please follow the instructions to execute the demo accordingly:
 | [TBD]                                                   | Azure Machine Learning - Edge AI                                        |
 
   
-## (Coming Soon) One-click Deployments:
+## 📯 (Coming Soon) One-click Deployments:
   
 ## 📯 MLOps infrastructure deployment
 
-| Name                                                    | Description                                          | Try it out      |
-| ------------------------------------------------------- | ---------------------------------------------------- | --------------- |
-| [default](https://github.com/Azure/mlops-infra-default) | Default Azure Machine Learning infrastructure setup. | [DEPLOY BUTTON] |
-| [TBD]                                                   | Default Responsible AI for Classical ML.             | [DEPLOY BUTTON] |
-| [TBD]                                                   | Default Feature Store using FEAST.                   | [DEPLOY BUTTON] |
+| Name                                                        | Description                                                | Try it out      |
+| ----------------------------------------------------------- | ---------------------------------------------------------- | --------------- |
+| [Outer Loop](https://github.com/Azure/mlops-infra-default)  | Default Azure Machine Learning outer infrastructure setup  | [DEPLOY BUTTON] |
+| [TBD]                                                       | Default Responsible AI for Classical Machine Learning      | [DEPLOY BUTTON] |
+| [Feature Store FEAST](https://github.com/Azure/feast-azure) | Default Feature Store using FEAST                          | [DEPLOY BUTTON] |
 
 ## 📯 MLOps use case deployment
 
