@@ -1,8 +1,6 @@
 variables:
 
   # gh_service_connection: mlops-v2-tabular
-
-  version: aml-cli-v2 #must be either 'python-sdk' or 'aml-cli-v2'
   ap_vm_image: ubuntu-20.04
 
 
