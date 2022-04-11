@@ -30,7 +30,10 @@ stages :
     - job: CreateStorageForTerraform
       displayName: Create Storage for Terraform
       steps:
+      - checkout: self
+        path: s/
       - checkout: mlops-templates
+        path: s/templates/
       - template: templates/infra/create-resource-group
       - template: templates/infra/create-storage-account
       - template: templates/infra/create-container
@@ -40,7 +43,10 @@ stages :
     - job:  DeployAMLWorkspace
       displayName: 'Deploy AML Workspace'
       steps:
+      - checkout: self
+        path: s/
       - checkout: mlops-templates
+        path: s/templates/
       - template: templates/infra/install-terraform
       - template: templates/infra/run-terraform-init
       - template: templates/infra/run-terraform-validate
