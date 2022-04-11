@@ -20,7 +20,7 @@ resources:
   repositories:
     - repository: mlops-templates 
       name: Azure/mlops-templates 
-      endpoint: mlops-v2-tabular 
+      endpoint: github.com_murggu 
       type: github
 
 stages :
