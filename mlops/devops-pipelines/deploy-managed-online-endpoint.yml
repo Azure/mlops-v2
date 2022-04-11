@@ -9,6 +9,8 @@ variables:
 - ${{ if ne(variables['Build.SourceBranchName'], 'main') }}:  
     # 'develop' or feature branches: DEV environment
     - template: ../../config-infra-dev.yml
+- name: version
+  value: aml-cli-v2
 
 trigger:
 - none
@@ -33,14 +35,14 @@ stages:
         path: s/
       - checkout: mlops-templates
         path: s/templates/
-      - template: templates/aml-cli-v2/install-aml-cli.yml@mlops-templates
-      - template: templates/aml-cli-v2/connect-to-workspace.yml@mlops-templates
-      - template: templates/aml-cli-v2/deploy-managed-online-endpoint.yml@mlops-templates
+      - template: templates/${{ variables.version }}/install-aml-cli.yml@mlops-templates
+      - template: templates/${{ variables.version }}/connect-to-workspace.yml@mlops-templates
+      - template: templates/${{ variables.version }}/deploy-managed-online-endpoint.yml@mlops-templates
         parameters:
           job_type: create-endpoint
-      - template: templates/aml-cli-v2/deploy-managed-online-endpoint.yml@mlops-templates
+      - template: templates/${{ variables.version }}/deploy-managed-online-endpoint.yml@mlops-templates
         parameters:
           job_type: create-deployment
-      - template: templates/aml-cli-v2/update-managed-online-endpoint.yml@mlops-templates
+      - template: templates/${{ variables.version }}/update-managed-online-endpoint.yml@mlops-templates
         parameters:
           job_type: traffic_allocation

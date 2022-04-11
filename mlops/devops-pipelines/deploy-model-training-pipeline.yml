@@ -9,6 +9,8 @@ variables:
 - ${{ if ne(variables['Build.SourceBranchName'], 'main') }}:  
     # 'develop' or feature branches: DEV environment
     - template: ../../config-infra-dev.yml
+- name: version
+  value: python-sdk
 
 trigger:
 - none
@@ -34,7 +36,7 @@ stages:
       - checkout: mlops-templates
         path: s/templates/
       - template: templates/${{ variables.version }}/install-az-cli.yml@mlops-templates
-      - template: templates/${{ variables.version }}/install-aml-cli-v2.yml@mlops-templates
+      - template: templates/${{ variables.version }}/install-aml-cli.yml@mlops-templates
       - template: templates/${{ variables.version }}/connect-to-workspace.yml@mlops-templates
       - template: templates/${{ variables.version }}/create-environment.yml@mlops-templates
         parameters:
