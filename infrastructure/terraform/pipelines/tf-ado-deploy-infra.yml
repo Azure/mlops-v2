@@ -35,9 +35,9 @@ stages :
         path: s/
       - checkout: mlops-templates
         path: s/templates/
-      - template: templates/infra/create-resource-group
-      - template: templates/infra/create-storage-account
-      - template: templates/infra/create-container
+      - template: templates/infra/create-resource-group.yml@mlops-templates
+      - template: templates/infra/create-storage-account.yml@mlops-templates
+      - template: templates/infra/create-storage-container.yml@mlops-templates
   - stage: DeployAzureMachineLearningRG
     displayName: Deploy AML Resource Group
     jobs:
@@ -48,8 +48,8 @@ stages :
         path: s/
       - checkout: mlops-templates
         path: s/templates/
-      - template: templates/infra/install-terraform
-      - template: templates/infra/run-terraform-init
-      - template: templates/infra/run-terraform-validate
-      - template: templates/infra/run-terraform-plan
-      - template: templates/infra/run-terraform-apply
+      - template: templates/infra/install-terraform.yml@mlops-templates
+      - template: templates/infra/run-terraform-init.yml@mlops-templates
+      - template: templates/infra/run-terraform-validate.yml@mlops-templates
+      - template: templates/infra/run-terraform-plan.yml@mlops-templates
+      - template: templates/infra/run-terraform-apply.yml@mlops-templates
