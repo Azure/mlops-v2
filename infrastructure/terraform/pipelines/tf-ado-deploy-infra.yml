@@ -31,7 +31,6 @@ stages :
       displayName: Create Storage for Terraform
       steps:
       - checkout: mlops-templates
-        path: s/templates/
       - template: templates/infra/create-resource-group
       - template: templates/infra/create-storage-account
       - template: templates/infra/create-container
@@ -42,7 +41,6 @@ stages :
       displayName: 'Deploy AML Workspace'
       steps:
       - checkout: mlops-templates
-        path: s/templates/
       - template: templates/infra/install-terraform
       - template: templates/infra/run-terraform-init
       - template: templates/infra/run-terraform-validate
