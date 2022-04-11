@@ -10,7 +10,7 @@ variables:
     # 'develop' or feature branches: DEV environment
     - template: ../../config-infra-dev.yml
 - name: version
-  value: python-sdk
+  value: aml-cli-v2 #must be either 'python-sdk' or 'aml-cli-v2'
 
 trigger:
 - none
@@ -22,7 +22,7 @@ resources:
   repositories:
     - repository: mlops-templates  # Template Repo
       name: Azure/mlops-templates # need to change org name from Azure when pulling the template
-      endpoint: github.com_chrey-gh # need to hardcode!
+      endpoint: mlops-v2-service-connection  # need to hardcode
       type: github
 
 stages:
@@ -38,16 +38,20 @@ stages:
       - template: templates/${{ variables.version }}/install-az-cli.yml@mlops-templates
       - template: templates/${{ variables.version }}/install-aml-cli.yml@mlops-templates
       - template: templates/${{ variables.version }}/connect-to-workspace.yml@mlops-templates
-      - template: templates/${{ variables.version }}/create-environment.yml@mlops-templates
-        parameters:
-          environment_name: $(training_env_name)
-          environment_conda_yaml: $(training_env_conda_yaml)
-      - template: templates/${{ variables.version }}/register-dataset.yml@mlops-templates
-        parameters:
-          data_type: training
-      - template: templates/${{ variables.version }}/get-compute.yml@mlops-templates
-        parameters:
-          compute_type: training
-      - template: templates/${{ variables.version }}/deploy-training-pipeline.yml@mlops-templates
-      - template: templates/${{ variables.version }}/add-pipeline-to-endpoint.yml@mlops-templates
       - template: templates/${{ variables.version }}/run-pipeline.yml@mlops-templates
+      condition: ne(variables['build.sourceBranchName'], 'cli-v2') # Skip for cli-v2
+
+- stage: CreateOnlineEndpoint
+  displayName: Create Online Endpoint
+  jobs:
+    - job: DeployOnlineEndpoint
+      steps:
+      - checkout: self
+        path: s/
+      - checkout: mlops-templates
+        path: s/templates/
+      - template: templates/${{ variables.version }}/install-az-cli.yml@mlops-templates
+      - template: templates/${{ variables.version }}/install-aml-cli.yml@mlops-templates
+      - template: templates/${{ variables.version }}/connect-to-workspace.yml@mlops-templates
+      - template: templates/${{ variables.version }}/create-endpoint.yml@mlops-templates
+      - template: templates/${{ variables.version }}/test-deployment.yml@mlops-templates

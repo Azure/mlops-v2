@@ -16,44 +16,56 @@ from sklearn.preprocessing import LabelEncoder
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.preprocessing import StandardScaler
 
+from azureml.core import Run
+run = Run.get_context()
+ws = run.experiment.workspace
+
 def parse_args():
     parser = argparse.ArgumentParser(description="UCI Credit example")
-    parser.add_argument("--data_path", type=str, default='data/', help="Directory path to training data")
-    parser.add_argument("--model_path", type=str, default='outputs/', help="Model output directory")
+    parser.add_argument("--transformed_data_path", type=str, default='transformed_data/', help="Directory path to training data")
+    parser.add_argument("--model_path", type=str, default='trained_model/', help="Model output directory")
     return parser.parse_args()
 
 def main():
     # Parse command-line arguments
     args = parse_args()
 
-    # Make sure model output path exists
-    if not os.path.exists(args.model_path):
-        os.makedirs(args.model_path)
+    transformed_data_path = os.path.join(args.transformed_data_path, run.parent.id)
+    model_path = os.path.join(args.model_path, run.parent.id)
 
-    print(args.data_path)
-    os.listdir(os.getcwd())
-    print(os.getcwd())    
-        
+    # Make sure model output path exists
+    if not os.path.exists(model_path):
+        os.makedirs(model_path)
+
     # Enable auto logging
     mlflow.sklearn.autolog()
     
     # Read training data
-    df = pd.read_csv(os.path.join(args.data_path, 'credit.csv'))
+    train = pd.read_csv(os.path.join(transformed_data_path, 'train.csv'))
+    val = pd.read_csv(os.path.join(transformed_data_path, 'val.csv'))
+    
+    run.log('TRAIN SIZE', train.shape[0])
+    run.log('VAL SIZE', val.shape[0])
     
     # Train model
-    model = model_train(df)
+    model = model_train(train, val)
 
     #copying model to "outputs" directory, this will automatically upload it to Azure ML
-    joblib.dump(value=model, filename=os.path.join(args.model_path, 'model.pkl'))
+    joblib.dump(value=model, filename=os.path.join(model_path, 'model.pkl'))
 
-def model_train(df):
-    df.drop("Sno", axis=1, inplace=True)
+def model_train(train, val):
+    
+    train.drop("Sno", axis=1, inplace=True)
+    val.drop("Sno", axis=1, inplace=True)
 
-    y_raw = df['Risk']
-    X_raw = df.drop('Risk', axis=1)
+    y_train = train['Risk']
+    X_train = train.drop('Risk', axis=1)
 
-    categorical_features = X_raw.select_dtypes(include=['object']).columns
-    numeric_features = X_raw.select_dtypes(include=['int64', 'float']).columns
+    y_val = val['Risk']
+    X_val = val.drop('Risk', axis=1)
+    
+    categorical_features = X_train.select_dtypes(include=['object']).columns
+    numeric_features = X_train.select_dtypes(include=['int64', 'float']).columns
 
     categorical_transformer = Pipeline(steps=[
         ('imputer', SimpleImputer(strategy='constant', fill_value="missing")),
@@ -70,10 +82,7 @@ def model_train(df):
 
     # Encode Labels
     le = LabelEncoder()
-    encoded_y = le.fit_transform(y_raw)
-
-    # Train test split
-    X_train, X_test, y_train, y_test = train_test_split(X_raw, encoded_y, test_size=0.20, stratify=encoded_y, random_state=42)
+    encoded_y = le.fit_transform(y_train)
 
     # Create sklearn pipeline
     lr_clf = Pipeline(steps=[('preprocessor', feature_engineering_pipeline),
@@ -83,9 +92,12 @@ def model_train(df):
 
     # Capture metrics
     train_acc = lr_clf.score(X_train, y_train)
-    test_acc = lr_clf.score(X_test, y_test)
+    val_acc = lr_clf.score(X_val, y_val)
     print("Training accuracy: %.3f" % train_acc)
-    print("Testing accuracy: %.3f" % test_acc)
+    print("Validation accuracy: %.3f" % val_acc)
+
+    run.log('Training accuracy', train_acc)
+    run.log('Validation accuracy', val_acc)
 
     return lr_clf
 

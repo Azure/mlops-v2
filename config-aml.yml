@@ -1,9 +1,12 @@
 variables:
 
-  # gh_service_connection: mlops-v2-tabular
-
-  version: python-sdk 
   ap_vm_image: ubuntu-20.04
+
+# Training pipeline settings - Regression
+
+  # Training dataset settings
+  training_folder_name: data-science-regression
+  training_script_filename: pipeline.yml
 
 
 # Training pipeline settings
@@ -31,12 +34,8 @@ variables:
   training_target_min_nodes: 0
   training_target_max_nodes: 4
 
-  # Training script specification; use azureml:dataset_name:version to reference an AML Dataset for --data_path
-  training_script: train.py
+  # Training arguments specification; use azureml:dataset_name:version to reference an AML Dataset for --data_path
   training_arguments: --data_path azureml:uci-credit:1
-
-  # Evaluate script specification
-  evaluate_script: evaluate.py
 
   # Name under which the model will be registered
   model_name: credit-ci
