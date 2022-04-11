@@ -33,19 +33,19 @@ stages:
         path: s/
       - checkout: mlops-templates
         path: s/templates/
-      - template: templates/${{ variables.version }}/install-az-cli.yml@mlops-templates
-      - template: templates/${{ variables.version }}/install-aml-cli-v2.yml@mlops-templates
-      - template: templates/${{ variables.version }}/connect-to-workspace.yml@mlops-templates
-      - template: templates/${{ variables.version }}/create-environment.yml@mlops-templates
+      - template: templates/python-sdk/install-az-cli.yml@mlops-templates
+      - template: templates/aml-cli-v2/install-aml-cli.yml@mlops-templates
+      - template: templates/python-sdk/connect-to-workspace.yml@mlops-templates
+      - template: templates/python-sdk/create-environment.yml@mlops-templates
         parameters:
           environment_name: $(training_env_name)
           environment_conda_yaml: $(training_env_conda_yaml)
-      - template: templates/${{ variables.version }}/register-dataset.yml@mlops-templates
+      - template: templates/python-sdk/register-dataset.yml@mlops-templates
         parameters:
           data_type: training
-      - template: templates/${{ variables.version }}/get-compute.yml@mlops-templates
+      - template: templates/python-sdk/get-compute.yml@mlops-templates
         parameters:
           compute_type: training
-      - template: templates/${{ variables.version }}/deploy-training-pipeline.yml@mlops-templates
-      - template: templates/${{ variables.version }}/add-pipeline-to-endpoint.yml@mlops-templates
-      - template: templates/${{ variables.version }}/run-pipeline.yml@mlops-templates
+      - template: templates/python-sdk/deploy-training-pipeline.yml@mlops-templates
+      - template: templates/python-sdk/add-pipeline-to-endpoint.yml@mlops-templates
+      - template: templates/python-sdk/run-pipeline.yml@mlops-templates
