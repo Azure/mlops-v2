@@ -34,7 +34,7 @@ stages:
       - checkout: mlops-templates
         path: s/templates/
       - template: templates/python-sdk/install-az-cli.yml@mlops-templates
-      - template: templates/aml-cli-v2/install-aml-cli.yml@mlops-templates
+      - template: templates/python-sdk/install-aml-cli.yml@mlops-templates
       - template: templates/python-sdk/connect-to-workspace.yml@mlops-templates
       - template: templates/python-sdk/create-environment.yml@mlops-templates
         parameters:
