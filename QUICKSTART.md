@@ -23,7 +23,7 @@ Then under pipelines you'll create a new pipeline and choose 'infrastructure\ter
    > If you didn't change the variable 'enable_aml_computecluster' from 'true' to 'false' a compute cluster is created as defined in 'infrastructure\terraform\modules\aml-workspace\main.tf'
 
 
-As of now (20220410) the Terraform infrastructure pipeline will create a new pair of Terraform state Resource Group and Machine Learning workspace Resource Group every time it runs, with a slightly different name (number 10x).
+As of now (20220410) the Terraform infrastructure pipeline will create a new pair of Terraform state Resource Group and Machine Learning workspace Resource Group every time it runs, with a slightly different name (rg-mlopstab-10x-tf-state and rg-mlopstab-10x).
 
 The successfully run pipeline should look like this:
 

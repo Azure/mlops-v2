@@ -24,6 +24,7 @@ resources:
       name: Azure/mlops-templates # need to change org name from Azure when pulling the template
       endpoint: mlops-v2-service-connection  # need to hardcode
       type: github
+      ref: feature/cmr-amlversion
 
 stages:
 - stage: DeployTrainingPipeline
