@@ -1,0 +1,13 @@
+blank_issues_enabled: false
+contact_links:
+  - name: MLOps v2 solution accelerators discussions.
+    url: https://github.com/azure/mlops-v2/discussions
+    about: >-
+      Please ask questions and start open-ended discussions here. 
+      Use issues for well-defined work in the solution accelerator repositories.
+  - name: Azure ML CLI issues.
+    url: https://github.com/azure/azure-cli-extensions/issues/new/choose
+    about: Please open issues with the Azure ML CLI extension here.
+  - name: Azure ML Python SDK issues.
+    url: https://github.com/azure/azure-sdk-for-python/issues/new/choose
+    about: Please open issues with the Azure ML Python SDK here.
