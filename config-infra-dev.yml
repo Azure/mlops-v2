@@ -20,8 +20,8 @@ variables:
   gh_org_url:
 
   # IaC
-  resource_group: azureml-examples-rg #rg-$(namespace)-$(postfix) #azureml-examples-rg
-  aml_workspace: main #mlw-$(namespace)-$(postfix) 
+  resource_group: rg-$(namespace)-$(postfix) #azureml-examples-rg
+  aml_workspace: mlw-$(namespace)-$(postfix) 
   application_insights: mlw-$(namespace)-$(postfix)
   key_vault: kv-$(namespace)-$(postfix)
   container_registry: cr$(namespace)$(postfix)

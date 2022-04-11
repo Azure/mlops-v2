@@ -37,5 +37,4 @@ The successfully run pipeline should look like this:
 ## Deploying Training Pipeline via ADO (Azure DevOps)
 ---
 
-
-
+In Azure DevOps, add a new pipeline, which is based on ./mlops/devops-pipelines/deploy0-model-training-pipeline-v2.yml. Make sure that the Github service connection mentioned in the pipeline as 'endpoint' under 'repositories' either matches your Github Oauth connection (from ADO service connection) or adjust it in the pipeline, if you have another service connection name. It's also possible to change the connection name in ADO/Project/ServiceConnections.
