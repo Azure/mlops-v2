@@ -52,6 +52,7 @@ def main():
     mlflow.sklearn.autolog()
     
     # Read training & testing data
+    print(os.path.join(transformed_data_path, 'train.csv'))
     train = pd.read_csv(os.path.join(transformed_data_path, 'train.csv'))
     train.drop("Sno", axis=1, inplace=True)
     y_train = train['Risk']
