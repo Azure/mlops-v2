@@ -20,11 +20,11 @@ def init():
     parser.add_argument('--model_name', type=str, help='Model to use for batch scoring')
     args, _ = parser.parse_known_args()
     
-    model_path = os.path.join(Model.get_model_path(args.model_name), "model.pkl")
+    model_path = Model.get_model_path(args.model_name)
     print(f"Model path: {model_path}")
     model = joblib.load(model_path)
 
-    # load the explainer
+        # load the explainer
     explainer_path = os.path.join(Model.get_model_path(args.model_name), "explainer")
     #explainer = joblib.load(explainer_path)
 
