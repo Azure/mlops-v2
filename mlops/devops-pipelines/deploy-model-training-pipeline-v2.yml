@@ -16,7 +16,8 @@ trigger:
 - none
 
 pool:
-  vmImage: $(ap_vm_image)
+  vmImage: ubuntu-20.04
+
 
 resources:
   repositories:
@@ -39,7 +40,9 @@ stages:
       - template: templates/${{ variables.version }}/install-aml-cli.yml@mlops-templates
       - template: templates/${{ variables.version }}/connect-to-workspace.yml@mlops-templates
       - template: templates/${{ variables.version }}/run-pipeline.yml@mlops-templates
-      condition: ne(variables['build.sourceBranchName'], 'dev') # Skip for cli-v2
+        parameters: 
+          pipeline_file: data-science-regression/pipeline.yml
+      condition: ne(variables['build.sourceBranchName'], 'cli-v2') # Skip for cli-v2
 
 - stage: CreateOnlineEndpoint
   displayName: Create Online Endpoint
@@ -54,6 +57,8 @@ stages:
       - template: templates/${{ variables.version }}/install-aml-cli.yml@mlops-templates
       - template: templates/${{ variables.version }}/connect-to-workspace.yml@mlops-templates
       - template: templates/${{ variables.version }}/create-endpoint.yml@mlops-templates
+        parameters:
+          endpoint_name: testEndpoint1
       - template: templates/${{ variables.version }}/create-deployment.yml@mlops-templates
         parameters:
           deployment_name: blue
