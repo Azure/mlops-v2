@@ -2,7 +2,7 @@
 # Licensed under the MIT License.
 
 variables:
-- template: ../../config-aml.yml
+- template: ../../config-aml-v2.yml
 - ${{ if eq(variables['Build.SourceBranchName'], 'main') }}:
     # 'main' branch: PRD environment
     - template: ../../config-infra-prod.yml
@@ -54,4 +54,53 @@ stages:
       - template: templates/${{ variables.version }}/install-aml-cli.yml@mlops-templates
       - template: templates/${{ variables.version }}/connect-to-workspace.yml@mlops-templates
       - template: templates/${{ variables.version }}/create-endpoint.yml@mlops-templates
+      - template: templates/${{ variables.version }}/create-deployment.yml@mlops-templates
+        parameters:
+          deployment_name: blue
+          deployment_file: data-science-regression/components/deploy/blue/blue-deployment.yml 
+      - template: templates/${{ variables.version }}/allocate-traffic.yml@mlops-templates
+        parameters:
+          traffic_allocation: blue=100
+      - template: templates/${{ variables.version }}/test-deployment.yml@mlops-templates
+
+# Example: Update existing deployment
+- stage: UpdateOnlineEndpoint
+  displayName: Update Online Endpoint
+  jobs:
+    - job: DeployOnlineEndpoint
+      steps:
+      - checkout: self
+        path: s/
+      - checkout: mlops-templates
+        path: s/templates/
+      - template: templates/${{ variables.version }}/install-az-cli.yml@mlops-templates
+      - template: templates/${{ variables.version }}/install-aml-cli.yml@mlops-templates
+      - template: templates/${{ variables.version }}/connect-to-workspace.yml@mlops-templates
+      - template: templates/${{ variables.version }}/update-deployment.yml@mlops-templates
+        parameters:
+          deployment_name: blue
+          deployment_file: data-science-regression/components/deploy/blue/blue-deployment.yml 
+      - template: templates/${{ variables.version }}/test-deployment.yml@mlops-templates
+
+
+# Example: Safe Rollout
+- stage: UpdateOnlineEndpoint
+  displayName: Update Online Endpoint
+  jobs:
+    - job: DeployOnlineEndpoint
+      steps:
+      - checkout: self
+        path: s/
+      - checkout: mlops-templates
+        path: s/templates/
+      - template: templates/${{ variables.version }}/install-az-cli.yml@mlops-templates
+      - template: templates/${{ variables.version }}/install-aml-cli.yml@mlops-templates
+      - template: templates/${{ variables.version }}/connect-to-workspace.yml@mlops-templates
+      - template: templates/${{ variables.version }}/create-deployment.yml@mlops-templates
+        parameters:
+          deployment_name: green
+          deployment_file: data-science-regression/components/deploy/green/green-deployment.yml 
+      - template: templates/${{ variables.version }}/allocate-traffic.yml@mlops-templates
+        parameters:
+          traffic_allocation: blue=90 green=10
       - template: templates/${{ variables.version }}/test-deployment.yml@mlops-templates
