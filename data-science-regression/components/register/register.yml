@@ -1,0 +1,22 @@
+# <component>
+$schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
+name: register_model
+version: 1
+display_name: register-model
+type: command
+inputs:
+  model_name:
+    type: string
+    default: "taxi-model"
+  model_path:
+    type: uri_folder
+  deploy_flag:
+    type: uri_folder
+environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
+code: ./src
+command: >-
+  python register.py 
+  --model_name ${{inputs.model_name}} 
+  --model_path ${{inputs.model_path}} 
+  --deploy_flag ${{inputs.deploy_flag}}
+# </component>
