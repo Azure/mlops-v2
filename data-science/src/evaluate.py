@@ -3,7 +3,6 @@ import sys
 import argparse
 import joblib
 import pandas as pd
-import pickle 
 
 import mlflow
 import mlflow.sklearn
@@ -33,6 +32,7 @@ def parse_args():
     parser.add_argument("--transformed_data_path", type=str, default='transformed_data/', help="Directory path to training data")
     parser.add_argument('--model_name', type=str, help='Name under which model is registered')
     parser.add_argument("--model_path", type=str, default='trained_model/', help="Model output directory")
+    parser.add_argument("--explainer_path", type=str, default='trained_model/', help="Model output directory")
     parser.add_argument("--evaluation_path", type=str, default='evaluation_results/', help="Evaluation results output directory")
     parser.add_argument('--deploy_flag', type=str, help='A deploy flag whether to deploy or no')
     return parser.parse_args()
@@ -42,16 +42,22 @@ def main():
     args = parse_args()
     transformed_data_path = os.path.join(args.transformed_data_path, run.parent.id)
     model_path = os.path.join(args.model_path, run.parent.id)
+    explainer_path = os.path.join(args.explainer_path, run.parent.id)
     evaluation_path = os.path.join(args.evaluation_path, run.parent.id)
 
-    # Make sure model output path exists
+    # Make sure evaluation output path exists
     if not os.path.exists(evaluation_path):
         os.makedirs(evaluation_path)
         
+    # Make sure explainer output path exists
+    if not os.path.exists(explainer_path):
+        os.makedirs(explainer_path)
+
     # Enable auto logging
     mlflow.sklearn.autolog()
     
     # Read training & testing data
+    print(os.path.join(transformed_data_path, 'train.csv'))
     train = pd.read_csv(os.path.join(transformed_data_path, 'train.csv'))
     train.drop("Sno", axis=1, inplace=True)
     y_train = train['Risk']
@@ -109,12 +115,14 @@ def main():
             test_accuracies[model_run.id] = mdl.score(X_test, y_test)
             test_predictions[model_run.id] = [labels_dict[x] for x in mdl.predict(X_test)]
      
-    print(test_accuracies)
-    if test_acc >= max(list(test_accuracies.values())):
-        deploy_flag = 1
+    if test_accuracies:
+        if test_acc >= max(list(test_accuracies.values())):
+            deploy_flag = 1
+        else:
+            deploy_flag = 0
     else:
-        deploy_flag = 0
-        
+        deploy_flag = 1
+            
     with open(args.deploy_flag, 'w') as f:
         f.write('%d' % int(deploy_flag))
         
@@ -165,10 +173,7 @@ def main():
                                      classes=[0, 1],
                                      transformations=model.steps[0][1])
                                      
-
-    filehandler = open(os.path.join(evaluation_path, "explainer"),"wb")
-    pickle.dump(tabular_explainer, filehandler)
-    filehandler.close()
+    joblib.dump(tabular_explainer, os.path.join(explainer_path, "explainer"))
 
     # you can use the training data or the test data here, but test data would allow you to use Explanation Exploration
     global_explanation = tabular_explainer.explain_global(X_test)

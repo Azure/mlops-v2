@@ -41,6 +41,7 @@ def main():
     mlflow.sklearn.autolog()
     
     # Read training data
+    print(os.path.join(transformed_data_path, 'train.csv'))
     train = pd.read_csv(os.path.join(transformed_data_path, 'train.csv'))
     val = pd.read_csv(os.path.join(transformed_data_path, 'val.csv'))
     

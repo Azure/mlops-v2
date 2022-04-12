@@ -11,11 +11,11 @@ variables:
   enable_aml_computecluster: true
 
   # Azure DevOps 
-  ado_service_connection_rg: Azure-ARM-Dev
+  ado_service_connection_rg: Azure-ARM-Dev #-murggu
   ado_service_connection_aml_ws: Azure-ARM-Dev
 
   # Github
-  gh_service_endpoint: mlops-v2-tabular  #this isn't allowed to be a variable in the devops yaml :( 
+  gh_service_endpoint: mlops-v2-tabular  #this isn't allowed to be a variable in the devops yaml, so needs to be hardcoded in devops pipelines
   gh_org_name:
   gh_org_url:
 
