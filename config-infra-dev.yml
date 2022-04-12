@@ -5,13 +5,13 @@ variables:
 
   # Global
   namespace: mlopstab
-  postfix: $[counter(variables['namespace'], 101)]
+  postfix: 441
   location: northeurope
   environment: dev
   enable_aml_computecluster: true
 
   # Azure DevOps 
-  ado_service_connection_rg: Azure-ARM-Dev #-murggu
+  ado_service_connection_rg: Azure-ARM-Dev-murggu
   ado_service_connection_aml_ws: Azure-ARM-Dev
 
   # Github
