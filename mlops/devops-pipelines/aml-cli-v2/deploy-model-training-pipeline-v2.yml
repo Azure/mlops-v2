@@ -76,7 +76,7 @@ stages:
 - stage: SafeRollout
   displayName: Safe rollout of new deployment
   jobs:
-    - job: DeployOnlineEndpoint
+    - job: SafeRolloutDeployment 
       steps:
       - checkout: self
         path: s/
