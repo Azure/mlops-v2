@@ -5,7 +5,7 @@ variables:
 
   # Global
   namespace: mlopstab
-  postfix: 223 #$[counter(variables['namespace'], 101)]
+  postfix: $[counter(variables['namespace'], 101)]
   location: northeurope
   environment: dev
   enable_aml_computecluster: true
@@ -15,12 +15,12 @@ variables:
   ado_service_connection_aml_ws: Azure-ARM-Dev
 
   # Github
-  gh_service_endpoint: mlops-v2-tabular  #this isn't allowed to be a variable in the devops yaml :( 
+  gh_service_endpoint: mlops-v2-tabular  #this isn't allowed to be a variable in the devops yaml, so needs to be hardcoded in devops pipelines
   gh_org_name:
   gh_org_url:
 
   # IaC
-  resource_group: azureml-examples-rg #rg-$(namespace)-$(postfix) #azureml-examples-rg
+  resource_group: azureml-examples-rg #rg-$(namespace)-$(postfix)
   aml_workspace: main #mlw-$(namespace)-$(postfix) 
   application_insights: mlw-$(namespace)-$(postfix)
   key_vault: kv-$(namespace)-$(postfix)
