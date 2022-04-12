@@ -16,76 +16,40 @@ trigger:
 pool:
   vmImage: $(ap_vm_image)
 
+resources:
+  repositories:
+    - repository: mlops-templates 
+      name: Azure/mlops-templates 
+      endpoint: mlops-v2-tabular
+      type: github
+      ref: infra-templates #branch name
+
 stages :
   - stage: CreateStorageAccountForTerraformState
     displayName: Create Storage for Terraform
     jobs:
-    - job: CreateStorageAccount
+    - job: CreateStorageForTerraform
       displayName: Create Storage for Terraform
-      continueOnError: false
       steps:
-        - task: AzureCLI@2
-          displayName: 'Create Resource Group'
-          inputs:
-            azureSubscription: '$(ado_service_connection_rg)'
-            scriptType: 'bash'
-            scriptLocation: 'inlineScript'
-            inlineScript: 'az group create --location $(location) --name $(terraform_st_resource_group)'
-        - task: AzureCLI@2
-          displayName: 'Create Storage Account'
-          inputs:
-            azureSubscription: '$(ado_service_connection_rg)'
-            scriptType: 'bash'
-            scriptLocation: 'inlineScript'
-            inlineScript: 'az storage account create -n $(terraform_st_storage_account) -g $(terraform_st_resource_group) -l $(location) --sku Standard_LRS'
-        - task: AzureCLI@2
-          displayName: 'Create Container'
-          inputs:
-            azureSubscription: '$(ado_service_connection_rg)'
-            scriptType: 'bash'
-            scriptLocation: 'inlineScript'
-            inlineScript: 'az storage container create --account-name $(terraform_st_storage_account) --name $(terraform_st_container_name)'
+      - checkout: self
+        path: s/
+      - checkout: mlops-templates
+        path: s/templates/
+      - template: templates/infra/create-resource-group.yml@mlops-templates
+      - template: templates/infra/create-storage-account.yml@mlops-templates
+      - template: templates/infra/create-storage-container.yml@mlops-templates
   - stage: DeployAzureMachineLearningRG
     displayName: Deploy AML Resource Group
     jobs:
     - job:  DeployAMLWorkspace
       displayName: 'Deploy AML Workspace'
-      continueOnError: false
       steps:
-      - task: TerraformInstaller@0
-        displayName: 'Terraform install'
-        inputs:
-          terraformVersion: $(terraform_version)
-      - task: TerraformTaskV2@2
-        displayName: 'Terraform init'
-        inputs:
-          provider: 'azurerm'
-          command: 'init'
-          workingDirectory: '$(System.DefaultWorkingDirectory)/$(terraform_workingdir)'
-          backendServiceArm: '$(ado_service_connection_rg)'
-          backendAzureRmResourceGroupName: '$(terraform_st_resource_group)'
-          backendAzureRmStorageAccountName: '$(terraform_st_storage_account)'
-          backendAzureRmContainerName: '$(terraform_st_container_name)'
-          backendAzureRmKey: '$(terraform_st_key)'
-      - task: TerraformTaskV2@2
-        displayName: 'Terraform validate'
-        inputs:
-          provider: 'azurerm'
-          command: 'validate'
-          workingDirectory: $(System.DefaultWorkingDirectory)/$(terraform_workingdir)
-      - task: TerraformTaskV2@2
-        displayName: 'Terraform plan'
-        inputs:
-          provider: 'azurerm'
-          command: 'plan'
-          workingDirectory: '$(System.DefaultWorkingDirectory)/$(terraform_workingdir)'
-          commandOptions: '-var "location=$(location)" -var "prefix=$(namespace)" -var "postfix=$(postfix)" -var "environment=$(environment)" -var "enable_aml_computecluster=$(enable_aml_computecluster)"'
-          environmentServiceNameAzureRM: '$(ado_service_connection_rg)'
-      - task: TerraformTaskV2@2
-        displayName: 'Terraform apply'
-        inputs:
-          provider: 'azurerm'
-          command: 'apply'
-          workingDirectory: '$(System.DefaultWorkingDirectory)/$(terraform_workingdir)'
-          commandOptions: '-var "location=$(location)" -var "prefix=$(namespace)" -var "postfix=$(postfix)" -var "environment=$(environment)" -var "enable_aml_computecluster=$(enable_aml_computecluster)"'
-          environmentServiceNameAzureRM: '$(ado_service_connection_rg)'
+      - checkout: self
+        path: s/
+      - checkout: mlops-templates
+        path: s/templates/
+      - template: templates/infra/install-terraform.yml@mlops-templates
+      - template: templates/infra/run-terraform-init.yml@mlops-templates
+      - template: templates/infra/run-terraform-validate.yml@mlops-templates
+      - template: templates/infra/run-terraform-plan.yml@mlops-templates
+      - template: templates/infra/run-terraform-apply.yml@mlops-templates
