@@ -22,7 +22,7 @@ resources:
       name: Azure/mlops-templates 
       endpoint: mlops-v2-tabular
       type: github
-      ref: infra-templates #branch name
+      ref: main #branch name
 
 stages :
   - stage: CreateStorageAccountForTerraformState
