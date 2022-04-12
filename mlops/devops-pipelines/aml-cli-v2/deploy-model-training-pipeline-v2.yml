@@ -47,7 +47,7 @@ stages:
 
 
 - stage: CreateOnlineEndpoint
-  displayName: Create Online Endpoint
+  displayName: Create/Update Online Endpoint 
   jobs:
     - job: DeployOnlineEndpoint
       steps:
@@ -70,28 +70,6 @@ stages:
       - template: templates/${{ variables.version }}/allocate-traffic.yml@mlops-templates
         parameters:
           traffic_allocation: blue=100
-
-# Example: Update existing deployment; as you'd probably never update an endpoint immediately after creating it
-- stage: UpdateOnlineEndpoint
-  displayName: Update Online Endpoint
-  jobs:
-    - job: DeployOnlineEndpoint
-      steps:
-      - checkout: self
-        path: s/
-      - checkout: mlops-templates
-        path: s/templates/
-      - template: templates/${{ variables.version }}/install-az-cli.yml@mlops-templates
-      - template: templates/${{ variables.version }}/install-aml-cli.yml@mlops-templates
-      - template: templates/${{ variables.version }}/connect-to-workspace.yml@mlops-templates
-      - template: templates/${{ variables.version }}/update-deployment.yml@mlops-templates
-        parameters:
-          deployment_name: blue
-          deployment_file: data-science-regression/components/deploy/blue/blue-deployment.yml 
-      - template: templates/${{ variables.version }}/test-deployment.yml@mlops-templates
-        parameters:
-          deployment_name: blue
-          sample_request: data-science-regression/components/deploy/blue/sample-request.json
 
 
 # Example: Safe Rollout, can also be used for A/B testing 
