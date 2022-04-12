@@ -10,17 +10,4 @@ variables:
 
 # This will change to python-generated yaml in beta 
 # Managed Online Endpoint pipeline settings; see sample-deployment.yml in the mlops-templates/src/aml-cli-v2 for reference
-  endpoint_name: testEndpoint1  #no spaces or _ allowed; only lowercase, caps, and -
-  
-  # Blue sample deployment
-  moe_deployment_name: blue
-  moe_model: ../../../data/managed-endpoints/models/sklearn_regression_model.pkl #to point to azureml later
-  moe_scoring_script: managed_online_endpoint.py
-  moe_env_conda_file: blue.yml
-  moe_env_image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04:20210727.v1
-  moe_instance_type: Standard_F2s_v2
-  moe_instance_count: 1
-
-  traffic_allocation: blue=100
-
-  # safe rollout placeholder
+  endpoint_name: testEndpoint2  #no spaces or _ allowed; only lowercase, caps, and -
