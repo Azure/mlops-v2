@@ -11,7 +11,7 @@ variables:
   enable_aml_computecluster: true
 
   # Azure DevOps 
-  ado_service_connection_rg: Azure-ARM-Dev #-murggu
+  ado_service_connection_rg: Azure-ARM-Dev-murggu
   ado_service_connection_aml_ws: Azure-ARM-Dev
 
   # Github
