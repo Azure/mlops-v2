@@ -2,7 +2,6 @@
 # Licensed under the MIT License.
 
 variables:
-- template: ../../config-aml-v2.yml
 - ${{ if eq(variables['Build.SourceBranchName'], 'main') }}:
     # 'main' branch: PRD environment
     - template: ../../config-infra-prod.yml
