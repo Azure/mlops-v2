@@ -10,6 +10,8 @@ variables:
     - template: ../../config-infra-dev.yml
 - name: version
   value: aml-cli-v2 #must be either 'python-sdk' or 'aml-cli-v2'
+- name: endpoint_name
+  value: testEndpoint1
 
 trigger:
 - none
@@ -56,8 +58,6 @@ stages:
       - template: templates/${{ variables.version }}/install-aml-cli.yml@mlops-templates
       - template: templates/${{ variables.version }}/connect-to-workspace.yml@mlops-templates
       - template: templates/${{ variables.version }}/create-endpoint.yml@mlops-templates
-        parameters:
-          endpoint_name: testEndpoint1
       - template: templates/${{ variables.version }}/create-deployment.yml@mlops-templates
         parameters:
           deployment_name: blue
