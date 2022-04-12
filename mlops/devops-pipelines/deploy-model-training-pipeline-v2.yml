@@ -84,8 +84,8 @@ stages:
 
 
 # Example: Safe Rollout
-- stage: UpdateOnlineEndpoint
-  displayName: Update Online Endpoint
+- stage: SafeRollout
+  displayName: Safe rollout of new deployment
   jobs:
     - job: DeployOnlineEndpoint
       steps:
