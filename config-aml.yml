@@ -1,0 +1,75 @@
+variables:
+
+  ap_vm_image: ubuntu-20.04
+
+# Training pipeline settings
+
+  # Training dataset settings
+  training_dataset_name: uci-credit
+  training_dataset_description: uci_credit
+  training_dataset_local_path: data/training/
+  training_dataset_path_on_datastore: data/training/
+  training_dataset_type: local
+  training_dataset_storage_url: 'https://azureaidemostorage.blob.core.windows.net/data/'
+  
+  # Training AzureML Environment name
+  training_env_name: credit-training
+
+  # Training AzureML Environment conda yaml
+  training_env_conda_yaml: mlops/environments/train.yml
+
+  # Name for the training pipeline
+  training_pipeline_name: credit-training
+
+  # Compute target for pipeline
+  training_target: cpu-cluster
+  training_target_sku: STANDARD_D2_V2
+  training_target_min_nodes: 0
+  training_target_max_nodes: 4
+
+  # Training arguments specification; use azureml:dataset_name:version to reference an AML Dataset for --data_path
+  training_arguments: --data_path azureml:uci-credit:1
+
+  # Name under which the model will be registered
+  model_name: credit-ci
+
+# Batch pipeline settings
+
+  # Batch scoring dataset settings
+  scoring_dataset_name: credit-batch-input
+  scoring_dataset_description: credit-batch-input
+  scoring_dataset_local_path: data/scoring/
+  scoring_dataset_path_on_datastore: data/scoring/
+  scoring_dataset_type: local
+  scoring_dataset_storage_url: 'https://azureaidemostorage.blob.core.windows.net/data/'
+
+  # Batch AzureML Environment name
+  batch_env_name: credit-batch
+
+  # Batch AzureML Environment conda yaml
+  batch_env_conda_yaml: mlops/environments/batch.yml
+
+  # Name for the batch scoring pipeline
+  batch_pipeline_name: credit-batch-scoring
+
+  # Compute target for pipeline
+  batch_target: cpu-cluster
+  #not needed because batch uses the same target as training
+  # batch_target_sku: STANDARD_D2_V2
+  # batch_target_min_nodes: 0
+  # batch_target_max_nodes: 4
+
+  # Input batch dataset
+  batch_input_dataset_name: credit-batch-input
+
+  # Output dataset with results
+  batch_output_dataset_name: credit-batch-output
+  batch_output_path_on_datastore: credit-batch-scoring-results/{run-id}
+  batch_output_filename: results.csv
+
+  # Parallelization settings
+  batch_mini_batch_size: 8
+  batch_error_threshold: 1
+  batch_process_count_per_node: 1
+  batch_node_count: 1
+

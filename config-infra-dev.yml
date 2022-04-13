@@ -1,0 +1,36 @@
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License.
+
+variables:
+
+  # Global
+  namespace: mlopstab
+  postfix: 441
+  location: northeurope
+  environment: dev
+  enable_aml_computecluster: true
+
+  # Azure DevOps 
+  ado_service_connection_rg: Azure-ARM-Dev #-murggu
+  ado_service_connection_aml_ws: Azure-ARM-Dev
+
+  # Github
+  gh_service_endpoint: mlops-v2-tabular  #this isn't allowed to be a variable in the devops yaml, so needs to be hardcoded in devops pipelines
+  gh_org_name:
+  gh_org_url:
+
+  # IaC
+  resource_group: azureml-examples-rg #rg-$(namespace)-$(postfix)
+  aml_workspace: main #mlw-$(namespace)-$(postfix) 
+  application_insights: mlw-$(namespace)-$(postfix)
+  key_vault: kv-$(namespace)-$(postfix)
+  container_registry: cr$(namespace)$(postfix)
+  storage_account: st$(namespace)$(postfix)
+
+  # Terraform
+  terraform_version: 0.14.7
+  terraform_workingdir: infrastructure/terraform
+  terraform_st_resource_group: rg-$(namespace)-$(postfix)-tf-state
+  terraform_st_storage_account: st$(namespace)$(postfix)tfstate
+  terraform_st_container_name: default
+  terraform_st_key: mlops-tab

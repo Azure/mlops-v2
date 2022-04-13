@@ -1,0 +1,20 @@
+name: mnist-train
+channels:
+  - defaults
+  - anaconda
+  - conda-forge
+dependencies:
+  - python=3.7.5
+  - pip
+  - pip:
+    - azureml-mlflow==1.38.0
+    - azureml-sdk==1.38.0
+    - scikit-learn==0.24.1
+    - pandas==1.2.1
+    - joblib==1.0.0
+    - matplotlib==3.3.3
+    - fairlearn==0.7.0
+    - azureml-contrib-fairness==1.38.0
+    - interpret-community==0.24.1
+    - interpret-core==0.2.7
+    - azureml-interpret==1.38.0

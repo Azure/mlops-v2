@@ -1,0 +1,101 @@
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License.
+
+variables:
+- ${{ if eq(variables['Build.SourceBranchName'], 'main') }}:
+    # 'main' branch: PRD environment
+    - template: ../../../config-infra-prod.yml
+- ${{ if ne(variables['Build.SourceBranchName'], 'main') }}:  
+    # 'develop' or feature branches: DEV environment
+    - template: ../../../config-infra-dev.yml
+- name: version
+  value: aml-cli-v2 #must be either 'python-sdk' or 'aml-cli-v2'
+- name: endpoint_name
+  value: onlineendpoint1
+- name: endpoint_type
+  value: online
+
+
+trigger:
+- none
+
+pool:
+  vmImage: ubuntu-20.04
+
+
+resources:
+  repositories:
+    - repository: mlops-templates  # Template Repo
+      name: Azure/mlops-templates # need to change org name from "Azure" to your own org
+      endpoint: mlops-v2-service-connection  # need to hardcode as repositories doesn't accept variables
+      type: github
+
+stages:
+- stage: DeployTrainingPipeline
+  displayName: Deploy Training Pipeline
+  jobs:
+    - job: DeployTrainingPipeline
+      steps:
+      - checkout: self
+        path: s/
+      - checkout: mlops-templates
+        path: s/templates/
+      - template: templates/${{ variables.version }}/install-az-cli.yml@mlops-templates
+      - template: templates/${{ variables.version }}/install-aml-cli.yml@mlops-templates
+      - template: templates/${{ variables.version }}/connect-to-workspace.yml@mlops-templates
+      - template: templates/${{ variables.version }}/run-pipeline.yml@mlops-templates
+        parameters: 
+          pipeline_file: data-science-regression/pipeline.yml
+      condition: eq(variables['build.sourceBranchName'], 'main') # Selective skipping based on branch; remove this line before release!
+
+
+- stage: CreateOnlineEndpoint
+  displayName: Create/Update Online Endpoint 
+  jobs:
+    - job: DeployOnlineEndpoint
+      steps:
+      - checkout: self
+        path: s/
+      - checkout: mlops-templates
+        path: s/templates/
+      - template: templates/${{ variables.version }}/install-az-cli.yml@mlops-templates
+      - template: templates/${{ variables.version }}/install-aml-cli.yml@mlops-templates
+      - template: templates/${{ variables.version }}/connect-to-workspace.yml@mlops-templates
+      - template: templates/${{ variables.version }}/create-endpoint.yml@mlops-templates
+      - template: templates/${{ variables.version }}/create-deployment.yml@mlops-templates
+        parameters:
+          deployment_name: blue
+          deployment_file: data-science-regression/components/deploy/online-endpoint/blue/blue-deployment.yml 
+      - template: templates/${{ variables.version }}/test-deployment.yml@mlops-templates
+        parameters:
+          deployment_name: blue
+          sample_request: data-science-regression/components/deploy/online-endpoint/blue/sample-request.json
+      - template: templates/${{ variables.version }}/allocate-traffic.yml@mlops-templates
+        parameters:
+          traffic_allocation: blue=100
+
+
+# Example: Safe Rollout, can also be used for A/B testing 
+- stage: SafeRollout
+  displayName: Safe rollout of new deployment
+  jobs:
+    - job: SafeRolloutDeployment 
+      steps:
+      - checkout: self
+        path: s/
+      - checkout: mlops-templates
+        path: s/templates/
+      - template: templates/${{ variables.version }}/install-az-cli.yml@mlops-templates
+      - template: templates/${{ variables.version }}/install-aml-cli.yml@mlops-templates
+      - template: templates/${{ variables.version }}/connect-to-workspace.yml@mlops-templates
+      - template: templates/${{ variables.version }}/create-deployment.yml@mlops-templates
+        parameters:
+          deployment_name: green
+          deployment_file: data-science-regression/components/deploy/online-endpoint/green/green-deployment.yml 
+      - template: templates/${{ variables.version }}/test-deployment.yml@mlops-templates
+        parameters:
+          deployment_name: green
+          sample_request: data-science-regression/components/deploy/online-endpoint/green/sample-request.json
+      - template: templates/${{ variables.version }}/allocate-traffic.yml@mlops-templates
+        parameters:
+          traffic_allocation: blue=90 green=10

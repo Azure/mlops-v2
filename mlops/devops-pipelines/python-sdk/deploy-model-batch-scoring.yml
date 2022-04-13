@@ -1,0 +1,50 @@
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License.
+
+variables:
+- template: ../../../config-aml.yml
+- ${{ if eq(variables['Build.SourceBranchName'], 'main') }}:
+    # 'main' branch: PRD environment
+    - template: ../../../config-infra-prod.yml
+- ${{ if ne(variables['Build.SourceBranchName'], 'main') }}:  
+    # 'develop' or feature branches: DEV environment
+    - template: ../../../config-infra-dev.yml
+- name: version
+  value: python-sdk
+
+trigger:
+- none
+
+pool:
+  vmImage: $(ap_vm_image)
+
+resources:
+  repositories:
+    - repository: mlops-templates  # Template Repo
+      name: Azure/mlops-templates
+      endpoint: mlops-v2-tabular # need to hardcode!
+      type: github
+
+stages:
+- stage: DeployBatchScoringPipeline
+  displayName: Deploy Batch Scoring Pipeline
+  jobs:
+    - job: DeployBatchScoringPipeline
+      steps:
+      - checkout: self
+        path: s/
+      - checkout: mlops-templates
+        path: s/templates/
+      - template: templates/${{ variables.version }}/install-az-cli.yml@mlops-templates
+      - template: templates/${{ variables.version }}/install-aml-cli.yml@mlops-templates
+      - template: templates/${{ variables.version }}/connect-to-workspace.yml@mlops-templates
+      - template: templates/${{ variables.version }}/create-environment.yml@mlops-templates
+        parameters:
+          environment_name: $(batch_env_name)
+          environment_conda_yaml: $(batch_env_conda_yaml)
+      - template: templates/${{ variables.version }}/register-dataset.yml@mlops-templates
+        parameters:
+          data_type: scoring
+      - template: templates/${{ variables.version }}/deploy-batch-scoring-pipeline.yml@mlops-templates
+      - template: templates/${{ variables.version }}/add-pipeline-to-endpoint.yml@mlops-templates
+      - template: templates/${{ variables.version }}/run-pipeline.yml@mlops-templates
