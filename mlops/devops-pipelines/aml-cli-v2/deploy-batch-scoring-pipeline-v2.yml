@@ -62,7 +62,7 @@ stages:
       - template: templates/${{ variables.version }}/connect-to-workspace.yml@mlops-templates
       - template: templates/${{ variables.version }}/create-compute.yml@mlops-templates
         parameters:
-          cluster_name: batch-cluster #must match cluster name in deployment file below
+          cluster_name: batch-cluster # name must match cluster name in deployment file below
           min_instances: 0
           max_instances: 5
       - template: templates/${{ variables.version }}/create-endpoint.yml@mlops-templates
@@ -70,9 +70,9 @@ stages:
         parameters:
           deployment_name: mlflowdp
           deployment_file: data-science-regression/components/deploy/batch-endpoint/mlflow-deployment.yml      
-    # - template: templates/${{ variables.version }}/test-deployment.yml@mlops-templates
-      #   parameters:
-      #     deployment_name: blue
-      #     sample_request: data-science-regression/components/deploy/blue/sample-request.json
+    - template: templates/${{ variables.version }}/test-deployment.yml@mlops-templates
+        parameters:
+          deployment_name: mlflowdp
+          sample_request: file:https://pipelinedata.blob.core.windows.net/sampledata/nytaxi/taxi-tip-data.csv
 
 
