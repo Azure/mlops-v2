@@ -1,0 +1,34 @@
+variables:
+- template: ../../../config-aml.yml
+- ${{ if eq(variables['Build.SourceBranchName'], 'main') }}:
+    # 'main' branch: PRD environment
+    - template: ../../../config-infra-prod.yml
+- ${{ if ne(variables['Build.SourceBranchName'], 'main') }}:  
+    # 'develop' or feature branches: DEV environment
+    - template: ../../../config-infra-dev.yml
+
+trigger:
+- none
+
+pool:
+  vmImage: $(ap_vm_image)
+
+
+stages :
+  - stage: CheckOutBicepAndDeploy
+    displayName: Deploy AML Workspace
+    jobs:
+    - job: DeployBicep
+      displayName: Create Bicep Deployment
+      steps:
+      - checkout: self
+      - task: AzureCLI@2
+        displayName: Running Deployment
+        inputs:
+          azureSubscription: $(ado_service_connection_rg)
+          scriptType: bash
+          scriptLocation: inlineScript
+          inlineScript: |
+            az --version
+            echo "deploying bicep..."
+            az deployment sub create --name $(Build.DefinitionName)    --location $(location) --template-file ./infrastructure/bicep/main.bicep --parameters location=$(location) resourceGroupName=$(resource_group) prefix=$(namespace) postfix=$(postfix)
