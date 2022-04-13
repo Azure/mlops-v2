@@ -14,6 +14,7 @@ For a quickstart, the only variables needed to be set are in 'config-infra-dev.y
 ---
 
 ### Clone the repo
+---
 
 Click the button 'Use this template' (if you don't see it, you might have to sign in to Github first). After clicking the button you'll choose your github account/org and enter a repository name, optionally a description and finally click on 'Create Repository from template'. Now you have your own Github repository with the accelerator and you'll first create the infrastructure pipeline in Azure DevOps.
 
