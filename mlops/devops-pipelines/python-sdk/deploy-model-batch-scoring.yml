@@ -2,13 +2,13 @@
 # Licensed under the MIT License.
 
 variables:
-- template: ../../config-aml.yml
+- template: ../../../config-aml.yml
 - ${{ if eq(variables['Build.SourceBranchName'], 'main') }}:
     # 'main' branch: PRD environment
-    - template: ../../config-infra-prod.yml
+    - template: ../../../config-infra-prod.yml
 - ${{ if ne(variables['Build.SourceBranchName'], 'main') }}:  
     # 'develop' or feature branches: DEV environment
-    - template: ../../config-infra-dev.yml
+    - template: ../../../config-infra-dev.yml
 - name: version
   value: python-sdk
 
