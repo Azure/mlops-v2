@@ -12,6 +12,8 @@ variables:
   value: aml-cli-v2 #must be either 'python-sdk' or 'aml-cli-v2'
 - name: endpoint_name
   value: batchendpoint1
+- name: endpoint_type
+  value: batch
 
 trigger:
 - none

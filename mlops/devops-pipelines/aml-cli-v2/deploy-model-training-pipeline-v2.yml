@@ -13,7 +13,7 @@ variables:
 - name: endpoint_name
   value: onlineendpoint1
 - name: endpoint_type
-  value: online-endpoint
+  value: online
 
 
 trigger:
