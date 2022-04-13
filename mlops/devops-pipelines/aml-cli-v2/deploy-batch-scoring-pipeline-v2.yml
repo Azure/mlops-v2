@@ -11,7 +11,7 @@ variables:
 - name: version
   value: aml-cli-v2 #must be either 'python-sdk' or 'aml-cli-v2'
 - name: endpoint_name
-  value: demoEndpoint1
+  value: batchEndpoint1
 
 trigger:
 - none
@@ -25,6 +25,7 @@ resources:
     - repository: mlops-templates  # Template Repo
       name: Azure/mlops-templates # need to change org name from "Azure" to your own org
       endpoint: mlops-v2-service-connection  # need to hardcode as repositories doesn't accept variables
+      ref: feature/batch-endpoint
       type: github
 
 stages:
@@ -43,11 +44,11 @@ stages:
       - template: templates/${{ variables.version }}/run-pipeline.yml@mlops-templates
         parameters: 
           pipeline_file: data-science-regression/pipeline.yml
-      condition: ne(variables['build.sourceBranchName'], 'dev') # Selective skipping based on branch; remove this line before release!
+      # condition: ne(variables['build.sourceBranchName'], 'dev') # Selective skipping based on branch; remove this line before release!
 
 
-- stage: CreateOnlineEndpoint
-  displayName: Create/Update Online Endpoint 
+- stage: CreateBatchEndpoint
+  displayName: Create/Update Batch Endpoint 
   jobs:
     - job: DeployOnlineEndpoint
       steps:
@@ -64,15 +65,16 @@ stages:
           min_instances: 0
           max_instances: 5
       - template: templates/${{ variables.version }}/create-endpoint.yml@mlops-templates
+        parameters:
+          endpoint_type: batch-endpoint
       - template: templates/${{ variables.version }}/create-deployment.yml@mlops-templates
         parameters:
-          deployment_name: blue
-          deployment_file: data-science-regression/components/deploy/blue/blue-deployment.yml 
+          endpoint_type: batch-endpoint
+          deployment_name: nonmlflowdp
+          deployment_file: data-science-regression/components/deploy/batch-endpoint/nonmlflow-deployment
       - template: templates/${{ variables.version }}/test-deployment.yml@mlops-templates
         parameters:
           deployment_name: blue
           sample_request: data-science-regression/components/deploy/blue/sample-request.json
-      - template: templates/${{ variables.version }}/allocate-traffic.yml@mlops-templates
-        parameters:
-          traffic_allocation: blue=100
+
 
