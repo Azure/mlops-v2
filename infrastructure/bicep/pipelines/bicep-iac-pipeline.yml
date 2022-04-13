@@ -23,6 +23,7 @@ stages :
       steps:
       - checkout: self
       - task: AzureCLI@2
+        displayName: Running Deployment
         inputs:
           azureSubscription: $(ado_service_connection_rg)
           scriptType: bash
