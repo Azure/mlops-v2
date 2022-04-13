@@ -2,16 +2,16 @@
 # Licensed under the MIT License.
 
 variables:
-- ${{ if eq(variables['Build.SourceBranchName'], 'pavleBranch') }}:
+- ${{ if eq(variables['Build.SourceBranchName'], 'main') }}:
     # 'main' branch: PRD environment
-    - template: ../../config-infra-prod.yml
-- ${{ if ne(variables['Build.SourceBranchName'], 'pavleBranch') }}:  
+    - template: ../../../config-infra-prod.yml
+- ${{ if ne(variables['Build.SourceBranchName'], 'main') }}:  
     # 'develop' or feature branches: DEV environment
-    - template: ../../config-infra-dev.yml
+    - template: ../../../config-infra-dev.yml
 - name: version
   value: aml-cli-v2 #must be either 'python-sdk' or 'aml-cli-v2'
 - name: endpoint_name
-  value: demoEndpoint1
+  value: testendpoint1
 
 trigger:
 - none
@@ -44,6 +44,7 @@ stages:
       - template: templates/${{ variables.version }}/run-pipeline.yml@mlops-templates
         parameters: 
           pipeline_file: data-science-regression/pipeline.yml
+      # condition: ne(variables['build.sourceBranchName'], 'dev') # Selective skipping based on branch; remove this line before release!
 
 
 - stage: CreateOnlineEndpoint
