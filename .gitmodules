@@ -3,4 +3,4 @@
 	url = https://github.com/Azure/mlops-infra-default.git
 [submodule "data-science-regression"]
 	path = data-science-regression
-	url = https://github.com/Azure/mlops-infra-default.git
+	url = https://github.com/Azure/mlops-project-classical-ml.git
