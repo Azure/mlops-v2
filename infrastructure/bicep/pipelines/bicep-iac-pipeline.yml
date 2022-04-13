@@ -29,4 +29,4 @@ stages :
           scriptLocation: inlineScript
           inlineScript: |
             az --version
-            az deployment sub what-if --location $(location) --template-file ./infrastructure/bicep/main.bicep --parameters 'location=$(location) resourceGroupName=$(resourceGroupName) prefix=$(namespace) postfix=$(postfix)'
+            az deployment sub what-if --location $(location) --template-file ./infrastructure/bicep/main.bicep --parameters location=$(location) resourceGroupName=$(resourceGroupName) prefix=$(namespace) postfix=$(postfix)
