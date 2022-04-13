@@ -11,7 +11,7 @@ variables:
 - name: version
   value: aml-cli-v2 #must be either 'python-sdk' or 'aml-cli-v2'
 - name: endpoint_name
-  value: demoEndpoint1
+  value: testendpoint1
 
 trigger:
 - none
@@ -43,7 +43,7 @@ stages:
       - template: templates/${{ variables.version }}/run-pipeline.yml@mlops-templates
         parameters: 
           pipeline_file: data-science-regression/pipeline.yml
-      condition: ne(variables['build.sourceBranchName'], 'dev') # Selective skipping based on branch; remove this line before release!
+      # condition: ne(variables['build.sourceBranchName'], 'dev') # Selective skipping based on branch; remove this line before release!
 
 
 - stage: CreateOnlineEndpoint
@@ -59,10 +59,10 @@ stages:
       - template: templates/${{ variables.version }}/install-aml-cli.yml@mlops-templates
       - template: templates/${{ variables.version }}/connect-to-workspace.yml@mlops-templates
       - template: templates/${{ variables.version }}/create-endpoint.yml@mlops-templates
-      # - template: templates/${{ variables.version }}/create-deployment.yml@mlops-templates
-      #   parameters:
-      #     deployment_name: blue
-      #     deployment_file: data-science-regression/components/deploy/blue/blue-deployment.yml 
+      - template: templates/${{ variables.version }}/create-deployment.yml@mlops-templates
+        parameters:
+          deployment_name: blue
+          deployment_file: data-science-regression/components/deploy/blue/blue-deployment.yml 
       - template: templates/${{ variables.version }}/test-deployment.yml@mlops-templates
         parameters:
           deployment_name: blue
