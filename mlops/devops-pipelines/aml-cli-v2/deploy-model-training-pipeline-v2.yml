@@ -12,6 +12,8 @@ variables:
   value: aml-cli-v2 #must be either 'python-sdk' or 'aml-cli-v2'
 - name: endpoint_name
   value: onlineEndpoint1
+- name: endpoint_type
+  value: online-endpoint
 
 
 trigger:
@@ -61,11 +63,8 @@ stages:
       - template: templates/${{ variables.version }}/install-aml-cli.yml@mlops-templates
       - template: templates/${{ variables.version }}/connect-to-workspace.yml@mlops-templates
       - template: templates/${{ variables.version }}/create-endpoint.yml@mlops-templates
-        parameters:
-          endpoint_type: online-endpoint
       - template: templates/${{ variables.version }}/create-deployment.yml@mlops-templates
         parameters:
-          endpoint_type: online-endpoint
           deployment_name: blue
           deployment_file: data-science-regression/components/deploy/online-endpoint/blue/blue-deployment.yml 
       - template: templates/${{ variables.version }}/test-deployment.yml@mlops-templates
