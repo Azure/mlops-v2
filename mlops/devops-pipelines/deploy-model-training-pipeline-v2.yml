@@ -3,10 +3,10 @@
 
 variables:
 - template: ../../config-aml-v2.yml
-- ${{ if eq(variables['Build.SourceBranchName'], 'main') }}:
+- ${{ if eq(variables['Build.SourceBranchName'], 'pavleBranch') }}:
     # 'main' branch: PRD environment
     - template: ../../config-infra-prod.yml
-- ${{ if ne(variables['Build.SourceBranchName'], 'main') }}:  
+- ${{ if ne(variables['Build.SourceBranchName'], 'pavleBranch') }}:  
     # 'develop' or feature branches: DEV environment
     - template: ../../config-infra-dev.yml
 - name: version
