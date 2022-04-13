@@ -11,7 +11,7 @@ variables:
 - name: version
   value: aml-cli-v2 #must be either 'python-sdk' or 'aml-cli-v2'
 - name: endpoint_name
-  value: testendpoint1
+  value: testendpoint2
 
 trigger:
 - none
