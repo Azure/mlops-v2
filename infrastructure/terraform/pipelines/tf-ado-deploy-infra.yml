@@ -1,0 +1,55 @@
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License.
+
+variables:
+- template: ../../../config-aml.yml
+- ${{ if eq(variables['Build.SourceBranchName'], 'main') }}:
+    # 'main' branch: PRD environment
+    - template: ../../../config-infra-prod.yml
+- ${{ if ne(variables['Build.SourceBranchName'], 'main') }}:  
+    # 'develop' or feature branches: DEV environment
+    - template: ../../../config-infra-dev.yml
+
+trigger:
+- none
+
+pool:
+  vmImage: $(ap_vm_image)
+
+resources:
+  repositories:
+    - repository: mlops-templates 
+      name: Azure/mlops-templates 
+      endpoint: mlops-v2-tabular
+      type: github
+      ref: main #branch name
+
+stages :
+  - stage: CreateStorageAccountForTerraformState
+    displayName: Create Storage for Terraform
+    jobs:
+    - job: CreateStorageForTerraform
+      displayName: Create Storage for Terraform
+      steps:
+      - checkout: self
+        path: s/
+      - checkout: mlops-templates
+        path: s/templates/
+      - template: templates/infra/create-resource-group.yml@mlops-templates
+      - template: templates/infra/create-storage-account.yml@mlops-templates
+      - template: templates/infra/create-storage-container.yml@mlops-templates
+  - stage: DeployAzureMachineLearningRG
+    displayName: Deploy AML Resource Group
+    jobs:
+    - job:  DeployAMLWorkspace
+      displayName: 'Deploy AML Workspace'
+      steps:
+      - checkout: self
+        path: s/
+      - checkout: mlops-templates
+        path: s/templates/
+      - template: templates/infra/install-terraform.yml@mlops-templates
+      - template: templates/infra/run-terraform-init.yml@mlops-templates
+      - template: templates/infra/run-terraform-validate.yml@mlops-templates
+      - template: templates/infra/run-terraform-plan.yml@mlops-templates
+      - template: templates/infra/run-terraform-apply.yml@mlops-templates

@@ -1,0 +1,32 @@
+# <component>
+$schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
+name: evaluate_model
+version: 1
+display_name: evaluate-model
+type: command
+inputs:
+  model_name:
+    type: string
+    default: "taxi-model"
+  model_input:
+    type: uri_folder
+  test_data:
+    type: uri_folder
+outputs:
+  predictions:
+    type: uri_folder
+  score_report:
+    type: uri_folder
+  deploy_flag:
+    type: uri_folder
+environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
+code: ./src
+command: >-
+  python evaluate.py 
+  --model_name ${{inputs.model_name}} 
+  --model_input ${{inputs.model_input}} 
+  --test_data ${{inputs.test_data}}
+  --predictions ${{outputs.predictions}}
+  --score_report ${{outputs.score_report}}
+  --deploy_flag ${{outputs.deploy_flag}}
+# </component>
