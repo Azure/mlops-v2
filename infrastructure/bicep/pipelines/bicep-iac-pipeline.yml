@@ -19,7 +19,7 @@ stages :
     displayName: Deploy AML Workspace
     jobs:
     - job: DeployBicep
-      displayName: Create Storage for Terraform
+      displayName: Create Bicep Deployment
       steps:
       - checkout: self
       - task: AzureCLI@2
@@ -29,4 +29,5 @@ stages :
           scriptLocation: inlineScript
           inlineScript: |
             az --version
+            echo "deploying bicep..."
             az deployment sub what-if --location $(location) --template-file ./infrastructure/bicep/main.bicep --parameters location=$(location) resourceGroupName=$(resource_group) prefix=$(namespace) postfix=$(postfix)
