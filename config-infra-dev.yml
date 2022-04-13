@@ -4,9 +4,9 @@
 variables:
 
   # Global
-  namespace: mlopstab
+  namespace: mlopsv2
   postfix: 441
-  location: northeurope
+  location: westus
   environment: dev
   enable_aml_computecluster: true
 
