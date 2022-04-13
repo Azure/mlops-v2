@@ -59,10 +59,10 @@ stages:
       - template: templates/${{ variables.version }}/install-aml-cli.yml@mlops-templates
       - template: templates/${{ variables.version }}/connect-to-workspace.yml@mlops-templates
       - template: templates/${{ variables.version }}/create-endpoint.yml@mlops-templates
-      - template: templates/${{ variables.version }}/create-deployment.yml@mlops-templates
-        parameters:
-          deployment_name: blue
-          deployment_file: data-science-regression/components/deploy/blue/blue-deployment.yml 
+      # - template: templates/${{ variables.version }}/create-deployment.yml@mlops-templates
+      #   parameters:
+      #     deployment_name: blue
+      #     deployment_file: data-science-regression/components/deploy/blue/blue-deployment.yml 
       - template: templates/${{ variables.version }}/test-deployment.yml@mlops-templates
         parameters:
           deployment_name: blue
