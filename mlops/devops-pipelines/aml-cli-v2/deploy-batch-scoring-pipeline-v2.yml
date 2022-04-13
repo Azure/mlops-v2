@@ -50,7 +50,7 @@ stages:
 - stage: CreateBatchEndpoint
   displayName: Create/Update Batch Endpoint 
   jobs:
-    - job: DeployOnlineEndpoint
+    - job: DeployBatchEndpoint
       steps:
       - checkout: self
         path: s/
@@ -65,16 +65,13 @@ stages:
           min_instances: 0
           max_instances: 5
       - template: templates/${{ variables.version }}/create-endpoint.yml@mlops-templates
-        parameters:
-          endpoint_type: batch-endpoint
       - template: templates/${{ variables.version }}/create-deployment.yml@mlops-templates
         parameters:
-          endpoint_type: batch-endpoint
-          deployment_name: nonmlflowdp
-          deployment_file: data-science-regression/components/deploy/batch-endpoint/nonmlflow-deployment
-      - template: templates/${{ variables.version }}/test-deployment.yml@mlops-templates
-        parameters:
-          deployment_name: blue
-          sample_request: data-science-regression/components/deploy/blue/sample-request.json
+          deployment_name: mlflowdp
+          deployment_file: data-science-regression/components/deploy/batch-endpoint/mlflow-deployment
+      # - template: templates/${{ variables.version }}/test-deployment.yml@mlops-templates
+      #   parameters:
+      #     deployment_name: blue
+      #     sample_request: data-science-regression/components/deploy/blue/sample-request.json
 
 
