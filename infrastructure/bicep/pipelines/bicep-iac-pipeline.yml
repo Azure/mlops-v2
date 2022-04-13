@@ -24,7 +24,7 @@ stages :
       - checkout: self
       - task: AzureCLI@2
         inputs:
-          azureSubscription: $(azureServiceConnection)
+          azureSubscription: $(ado_service_connection_rg)
           scriptType: bash
           scriptLocation: inlineScript
           inlineScript: |
