@@ -1,0 +1,21 @@
+$schema: https://azuremlschemas.azureedge.net/latest/batchDeployment.schema.json
+name: taxi-batch-score
+endpoint_name: taxi-endpoint
+model: 
+  path: ./taxi-fare/model
+code_configuration:
+  code: ./components/score/
+  scoring_script: score.py
+environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
+compute: azureml:cpu-cluster
+resources:
+  instance_count: 1
+max_concurrency_per_instance: 2
+mini_batch_size: 10
+output_action: append_row
+output_file_name: predictions.csv
+retry_settings:
+  max_retries: 3
+  timeout: 30
+error_threshold: -1
+logging_level: info
