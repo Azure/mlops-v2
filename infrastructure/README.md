@@ -1,24 +1,40 @@
 ![Header](documentation/repositoryfiles/mlopsheader.jpg)
 
-# Azure MLOps (v2) Pattern: Azure Machine Learning - Classical Machine Learning
+# Azure MLOps (v2) solution accelerator: Infrastructure
 
-This repository includes all use case specific codebase to be deployed as the inner loop for the [MLOps v2](https://github.com/Azure/mlops-v2) solution accelerator.
+This repository includes all infrastructure deployed as the outer loop from the [MLOps v2](https://github.com/Azure/mlops-v2) solution accelerator.
 
-The repo itself functions as a standalone entity that agnosticly holds all Azure Machine Learning - Classical Machine Learning requirements for this architectual pattern.
+The repo itself functions as a standalone entity that agnosticly holds all infrastructure requirements for each individual architectual pattern.
+
+
+## ℹ️ Infrastructure Deployment
+
+Azure services deployed:
+
+[Azure Machine Learning](https://azure.microsoft.com/en-us/services/machine-learning/)
+
+[Azure Machine Learning Compute](https://docs.microsoft.com/en-us/azure/machine-learning/concept-compute-target)
+
+[Azure Machine Learning Workspace](https://docs.microsoft.com/en-us/azure/machine-learning/concept-workspace)
 
 
 ## 📐 Pattern Architectures: Key concepts
 
-This repository follows the architecture linked below:
-
 | Link                                                    | AI Pattern                                                              |
 | ------------------------------------------------------- | ----------------------------------------------------------------------- |
 | [Pattern AML CML](https://github.com/Azure/mlops-v2/blob/main/documentation/architecturepattern/AzureML_CML_Architecture_v0.7.jpg) | Azure Machine Learning - Classical Machine Learning                     |
+| [Pattern AML CV](https://github.com/Azure/mlops-v2/blob/main/documentation/architecturepattern/AzureML_SupervisedCV_Architecture_v0.5.jpg)                                                 | Azure Machine Learning - Computer Vision                                |
+| [TBD]                                                   | Azure Machine Learning - Natural Language Processing                    |
+| [TBD]                                                   | Azure Machine Learning / Azure Databricks - Classical Machine Learning  |
+| [TBD]                                                   | Azure Machine Learning / Azure Databricks - Computer Vision             |
+| [TBD]                                                   | Azure Machine Learning / Azure Databricks - Natural Language Processing |
+| [TBD]                                                   | Azure Machine Learning - Classical Machine Learning using R             |
+| [TBD]                                                   | Azure Machine Learning - Edge AI                                        |
 
 
 ## 👤 Getting started
 
-Please visit [MLOps v2](https://github.com/Azure/mlops-v2) for the initial deployment of this inner loop pattern.
+Please visit [MLOps v2](https://github.com/Azure/mlops-v2) for the initial deployment of this outer loop pattern.
 
 
 ## ‼️ Feedback or Issues
