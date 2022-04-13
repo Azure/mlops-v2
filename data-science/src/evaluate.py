@@ -112,6 +112,7 @@ def main():
         if model_run.name == args.model_name:
             mdl_path = Model.download(model_run, exist_ok=True)
             mdl = joblib.load(os.path.join(mdl_path, 'model.pkl'))
+            
             test_accuracies[model_run.id] = mdl.score(X_test, y_test_labels)
             test_predictions[model_run.id] = [labels_dict[x] for x in mdl.predict(X_test)]
      
