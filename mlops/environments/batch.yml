@@ -10,11 +10,10 @@ dependencies:
   - python=3.7.5
   - pip
   - pip:
-    - azureml-defaults
-    - azureml-mlflow
-    - azureml-sdk
-    - azureml-dataprep[fuse]
-    - azureml-interpret
+    - azureml-defaults==1.38.0
+    - azureml-mlflow==1.38.0
+    - azureml-sdk==1.38.0
+    - azureml-interpret==1.38.0
     - scikit-learn==0.24.1
     - pandas==1.2.1
     - joblib==1.0.0
