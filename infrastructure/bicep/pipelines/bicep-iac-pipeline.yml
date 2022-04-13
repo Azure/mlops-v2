@@ -31,4 +31,4 @@ stages :
           inlineScript: |
             az --version
             echo "deploying bicep..."
-            az deployment sub what-if --name $(Build.DefinitionnName)    --location $(location) --template-file ./infrastructure/bicep/main.bicep --parameters location=$(location) resourceGroupName=$(resource_group) prefix=$(namespace) postfix=$(postfix)
+            az deployment sub what-if --name $(Build.DefinitionName)    --location $(location) --template-file ./infrastructure/bicep/main.bicep --parameters location=$(location) resourceGroupName=$(resource_group) prefix=$(namespace) postfix=$(postfix)
