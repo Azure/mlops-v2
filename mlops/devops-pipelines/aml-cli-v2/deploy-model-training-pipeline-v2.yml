@@ -11,7 +11,7 @@ variables:
 - name: version
   value: aml-cli-v2 #must be either 'python-sdk' or 'aml-cli-v2'
 - name: endpoint_name
-  value: demoEndpoint1
+  value: testendpoint1
 
 trigger:
 - none
@@ -43,7 +43,7 @@ stages:
       - template: templates/${{ variables.version }}/run-pipeline.yml@mlops-templates
         parameters: 
           pipeline_file: data-science-regression/pipeline.yml
-      condition: ne(variables['build.sourceBranchName'], 'dev') # Selective skipping based on branch; remove this line before release!
+      # condition: ne(variables['build.sourceBranchName'], 'dev') # Selective skipping based on branch; remove this line before release!
 
 
 - stage: CreateOnlineEndpoint
@@ -76,7 +76,7 @@ stages:
 - stage: SafeRollout
   displayName: Safe rollout of new deployment
   jobs:
-    - job: DeployOnlineEndpoint
+    - job: SafeRolloutDeployment 
       steps:
       - checkout: self
         path: s/
