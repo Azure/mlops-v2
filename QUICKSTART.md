@@ -11,52 +11,52 @@
 
    For the use of the demo, the creation of two service principles is required. Go into your Azure portal to set those up.
 
-   1. Select Azure Active Directory (AAC)
+   1.1. Select Azure Active Directory (AAC)
 
    ![SP1](./images/SP-setup1.png)
 
-   2. Select App Registrations on the left panel, then select "new registration".
+   1.2. Select App Registrations on the left panel, then select "new registration".
 
    ![PS2](./images/SP-setup2.png)
 
-   3. Go through the process of creating a Service Principle (SP) selecting "Accounts in any organizational directory (Any Azure AD directory - Multitenant)" and name it  "Azure-ARM-Dev". Once created, repeate and create a new SP named "Azure-ARM-Prod".
+   1.3. Go through the process of creating a Service Principle (SP) selecting "Accounts in any organizational directory (Any Azure AD directory - Multitenant)" and name it  "Azure-ARM-Dev". Once created, repeate and create a new SP named "Azure-ARM-Prod".
 
-   4. Go to "Certificates & Secrets" and add for each SP "New client secret", then store the value and secret sepperately.
+   1.4. Go to "Certificates & Secrets" and add for each SP "New client secret", then store the value and secret sepperately.
 
-   5. Select your subscription and go to IAM. Select +Add then select "Add Role Assigment.
+   1.5. Select your subscription and go to IAM. Select +Add then select "Add Role Assigment.
 
    ![PS3](./images/SP-setup3.png)
 
-   6. Select Contributor and add members selecting + Select Members. Add the member "Azure-ARM-Dev" as create before.
+   1.6. Select Contributor and add members selecting + Select Members. Add the member "Azure-ARM-Dev" as create before.
 
    ![SP4](./images/SP-setup4.png)
 
-   7. Repeat step with "Azure-ARM-Prod". The SP setup is successfully finished.
+   1.7. Repeat step with "Azure-ARM-Prod". The SP setup is successfully finished.
 
 
 2. Set up Github Environment
 
-   1. Goto https://github.com/Azure/mlops-v2.
+   2.1. Goto https://github.com/Azure/mlops-v2.
    
-   2. Click the button "Use this template" (if you don't see it, you might have to sign in to Github first). 
+   2.2. Click the button "Use this template" (if you don't see it, you might have to sign in to Github first). 
    
    ![Github Use Template](./images/gh-usethistemplate.png)
    
-   3. After clicking the button you'll choose your github account/org and enter a repository name "MLOps-Test", optionally a description and finally click on "Create Repository from template'". 
+   2.3. After clicking the button you'll choose your github account/org and enter a repository name "MLOps-Test", optionally a description and finally click on "Create Repository from template'". 
    
    ![Github Create new Repo](./images/gh-createnewrepo.png)
    
-   4. Now you should have your own Github repository with the solution accelerator.
+   2.4. Now you should have your own Github repository with the solution accelerator.
    
-   5. Next, create an SSO token in github by selecting "Developer settings" in your github account settings.
+   2.5. Next, create an SSO token in github by selecting "Developer settings" in your github account settings.
 
    ![GH1](./images/GH-setup1.png)
    
-   6. Select "Personal Access Token", then generate new token. Select the check boxes and name your token "MLOpsToken". Select "Generate Token". Copy/Paste token key to a notepate interim.
+   2.6. Select "Personal Access Token", then generate new token. Select the check boxes and name your token "MLOpsToken". Select "Generate Token". Copy/Paste token key to a notepate interim.
    
    ![GH2](./images/GH-setup2.png)
    
-   7. Now "Authorize" the token to have access to the Azure organization. If you are not a member of the Azure organization please enable it beforehand in your organisation setting.
+   2.7. Now "Authorize" the token to have access to the Azure organization. If you are not a member of the Azure organization please enable it beforehand in your organisation setting.
    
    ![GH3](./images/GH-setup3.png)
    
@@ -65,33 +65,33 @@
 
 3. Set up Azure DevOps
 
-   1. Go to [Azure DevOps](https://dev.azure.com/) to set up your MLOps deployment environment. To deploy the infrastructure via ADO (Azure DevOps), you will have to have an organization and a project, with a service connection to your subscription configured.
+   3.1. Go to [Azure DevOps](https://dev.azure.com/) to set up your MLOps deployment environment. To deploy the infrastructure via ADO (Azure DevOps), you will have to have an organization and a project, with a service connection to your subscription configured.
    
-   2. Create a new organization and project in Azure Devops. Feel free to name both according to your project practices.
+   3.2. Create a new organization and project in Azure Devops. Feel free to name both according to your project practices.
    
    ![ADO Project](./images/ADO-project.png)
    
-   3. In the project under 'Project Settings (at the bottom of the screen when in the project)' select "Service Connections".
+   3.3. In the project under 'Project Settings (at the bottom of the screen when in the project)' select "Service Connections".
    
    ![ADO1](./images/ADO-setup1.png)
    
    **Azure Subscription Connection:**
    
-      3.1.1 Select "New Service Connection".
+      3.3.1 Select "New Service Connection".
 
       ![ADO2](./images/ADO-setup2.png)
 
-      3.1.1 Select "Azure Resource Manager", select "Next", select "Service principal (automatic)", select "Next", select your subscrption where your SP is stored and name the service connection "Azure-ARM-Prod". Select "Grant access permission to all pipelines", then select "Save". 
+      3.3.2 Select "Azure Resource Manager", select "Next", select "Service principal (automatic)", select "Next", select your subscrption where your SP is stored and name the service connection "Azure-ARM-Prod". Select "Grant access permission to all pipelines", then select "Save". 
 
       ![ADO3](./images/ADO-setup3.png)
       
    **Github Connection:**
    
-      3.2.1 Select "New Service Connection".
+      3.3.4 Select "New Service Connection".
 
       ![ADO4](./images/ADO-setup2.png)
       
-      3.2.2Select "Github", select "Next", select "Personal Access Token" and paste your Github SSO Token in the Personal Access token field, name the "Service connection name" accordingly "mlops-v2-service-connection", grand pipeline security access, then select "Save".
+      3.3.5 Select "Github", select "Next", select "Personal Access Token" and paste your Github SSO Token in the Personal Access token field, name the "Service connection name" accordingly "mlops-v2-service-connection", grand pipeline security access, then select "Save".
       
       ![ADO5](./images/ADO-setup4.png)
       
