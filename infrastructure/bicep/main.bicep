@@ -7,7 +7,7 @@ param postfix string
 
 
 
-var baseName  = '${prefix}${postfix}${env}'
+var baseName  = '${prefix}-${postfix}${env}'
 var resourceGroupName = 'rg-${baseName}'
 
 resource resgrp 'Microsoft.Resources/resourceGroups@2020-06-01' = {
@@ -21,7 +21,7 @@ module stoacct './modules/stoacct.bicep' = {
   name: 'stoacct'
   scope: resourceGroup(resgrp.name)
   params: {
-    baseName: baseName
+    baseName: '${prefix}-${postfix}${env}'
     location: location
   }
 }
