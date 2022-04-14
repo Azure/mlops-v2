@@ -179,7 +179,7 @@
    
    >**IMPORTANT: This pipeline needs an additional connection to the Github repo Azure/mlops-templates, where all the templates are stored and maintained, which, like legos, encapsulate certain functionality. That's why you see in the pipeline itself a lot of calls to '-template: template in mlops-templates'. These functionalities are install the azure cli, or ml extension or run a pipeline etc. Therefore we created the connection 'mlops-v2-service-connection' in the beginning currenly hard-coded.**
    
-   7. Do to global subscription issues in Azure change "onlineendpoint1" to "onlineendpoint2", select "Run".
+   7. Due to global subscription issues in Azure change "onlineendpoint1" to "onlineendpoint2", select "Run".
 
    ![ADO Run7](./images/ADO-run7.png)
    
@@ -220,7 +220,7 @@
    
    ![ADO Run10](./images/ADO-run10.png)
    
-   7. Do to global subscription issues in Azure change "batchendpoint1" to "batchendpoint2", select "Run".
+   7. Due to global subscription issues in Azure change "batchendpoint1" to "batchendpoint2", select "Run".
 
    ![ADO Run11](./images/ADO-run11.png)
    
