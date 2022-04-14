@@ -10,30 +10,60 @@ Note: This demo is based on the beta version for the MLOps Azure Machine Learnin
 
    Select Azure Active Directory (AAC)
 
-![Github Use Template](./images/SP-setup1.png)
+   ![SP1](./images/SP-setup1.png)
 
-Select App Registrations on the left panel, then select "new registration".
+   Select App Registrations on the left panel, then select "new registration".
 
-![Github Use Template](./images/SP-setup2.png)
+   ![PS2](./images/SP-setup2.png)
 
-Go through the process of creating a Service Principle (SP) selecting "Accounts in any organizational directory (Any Azure AD directory - Multitenant)" and name it "Azure-ARM-Dev". Once created, repeate and create a new SP named "Azure-ARM-Prod".
+   Go through the process of creating a Service Principle (SP) selecting "Accounts in any organizational directory (Any Azure AD directory - Multitenant)" and name it  "Azure-ARM-Dev". Once created, repeate and create a new SP named "Azure-ARM-Prod".
 
-Go to "Certificates & Secrets" and add for each SP "New client secret", then store the value and secret sepperately.
+   Go to "Certificates & Secrets" and add for each SP "New client secret", then store the value and secret sepperately.
 
-Select your subscription and go to IAM. Select +Add then select "Add Role Assigment.
+   Select your subscription and go to IAM. Select +Add then select "Add Role Assigment.
 
-![Github Use Template](./images/SP-setup3.png)
+   ![PS3](./images/SP-setup3.png)
 
-Select Contributor and add members selecting + Select Members. Add the member "Azure-ARM-Dev" as create before.
+   Select Contributor and add members selecting + Select Members. Add the member "Azure-ARM-Dev" as create before.
 
-![Github Use Template](./images/SP-setup4.png)
+   ![SP4](./images/SP-setup4.png)
 
-Repeat step with "Azure-ARM-Prod".
+   Repeat step with "Azure-ARM-Prod". The SP setup is successfully finished.
 
-The SP setup is successfully finished.
+2. Set up Github Environment
+
+   Goto https://github.com/Azure/mlops-v2.
+   
+   Click the button "Use this template" (if you don't see it, you might have to sign in to Github first). 
+   
+   ![Github Use Template](./images/gh-usethistemplate.png)
+   
+   After clicking the button you'll choose your github account/org and enter a repository name, optionally a description and finally click on "Create Repository from template'". 
+   
+   ![Github Create new Repo](./images/gh-createnewrepo.png)
+   
+   Now you should have your own Github repository with the solution accelerator.
+   
+   Next, create an SSO token in github by selecting "Developer settings" in your github account settings.
+
+   ![GH1](./images/GH-setup1.png)
+   
+   Select "Personal Access Token", then generate new token. Select the check boxes and name your token "MLOpsToken". Select "Generate Token". Copy/Paste token key to a notepate interim.
+   
+   ![GH2](./images/GH-setup2.png)
+   
+   Now "Authorize" the token to have access to the Azure organization. If you are not a member of the Azure organization please enable it beforehand in your organisation setting.
+   
+   ![GH3](./images/GH-setup3.png)
+   
+   The github setup is successfully finished.
 
 
-2. Set up Azure DevOps
+3. Set up Azure DevOps
+
+   Go to [Azure DevOps](https://dev.azure.com/) to set up your MLOps deployment environment.
+   
+   
 
 
 
