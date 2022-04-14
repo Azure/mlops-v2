@@ -8,7 +8,7 @@ param postfix string
 
 
 var baseName  = '${prefix}${postfix}${env}'
-var resourceGroupName = 'rg-$baseName'
+var resourceGroupName = 'rg-${baseName}'
 
 resource resgrp 'Microsoft.Resources/resourceGroups@2020-06-01' = {
   name: resourceGroupName
