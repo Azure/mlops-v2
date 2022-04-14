@@ -1,5 +1,46 @@
 # Quickstart
 
+## Prerequisites
+
+Note: This demo is based on the beta version for the MLOps Azure Machine Learning Classical ML Pattern. Due to ongoing, cli v2 changes and Azure Machine Learning enhencements, the demo can fail. The team is working on keeping the example as up-to-date as possible.
+
+1. Create Service Principles
+
+For the use of the demo, the creation of two service principles is required. Go into your Azure portal to set those up.
+
+Select Azure Active Directory (AAC)
+
+![Github Use Template](./images/SP-setup1.png)
+
+Select App Registrations on the left panel, then select "new registration".
+
+![Github Use Template](./images/SP-setup2.png)
+
+Go through the process of creating a Service Principle (SP) selecting "Accounts in any organizational directory (Any Azure AD directory - Multitenant)" and name it "Azure-ARM-Dev". Once created, repeate and create a new SP named "Azure-ARM-Prod".
+
+Go to "Certificates & Secrets" and add for each SP "New client secret", then store the value and secret sepperately.
+
+Select your subscription and go to IAM. Select +Add then select "Add Role Assigment.
+
+![Github Use Template](./images/SP-setup3.png)
+
+Select Contributor and add members selecting + Select Members. Add the member "Azure-ARM-Dev" as create before.
+
+![Github Use Template](./images/SP-setup4.png)
+
+Repeat step with "Azure-ARM-Prod".
+
+The SP setup is successfully finished.
+
+
+2. Set up Azure DevOps
+
+
+
+
+
+
+
 
 ## 1. Deploying Infrastructure via ADO (Azure DevOps)
 ---
