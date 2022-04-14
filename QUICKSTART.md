@@ -175,7 +175,7 @@
    
    6. Select "main" as a branch and choose '/mlops/devops-pipelines/aml-cli-v2/deploy-model-training-pipeline-v2.yml', then select "Continue".  
 
-   ![ADO choose your pipeline](./images/ADO-selectinfrapipeline.png)
+   ![ADO Run9](./images/ADO-run9.png)
    
    >**IMPORTANT: This pipeline needs an additional connection to the Github repo Azure/mlops-templates, where all the templates are stored and maintained, which, like legos, encapsulate certain functionality. That's why you see in the pipeline itself a lot of calls to '-template: template in mlops-templates'. These functionalities are install the azure cli, or ml extension or run a pipeline etc. Therefore we created the connection 'mlops-v2-service-connection' in the beginning currenly hard-coded.**
    
@@ -189,7 +189,9 @@
    
    ![ADO Run8](./images/ADO-run8.png)
 
-   
+   Now the Inner Loop of the MLOps Architecture is deployed.
+      
+      
  
 ## Inner / Outer Loop: Moving to Production
 ---
@@ -216,29 +218,40 @@
    
    6. Select "main" as a branch and choose '/mlops/devops-pipelines/aml-cli-v2/deploy-batch-scoring-pipeline-v2.yml', then select "Continue".  
    
+   ![ADO Run10](./images/ADO-run10.png)
    
-   
-   
-   
+   7. Do to global subscription issues in Azure change "batchendpoint1" to "batchendpoint2", select "Run".
 
-## Setting Variables
+   ![ADO Run11](./images/ADO-run11.png)
+   
+   **IMPORTANT: If the run fails due to an existing online endpoint name, recreate the pipeline as discribed above and change "batchendpoint1" to "batchendpoint[random number]"**
+   
+   8. When the run completes, you will see:
+   
+   ![ADO Run12](./images/ADO-run12.png)
+   
+  Now the Inner Loop is connected to the Outer of the MLOps Architecture and inference has been run.
+  
+  
+
+## Next Steps
 ---
 
->Right now there's just a deployment from 'main' and therefore only production artifacts are deployed.
+This finishes the demo according to the architectual patters: Azure Machine Learning Classical Machine Learning. Next you can dive into your Azure Machine Learning service in the Azure Portal and see the inference results of this example model. 
 
-For a quickstart, the only variables needed to be set are in 'config-infra-prod.yml'(in the root of the repo):
-* If your location (Azure Region) is different from 'westus' then you'll have to adjust it to the desired one p.ex. 'westus2', 'northerneurope'.
-* the function of 'namespace' is to make all your artifacts, that you're going to deploy, unique. Since there's going to be a Storage Account deployed, it has to adhere to the naming limitations of these (3-24 characters, all lowercase letters or numbers)
-* as of now, the 'ado_service_connection_rg:Azure-ARM-dev' needs to have contributor permission subscription wide, since there's a resource groups being created, which contains the artifacts for the Machine Learning Workspace (Storage Account, Key Vault, Application Insights, Container Registry). You then have to create a service connection in your ADO project, which has the same name ' or adjust it here accordingly.
+As the cli v2 is still in development, the following components are not part of this demo:
+- Model Monitoring for Data/Model Drift
+- Automated Retraining
+- Model and Infrastructure triggers
+
+As the development team builds according to the Product Groups release plan, no custom components are going to be developed rather it is intended to wait for full GA release of the cli v2 to address those components. 
+
+Interim it is recommended to schedule the deployment pipeline for development for complete model retraining on a timed trigger.
+
+For questions, please hand in an issue or reach out to the development team at Microsoft.
 
 
-
-
-
-
-![ADO Github Service Connection](./images/ado-ghserviceconnection.png)
-
-
-With the following endresult:
-
-![ADO Training Pipeline](./images/ado-trainingpipeline.png)
+   
+   
+   
+ 
