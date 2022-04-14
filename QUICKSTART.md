@@ -4,7 +4,9 @@
 ## Setting Variables
 ---
 
-For a quickstart, the only variables needed to be set are in 'config-infra-dev.yml'(in the root of the repo):
+>Right now there's just a deployment from 'main' and therefore only production artifacts are deployed.
+
+For a quickstart, the only variables needed to be set are in 'config-infra-prod.yml'(in the root of the repo):
 * If your location (Azure Region) is different from 'westus' then you'll have to adjust it to the desired one p.ex. 'westus2', 'northerneurope'.
 * the function of 'namespace' is to make all your artifacts, that you're going to deploy, unique. Since there's going to be a Storage Account deployed, it has to adhere to the naming limitations of these (3-24 characters, all lowercase letters or numbers)
 * as of now, the 'ado_service_connection_rg:Azure-ARM-dev' needs to have contributor permission subscription wide, since there's a resource groups being created, which contains the artifacts for the Machine Learning Workspace (Storage Account, Key Vault, Application Insights, Container Registry). You then have to create a service connection in your ADO project, which has the same name ' or adjust it here accordingly.
@@ -29,13 +31,10 @@ To daploy the infrastructure via ADO (Azure DevOps), you will have to have an or
 Then under pipelines you'll create a "New Pipeline" and choose "GitHub" for 'Where is your Code ?'. You might have to create a connection to your GitHub repos via the displayed links. Then choose your Github repo and under 'Configure Your Pipeline' choose 'Existing Azure Pipelines YAML file'. In the dialog on the right, make sure 'main' is selected and then open the listbox and choose 'infrastructure/bicep/pipelines/bicep-iac-std-pipelines.yml' as the path and 'Continue' button. After that you're presented with the pipeline, which you can just run (button 'Run' on the upper right)
    
    You can then run the pipeline, which should create the following artifacts:
-   * Resource Group for Terraform State including Storage Account
    * Resource Group for your Workspace including Storage Account, Container Registry, Application Insights, Keyvault and the Azure Machine Learning Workspace itself.
+   * In the workspace there's also a compute cluster created
 
-   > If you didn't change the variable 'enable_aml_computecluster' from 'true' to 'false' a compute cluster is created as defined in 'infrastructure\terraform\modules\aml-workspace\main.tf'
 
-
-As of now (20220410) the Terraform infrastructure pipeline will create a new pair of Terraform state Resource Group and Machine Learning workspace Resource Group every time it runs, with a slightly different name (number 10x).
 
 The successfully run pipeline should look like this:
 
