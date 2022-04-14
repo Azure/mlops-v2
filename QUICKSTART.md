@@ -2,7 +2,7 @@
 
 ## Prerequisites
 
-Note: This demo is based on the beta version for the MLOps Azure Machine Learning Classical ML Pattern. Due to ongoing, cli v2 changes and Azure Machine Learning enhencements, the demo can fail. The team is working on keeping the example as up-to-date as possible.
+**Note: This demo is based on the beta version for the MLOps Azure Machine Learning Classical ML Pattern. Due to ongoing, cli v2 changes and Azure Machine Learning enhencements, the demo can fail. The team is working on keeping the example as up-to-date as possible.**
 
 1. Create Service Principles
 
@@ -29,6 +29,7 @@ Note: This demo is based on the beta version for the MLOps Azure Machine Learnin
    ![SP4](./images/SP-setup4.png)
 
    Repeat step with "Azure-ARM-Prod". The SP setup is successfully finished.
+
 
 2. Set up Github Environment
 
@@ -61,10 +62,43 @@ Note: This demo is based on the beta version for the MLOps Azure Machine Learnin
 
 3. Set up Azure DevOps
 
-   Go to [Azure DevOps](https://dev.azure.com/) to set up your MLOps deployment environment.
+   Go to [Azure DevOps](https://dev.azure.com/) to set up your MLOps deployment environment. To deploy the infrastructure via ADO (Azure DevOps), you will have to have an organization and a project, with a service connection to your subscription configured.
    
+   Create a new organization and project in Azure Devops. Feel free to name both according to your project practices.
    
+   ![ADO Project](./images/ADO-project.png)
+   
+   In the project under 'Project Settings (at the bottom of the screen when in the project)' select "Service Connections".
+   
+   ![ADO1](./images/ADO-setup1.png)
+   
+   **Azure Subscription Connection:**
+   
+      Select "New Service Connection".
 
+      ![ADO2](./images/ADO-setup2.png)
+
+      Select "Azure Resource Manager", select "Next", select "Service principal (automatic)", select "Next", select your subscrption where your SP is stored and name the service connection "Azure-ARM-Prod". Select "Grant access permission to all pipelines", then select "Save". 
+
+      ![ADO3](./images/ADO-setup3.png)
+      
+   **Github Connection:**
+   
+      Select "New Service Connection".
+
+      ![ADO4](./images/ADO-setup2.png)
+      
+      Select "Github", select "Next", select "Personal Access Token" and paste your Github SSO Token in the Personal Access token field, name the "Service connection name" accordingly "mlops-v2-service-connection", grand pipeline security access, then select "Save".
+      
+      ![ADO5](./images/ADO-setup4.png)
+      
+      If it does not exist already, repeat exactly this step only name name the "Service connection name" accordingly YOUR GITHUB NAME. Finishing this step, your conection should look like this.
+   
+      ![ADO6](./images/ADO-setup5.png)
+
+   The Azure DevOps setup is successfully finished.
+   
+   
 
 
 
@@ -86,32 +120,6 @@ For a quickstart, the only variables needed to be set are in 'config-infra-prod.
 * as of now, the 'ado_service_connection_rg:Azure-ARM-dev' needs to have contributor permission subscription wide, since there's a resource groups being created, which contains the artifacts for the Machine Learning Workspace (Storage Account, Key Vault, Application Insights, Container Registry). You then have to create a service connection in your ADO project, which has the same name ' or adjust it here accordingly.
 
 
-
-
-### Clone the repo
----
-Goto https://github.com/Azure/mlops-v2.
-
-Click the button 'Use this template' (if you don't see it, you might have to sign in to Github first). 
-
-![Github Use Template](./images/gh-usethistemplate.png)
-
-After clicking the button you'll choose your github account/org and enter a repository name, optionally a description and finally click on 'Create Repository from template'. 
-
-![Github Create new Repo](./images/gh-createnewrepo.png)
-
-Now you should have your own Github repository with the accelerator and you'll first create the infrastructure pipeline in Azure DevOps.
-
-
-### Prepare Azure DevOps (ADO) organization, project, service connection
----
-To daploy the infrastructure via ADO (Azure DevOps), you will have to have an organization and a project, with a service connection to your subscription configured. An organization, you can create here (https://dev.azure.com) for free. Once you have your organization, you create a project. 
-
-![ADO Project](./images/ADO-project.png)
-
-In the project under 'Project Settings (at the bottom of the screen when in the project)' > Service Connections, you'll create the service connection to your subscription, with subscription access. Make sure, to name it 'Azure-ARM-dev'.
-
-![ADO Project Settings](./images/ado-project-settings.png)
 
 
 ### Creating the infrastructure pipeline
