@@ -3,6 +3,8 @@
 ## Prerequisites
 ---
 
+**Duration: 45min**
+
 **Note: This demo is based on the beta version for the MLOps Azure Machine Learning Classical ML Pattern. Due to ongoing, cli v2 changes and Azure Machine Learning enhencements, the demo can fail. The team is working on keeping the example as up-to-date as possible.**
 
 1. Create Service Principles
