@@ -1,6 +1,7 @@
 # Quickstart
 
 ## Prerequisites
+---
 
 **Note: This demo is based on the beta version for the MLOps Azure Machine Learning Classical ML Pattern. Due to ongoing, cli v2 changes and Azure Machine Learning enhencements, the demo can fail. The team is working on keeping the example as up-to-date as possible.**
 
@@ -39,7 +40,7 @@
    
    ![Github Use Template](./images/gh-usethistemplate.png)
    
-   After clicking the button you'll choose your github account/org and enter a repository name, optionally a description and finally click on "Create Repository from template'". 
+   After clicking the button you'll choose your github account/org and enter a repository name "MLOps-Test", optionally a description and finally click on "Create Repository from template'". 
    
    ![Github Create new Repo](./images/gh-createnewrepo.png)
    
@@ -97,17 +98,59 @@
       ![ADO6](./images/ADO-setup5.png)
 
    The Azure DevOps setup is successfully finished.
+ 
+ 
+**This finishes the prerequisite section and the deployment of the solution accelerator can happen accordingly.**
+
+
    
-   
-
-
-
-
-
-
-
-## 1. Deploying Infrastructure via ADO (Azure DevOps)
+## Outer Loop: Deploying Infrastructure via Azure DevOps
 ---
+
+1. Go to ADO pipelines
+
+![ADO Pipelines](./images/ADO-pipelines.png)
+
+2. Select "New Pipeline".
+
+![ADO Run1](./images/ADO-run1.png)
+
+3. Select "Github".
+
+![ADO Where's your code](./images/ado-wheresyourcode.png)
+
+4. Select your /MLOps-Test repository.
+
+![ADO Run2](./images/ADO-run2.png)
+
+5. Select "Existing Azure Pipeline YAML File"
+
+![ADO Run3](./images/ADO-run3.png)
+
+6. Select "main" as a branch and choose 'infrastructure/bicep/pipelines/bicep-iac-std-pipelines.yml', then select "Continue".
+
+![Select Infrastructure Pipeline](./images/ADO-selectinfrapipeline.png)
+
+7. **IMPORTANT: THIS STEP WILL AUTOMATED SOON** 
+
+DO NOT run the pipeline yet. Go to your Github cloned repo and select the "config-infra-prod.yml" file.
+
+![ADO Run4](./images/ADO-run4.png)
+
+Under global, change postfix: 818 to postfix: 819 (line 8) and save.
+
+8. Now go back to ADO and run. This will take a few minutes to finish
+
+![ADO Run5](./images/ADO-run5.png)
+
+Now the Outer Loop of the MLOps Architecture is deployed.
+
+
+
+
+
+
+
 
 ## Setting Variables
 ---
