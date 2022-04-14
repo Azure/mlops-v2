@@ -107,50 +107,119 @@
 ## Outer Loop: Deploying Infrastructure via Azure DevOps
 ---
 
-1. Go to ADO pipelines
+   1. Go to ADO pipelines
+   
+   ![ADO Pipelines](./images/ADO-pipelines.png)
+   
+   2. Select "New Pipeline".
+   
+   ![ADO Run1](./images/ADO-run1.png)
+   
+   3. Select "Github".
+   
+   ![ADO Where's your code](./images/ado-wheresyourcode.png)
+   
+   4. Select your /MLOps-Test repository.
+   
+   ![ADO Run2](./images/ADO-run2.png)
+   
+   5. Select "Existing Azure Pipeline YAML File"
+   
+   ![ADO Run3](./images/ADO-run3.png)
+   
+   6. Select "main" as a branch and choose 'infrastructure/bicep/pipelines/bicep-iac-std-pipelines.yml', then select "Continue".
+   
+   ![Select Infrastructure Pipeline](./images/ADO-selectinfrapipeline.png)
+   
+   7. **IMPORTANT: THIS STEP WILL AUTOMATED SOON** 
+   
+   DO NOT run the pipeline yet. Go to your Github cloned repo and select the "config-infra-prod.yml" file.
+   
+   ![ADO Run4](./images/ADO-run4.png)
+   
+   Under global, change postfix: 818 to postfix: 819 (line 8) and save.
+   
+   8. Now go back to ADO and "Run". This will take a few minutes to finish. The pipeline should create the following artifacts:
+   * Resource Group for your Workspace including Storage Account, Container Registry, Application Insights, Keyvault and the Azure Machine Learning Workspace itself.
+   * In the workspace there's also a compute cluster created.
+   
+   ![ADO Run5](./images/ADO-run5.png)
+   
+   Now the Outer Loop of the MLOps Architecture is deployed.
+   
+   ![ADO Run6](./images/ADO-run6.png)
 
-![ADO Pipelines](./images/ADO-pipelines.png)
 
-2. Select "New Pipeline".
+## Inner Loop: Deploying Classical ML Model Development / Moving to Test Environment 
+---
 
-![ADO Run1](./images/ADO-run1.png)
+   1. Go to ADO pipelines
+   
+   ![ADO Pipelines](./images/ADO-pipelines.png)
 
-3. Select "Github".
+   2. Select "New Pipeline".
+   
+   ![ADO Run1](./images/ADO-run1.png)
+   
+   3. Select "Github".
+   
+   ![ADO Where's your code](./images/ado-wheresyourcode.png)
+   
+   4. Select your /MLOps-Test repository.
+   
+   ![ADO Run2](./images/ADO-run2.png)
+   
+   5. Select "Existing Azure Pipeline YAML File"
+   
+   ![ADO Run3](./images/ADO-run3.png)
+   
+   6. Select "main" as a branch and choose '/mlops/devops-pipelines/aml-cli-v2/deploy-model-training-pipeline-v2.yml', then select "Continue".  
 
-![ADO Where's your code](./images/ado-wheresyourcode.png)
+   ![ADO choose your pipeline](./images/ADO-selectinfrapipeline.png)
+   
+   >**IMPORTANT: This pipeline needs an additional connection to the Github repo Azure/mlops-templates, where all the templates are stored and maintained, which, like legos, encapsulate certain functionality. That's why you see in the pipeline itself a lot of calls to '-template: template in mlops-templates'. These functionalities are install the azure cli, or ml extension or run a pipeline etc. Therefore we created the connection 'mlops-v2-service-connection' in the beginning currenly hard-coded.**
+   
+   7. Do to global subscription issues in Azure change "onlineendpoint1" to "onlineendpoint2", select "Run".
 
-4. Select your /MLOps-Test repository.
+   ![ADO Run7](./images/ADO-run7.png)
+   
+   **IMPORTANT: If the run fails due to an existing online endpoint name, recreate the pipeline as discribed above and change "onlineendpoint1" to "onlineendpoint[random number]"**
+   
+   8. When the run completes, you will see:
+   
+   ![ADO Run8](./images/ADO-run8.png)
 
-![ADO Run2](./images/ADO-run2.png)
+   
+ 
+## Inner / Outer Loop: Moving to Production
+---
+   
+   1. Go to ADO pipelines
+   
+   ![ADO Pipelines](./images/ADO-pipelines.png)
 
-5. Select "Existing Azure Pipeline YAML File"
-
-![ADO Run3](./images/ADO-run3.png)
-
-6. Select "main" as a branch and choose 'infrastructure/bicep/pipelines/bicep-iac-std-pipelines.yml', then select "Continue".
-
-![Select Infrastructure Pipeline](./images/ADO-selectinfrapipeline.png)
-
-7. **IMPORTANT: THIS STEP WILL AUTOMATED SOON** 
-
-DO NOT run the pipeline yet. Go to your Github cloned repo and select the "config-infra-prod.yml" file.
-
-![ADO Run4](./images/ADO-run4.png)
-
-Under global, change postfix: 818 to postfix: 819 (line 8) and save.
-
-8. Now go back to ADO and run. This will take a few minutes to finish
-
-![ADO Run5](./images/ADO-run5.png)
-
-Now the Outer Loop of the MLOps Architecture is deployed.
-
-
-
-
-
-
-
+   2. Select "New Pipeline".
+   
+   ![ADO Run1](./images/ADO-run1.png)
+   
+   3. Select "Github".
+   
+   ![ADO Where's your code](./images/ado-wheresyourcode.png)
+   
+   4. Select your /MLOps-Test repository.
+   
+   ![ADO Run2](./images/ADO-run2.png)
+   
+   5. Select "Existing Azure Pipeline YAML File"
+   
+   ![ADO Run3](./images/ADO-run3.png)
+   
+   6. Select "main" as a branch and choose '/mlops/devops-pipelines/aml-cli-v2/deploy-batch-scoring-pipeline-v2.yml', then select "Continue".  
+   
+   
+   
+   
+   
 
 ## Setting Variables
 ---
@@ -165,57 +234,7 @@ For a quickstart, the only variables needed to be set are in 'config-infra-prod.
 
 
 
-### Creating the infrastructure pipeline
----
-Go to ADO pipelines
 
-![ADO Pipelines](./images/ADO-pipelines.png)
-
-Then under pipelines you'll create a "New Pipeline"
-
-![ADO Pipelines](./images/ADO-newpipeline.png)
-
-and choose "GitHub" for 'Where is your Code ?'. 
-
-![ADO Where's your code](./images/ado-wheresyourcode.png)
-
-You might have to create a connection to your GitHub repos via the displayed links. Then choose your Github repo and under 'Configure Your Pipeline' choose 'Existing Azure Pipelines YAML file'. 
-
-![ADO chose repo](./images/ado-chooserepository.png)
-
-
-
-In the dialog on the right, make sure 'main' is selected and then open the listbox and choose 'infrastructure/bicep/pipelines/bicep-iac-std-pipelines.yml'
-
-![Select Infrastructure Pipeline](./images/ADO-selectinfrapipeline.png)
-
-as the path and 'Continue' button. After that you're presented with the pipeline, which you can just run (button 'Run' on the upper right)
-   
-   You can then run the pipeline, which should create the following artifacts:
-   * Resource Group for your Workspace including Storage Account, Container Registry, Application Insights, Keyvault and the Azure Machine Learning Workspace itself.
-   * In the workspace there's also a compute cluster created.
-
-
-
-The successfully run pipeline should look like this:
-
-![IaC image](./images/ADO-Infrapipelinesuccess.png)
-
-<p>
-</p>
-
-
-
-## 2. Deploying Training Pipeline via ADO (Azure DevOps)
----
-
-For the training pipeine to install, it's the same steps as above except in the part where you choose the pipeline (the dialog), which is to be found under     /mlops/devops-pipelines/aml-cli-v2/deploy-model-training-pipeline-v2.yml.
-
-![ADO choose your pipeline](./images/ADO-selectinfrapipeline.png)
-
->This pipeline needs an additional connection to the Github repo Azure/mlops-templates, where all the templates are stored and maintained, which, like legos, encapsulate certain functionality. That's why you see in the pipeline itself a lot of calls to '-template: template in mlops-templates'. These functionalities are install the azure cli, or ml extension or run a pipeline etc.
-
-Therefore you need to create a connection, which has to be named 'mlops-v2-service-connection' (sadly this has to be hardcoded like this). This connection can be created under Project Settings > Service Connections > Service Connection to Github choosing OAuth. ( and follow the prompts)
 
 ![ADO Github Service Connection](./images/ado-ghserviceconnection.png)
 
