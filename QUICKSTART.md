@@ -32,22 +32,40 @@ Now you should have your own Github repository with the accelerator and you'll f
 
 ### Prepare Azure DevOps (ADO) organization, project, service connection
 ---
-To daploy the infrastructure via ADO (Azure DevOps), you will have to have an organization and a project, with a service connection to your subscription configured. An organization, you can create here (https://dev.azure.com) for free. Once you have your organization, you create a project. In the project under 'Project Settings (at the bottom of the screen when in the project)' > Service Connections, you'll create the service connection to your subscription, with subscription access. Make sure, to name it 'Azure-ARM-dev'.
+To daploy the infrastructure via ADO (Azure DevOps), you will have to have an organization and a project, with a service connection to your subscription configured. An organization, you can create here (https://dev.azure.com) for free. Once you have your organization, you create a project. 
+
+![ADO Project](./images/ADO-project.png)
+
+In the project under 'Project Settings (at the bottom of the screen when in the project)' > Service Connections, you'll create the service connection to your subscription, with subscription access. Make sure, to name it 'Azure-ARM-dev'.
+
+![ADO Project Settings](./images/ado-project-settings.png)
 
 
 ### Creating the infrastructure pipeline
 ---
-Then under pipelines you'll create a "New Pipeline" and choose "GitHub" for 'Where is your Code ?'. You might have to create a connection to your GitHub repos via the displayed links. Then choose your Github repo and under 'Configure Your Pipeline' choose 'Existing Azure Pipelines YAML file'. In the dialog on the right, make sure 'main' is selected and then open the listbox and choose 'infrastructure/bicep/pipelines/bicep-iac-std-pipelines.yml' as the path and 'Continue' button. After that you're presented with the pipeline, which you can just run (button 'Run' on the upper right)
+Then under pipelines you'll create a "New Pipeline"
+
+![ADO Pipelines](./images/ADO-pipelines.png)
+
+and choose "GitHub" for 'Where is your Code ?'. 
+
+![Configure Your Pipeline](./images/ado-configureyourpipeline.png) 
+
+You might have to create a connection to your GitHub repos via the displayed links. Then choose your Github repo and under 'Configure Your Pipeline' choose 'Existing Azure Pipelines YAML file'. 
+
+![Select Infrastructure Pipeline](./images/ADO-selectinfrapipeline.png)
+
+In the dialog on the right, make sure 'main' is selected and then open the listbox and choose 'infrastructure/bicep/pipelines/bicep-iac-std-pipelines.yml' as the path and 'Continue' button. After that you're presented with the pipeline, which you can just run (button 'Run' on the upper right)
    
    You can then run the pipeline, which should create the following artifacts:
    * Resource Group for your Workspace including Storage Account, Container Registry, Application Insights, Keyvault and the Azure Machine Learning Workspace itself.
-   * In the workspace there's also a compute cluster created
+   * In the workspace there's also a compute cluster created.
 
 
 
 The successfully run pipeline should look like this:
 
-![IaC image](./images/iacpipelineresult.png)
+![IaC image](./images/ADO-Infrapipelinesuccess.png)
 
 <p>
 </p>
