@@ -98,3 +98,6 @@ Therefore you need to create a connection, which has to be named 'mlops-v2-servi
 ![ADO Github Service Connection](./images/ado-ghserviceconnection.png)
 
 
+With the following endresult:
+
+![ADO Training Pipeline](./images/ado-trainingpipeline.png)
