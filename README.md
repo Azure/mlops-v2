@@ -42,7 +42,7 @@ The demo follows the Classical Machine Learning Pattern with Azure Machine Learn
   
 ![AML CML](/documentation/architecturepattern/AzureML_CML_Architecture.png)
   
-Please follow the instructions to execute the demo accordingly: [Quickstart](https://github.com/Azure/mlops-v2/blob/main/QUICKSTART.md)
+‼️ Please follow the instructions to execute the demo accordingly: [Quickstart](https://github.com/Azure/mlops-v2/blob/main/QUICKSTART.md) ‼️
  
 
 ## 📐 Pattern Architectures: Key concepts
