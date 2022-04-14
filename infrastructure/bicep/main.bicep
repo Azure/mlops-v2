@@ -1,14 +1,14 @@
 targetScope='subscription'
 
 param location string = 'westus2'
-param env string = 'dev'
+param env string 
 param prefix string 
 param postfix string
-param resourceGroupName string = 'rg-wus-test'
 
 
-var baseName  = '${prefix}${postfix}'
 
+var baseName  = '${prefix}${postfix}${env}'
+var resourceGroupName = 'rg-$baseName'
 
 resource resgrp 'Microsoft.Resources/resourceGroups@2020-06-01' = {
   name: resourceGroupName
@@ -21,7 +21,6 @@ module stoacct './modules/stoacct.bicep' = {
   name: 'stoacct'
   scope: resourceGroup(resgrp.name)
   params: {
-    env: env
     baseName: baseName
     location: location
   }
@@ -33,7 +32,6 @@ module kv './modules/kv.bicep' = {
   name: 'kv'
   scope: resourceGroup(resgrp.name)
   params:{
-    env: env
     location: location
     baseName: baseName
   }
@@ -46,7 +44,6 @@ module appinsight './modules/appinsight.bicep' = {
   scope: resourceGroup(resgrp.name)
   params:{
     baseName: baseName
-    env: env
     location: location
   }
 }
@@ -57,7 +54,6 @@ module cr './modules/cr.bicep' = {
   scope: resourceGroup(resgrp.name)
   params:{
     baseName: baseName
-    env: env
     location: location
   }
 }
@@ -69,7 +65,6 @@ module amls './modules/amls.bicep' = {
   scope: resourceGroup(resgrp.name)
   params:{
     baseName: baseName
-    env: env
     location: location
     stoacctid: stoacct.outputs.stoacctOut
     kvid: kv.outputs.kvOut
@@ -85,8 +80,6 @@ module amlci './modules/amlcomputeinstance.bicep' = {
   name: 'amlci'
   scope: resourceGroup(resgrp.name)
   params:{
-    baseName: baseName
-    env: env
     location: location
     workspaceName: amls.outputs.amlsName
   }

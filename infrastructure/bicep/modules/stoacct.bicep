@@ -1,11 +1,10 @@
-param env string
 param baseName string
 param location string
 
 
 // stroage account
 resource stoacct 'Microsoft.Storage/storageAccounts@2019-04-01' = {
-  name: '${env}${baseName}sa'
+  name: 'st${baseName}'
   location: location
   sku:{
     name:'Standard_LRS'

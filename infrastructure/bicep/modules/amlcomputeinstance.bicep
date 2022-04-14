@@ -1,7 +1,5 @@
 param location string
-param baseName string
-param env string
-param computeInstanceName string = '${env}-${baseName}-ci'
+param computeInstanceName string = 'cpu-cluster'
 param workspaceName string
 
 resource amlci 'Microsoft.MachineLearningServices/workspaces/computes@2020-09-01-preview' = {

@@ -1,6 +1,5 @@
 param location string
 param baseName string
-param env string
 param stoacctid string
 param kvid string
 param appinsightid string
@@ -10,7 +9,7 @@ param crid string
 
 // azure machine learning service
 resource amls 'Microsoft.MachineLearningServices/workspaces@2020-09-01-preview' = {
-  name: '${env}${baseName}-ws'
+  name: 'mlw-${baseName}'
   location: location
   identity: {
     type: 'SystemAssigned'
@@ -20,7 +19,7 @@ resource amls 'Microsoft.MachineLearningServices/workspaces@2020-09-01-preview' 
     name: 'basic'
   }
   properties:{
-    friendlyName: '${env}${baseName}-ws'
+    friendlyName: 'mlw-${baseName}'
     storageAccount: stoacctid
     keyVault: kvid
     applicationInsights: appinsightid

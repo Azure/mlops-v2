@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.5.6.12127",
-      "templateHash": "11208633954998583577"
+      "templateHash": "15081322313323346681"
     }
   },
   "parameters": {
@@ -14,44 +14,37 @@
       "defaultValue": "westus2"
     },
     "env": {
-      "type": "string",
-      "defaultValue": "dev"
+      "type": "string"
     },
     "prefix": {
       "type": "string"
     },
     "postfix": {
       "type": "string"
-    },
-    "resourceGroupName": {
-      "type": "string",
-      "defaultValue": "rg-wus-test"
     }
   },
   "variables": {
-    "baseName": "[format('{0}{1}', parameters('prefix'), parameters('postfix'))]"
+    "baseName": "[format('{0}{1}{2}', parameters('prefix'), parameters('postfix'), parameters('env'))]",
+    "resourceGroupName": "rg-$baseName"
   },
   "resources": [
     {
       "type": "Microsoft.Resources/resourceGroups",
       "apiVersion": "2020-06-01",
-      "name": "[parameters('resourceGroupName')]",
+      "name": "[variables('resourceGroupName')]",
       "location": "[parameters('location')]"
     },
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2020-10-01",
       "name": "stoacct",
-      "resourceGroup": "[parameters('resourceGroupName')]",
+      "resourceGroup": "[variables('resourceGroupName')]",
       "properties": {
         "expressionEvaluationOptions": {
           "scope": "inner"
         },
         "mode": "Incremental",
         "parameters": {
-          "env": {
-            "value": "[parameters('env')]"
-          },
           "baseName": {
             "value": "[variables('baseName')]"
           },
@@ -66,13 +59,10 @@
             "_generator": {
               "name": "bicep",
               "version": "0.5.6.12127",
-              "templateHash": "13854706444404712543"
+              "templateHash": "18142017805397855696"
             }
           },
           "parameters": {
-            "env": {
-              "type": "string"
-            },
             "baseName": {
               "type": "string"
             },
@@ -84,7 +74,7 @@
             {
               "type": "Microsoft.Storage/storageAccounts",
               "apiVersion": "2019-04-01",
-              "name": "[format('{0}{1}sa', parameters('env'), parameters('baseName'))]",
+              "name": "[format('st{0}', parameters('baseName'))]",
               "location": "[parameters('location')]",
               "sku": {
                 "name": "Standard_LRS"
@@ -109,29 +99,26 @@
           "outputs": {
             "stoacctOut": {
               "type": "string",
-              "value": "[resourceId('Microsoft.Storage/storageAccounts', format('{0}{1}sa', parameters('env'), parameters('baseName')))]"
+              "value": "[resourceId('Microsoft.Storage/storageAccounts', format('st{0}', parameters('baseName')))]"
             }
           }
         }
       },
       "dependsOn": [
-        "[subscriptionResourceId('Microsoft.Resources/resourceGroups', parameters('resourceGroupName'))]"
+        "[subscriptionResourceId('Microsoft.Resources/resourceGroups', variables('resourceGroupName'))]"
       ]
     },
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2020-10-01",
       "name": "kv",
-      "resourceGroup": "[parameters('resourceGroupName')]",
+      "resourceGroup": "[variables('resourceGroupName')]",
       "properties": {
         "expressionEvaluationOptions": {
           "scope": "inner"
         },
         "mode": "Incremental",
         "parameters": {
-          "env": {
-            "value": "[parameters('env')]"
-          },
           "location": {
             "value": "[parameters('location')]"
           },
@@ -146,14 +133,11 @@
             "_generator": {
               "name": "bicep",
               "version": "0.5.6.12127",
-              "templateHash": "3960831692549416869"
+              "templateHash": "6791231334089874292"
             }
           },
           "parameters": {
             "baseName": {
-              "type": "string"
-            },
-            "env": {
               "type": "string"
             },
             "location": {
@@ -164,7 +148,7 @@
             {
               "type": "Microsoft.KeyVault/vaults",
               "apiVersion": "2019-09-01",
-              "name": "[format('{0}-{1}-kv', parameters('env'), parameters('baseName'))]",
+              "name": "[format('kv-{0}', parameters('baseName'))]",
               "location": "[parameters('location')]",
               "properties": {
                 "tenantId": "[subscription().tenantId]",
@@ -179,20 +163,20 @@
           "outputs": {
             "kvOut": {
               "type": "string",
-              "value": "[resourceId('Microsoft.KeyVault/vaults', format('{0}-{1}-kv', parameters('env'), parameters('baseName')))]"
+              "value": "[resourceId('Microsoft.KeyVault/vaults', format('kv-{0}', parameters('baseName')))]"
             }
           }
         }
       },
       "dependsOn": [
-        "[subscriptionResourceId('Microsoft.Resources/resourceGroups', parameters('resourceGroupName'))]"
+        "[subscriptionResourceId('Microsoft.Resources/resourceGroups', variables('resourceGroupName'))]"
       ]
     },
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2020-10-01",
       "name": "appinsight",
-      "resourceGroup": "[parameters('resourceGroupName')]",
+      "resourceGroup": "[variables('resourceGroupName')]",
       "properties": {
         "expressionEvaluationOptions": {
           "scope": "inner"
@@ -201,9 +185,6 @@
         "parameters": {
           "baseName": {
             "value": "[variables('baseName')]"
-          },
-          "env": {
-            "value": "[parameters('env')]"
           },
           "location": {
             "value": "[parameters('location')]"
@@ -216,14 +197,11 @@
             "_generator": {
               "name": "bicep",
               "version": "0.5.6.12127",
-              "templateHash": "2591061638125956638"
+              "templateHash": "12692442721719680710"
             }
           },
           "parameters": {
             "baseName": {
-              "type": "string"
-            },
-            "env": {
               "type": "string"
             },
             "location": {
@@ -234,7 +212,7 @@
             {
               "type": "Microsoft.Insights/components",
               "apiVersion": "2020-02-02-preview",
-              "name": "[format('{0}{1}-appin', parameters('env'), parameters('baseName'))]",
+              "name": "[format('appi-{0}', parameters('baseName'))]",
               "location": "[parameters('location')]",
               "kind": "web",
               "properties": {
@@ -245,20 +223,20 @@
           "outputs": {
             "appinsightOut": {
               "type": "string",
-              "value": "[resourceId('Microsoft.Insights/components', format('{0}{1}-appin', parameters('env'), parameters('baseName')))]"
+              "value": "[resourceId('Microsoft.Insights/components', format('appi-{0}', parameters('baseName')))]"
             }
           }
         }
       },
       "dependsOn": [
-        "[subscriptionResourceId('Microsoft.Resources/resourceGroups', parameters('resourceGroupName'))]"
+        "[subscriptionResourceId('Microsoft.Resources/resourceGroups', variables('resourceGroupName'))]"
       ]
     },
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2020-10-01",
       "name": "cr",
-      "resourceGroup": "[parameters('resourceGroupName')]",
+      "resourceGroup": "[variables('resourceGroupName')]",
       "properties": {
         "expressionEvaluationOptions": {
           "scope": "inner"
@@ -267,9 +245,6 @@
         "parameters": {
           "baseName": {
             "value": "[variables('baseName')]"
-          },
-          "env": {
-            "value": "[parameters('env')]"
           },
           "location": {
             "value": "[parameters('location')]"
@@ -282,13 +257,10 @@
             "_generator": {
               "name": "bicep",
               "version": "0.5.6.12127",
-              "templateHash": "12155558635582316098"
+              "templateHash": "4382147579551378708"
             }
           },
           "parameters": {
-            "env": {
-              "type": "string"
-            },
             "baseName": {
               "type": "string"
             },
@@ -300,7 +272,7 @@
             {
               "type": "Microsoft.ContainerRegistry/registries",
               "apiVersion": "2020-11-01-preview",
-              "name": "[format('{0}{1}cr', parameters('env'), parameters('baseName'))]",
+              "name": "[format('cr{0}', parameters('baseName'))]",
               "location": "[parameters('location')]",
               "sku": {
                 "name": "Standard"
@@ -313,20 +285,20 @@
           "outputs": {
             "crOut": {
               "type": "string",
-              "value": "[resourceId('Microsoft.ContainerRegistry/registries', format('{0}{1}cr', parameters('env'), parameters('baseName')))]"
+              "value": "[resourceId('Microsoft.ContainerRegistry/registries', format('cr{0}', parameters('baseName')))]"
             }
           }
         }
       },
       "dependsOn": [
-        "[subscriptionResourceId('Microsoft.Resources/resourceGroups', parameters('resourceGroupName'))]"
+        "[subscriptionResourceId('Microsoft.Resources/resourceGroups', variables('resourceGroupName'))]"
       ]
     },
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2020-10-01",
       "name": "amls",
-      "resourceGroup": "[parameters('resourceGroupName')]",
+      "resourceGroup": "[variables('resourceGroupName')]",
       "properties": {
         "expressionEvaluationOptions": {
           "scope": "inner"
@@ -336,23 +308,20 @@
           "baseName": {
             "value": "[variables('baseName')]"
           },
-          "env": {
-            "value": "[parameters('env')]"
-          },
           "location": {
             "value": "[parameters('location')]"
           },
           "stoacctid": {
-            "value": "[reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, parameters('resourceGroupName')), 'Microsoft.Resources/deployments', 'stoacct')).outputs.stoacctOut.value]"
+            "value": "[reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, variables('resourceGroupName')), 'Microsoft.Resources/deployments', 'stoacct')).outputs.stoacctOut.value]"
           },
           "kvid": {
-            "value": "[reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, parameters('resourceGroupName')), 'Microsoft.Resources/deployments', 'kv')).outputs.kvOut.value]"
+            "value": "[reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, variables('resourceGroupName')), 'Microsoft.Resources/deployments', 'kv')).outputs.kvOut.value]"
           },
           "appinsightid": {
-            "value": "[reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, parameters('resourceGroupName')), 'Microsoft.Resources/deployments', 'appinsight')).outputs.appinsightOut.value]"
+            "value": "[reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, variables('resourceGroupName')), 'Microsoft.Resources/deployments', 'appinsight')).outputs.appinsightOut.value]"
           },
           "crid": {
-            "value": "[reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, parameters('resourceGroupName')), 'Microsoft.Resources/deployments', 'cr')).outputs.crOut.value]"
+            "value": "[reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, variables('resourceGroupName')), 'Microsoft.Resources/deployments', 'cr')).outputs.crOut.value]"
           }
         },
         "template": {
@@ -362,7 +331,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.5.6.12127",
-              "templateHash": "18023230433604735324"
+              "templateHash": "13822078097770695570"
             }
           },
           "parameters": {
@@ -370,9 +339,6 @@
               "type": "string"
             },
             "baseName": {
-              "type": "string"
-            },
-            "env": {
               "type": "string"
             },
             "stoacctid": {
@@ -392,7 +358,7 @@
             {
               "type": "Microsoft.MachineLearningServices/workspaces",
               "apiVersion": "2020-09-01-preview",
-              "name": "[format('{0}{1}-ws', parameters('env'), parameters('baseName'))]",
+              "name": "[format('mlw-{0}', parameters('baseName'))]",
               "location": "[parameters('location')]",
               "identity": {
                 "type": "SystemAssigned"
@@ -402,7 +368,7 @@
                 "name": "basic"
               },
               "properties": {
-                "friendlyName": "[format('{0}{1}-ws', parameters('env'), parameters('baseName'))]",
+                "friendlyName": "[format('mlw-{0}', parameters('baseName'))]",
                 "storageAccount": "[parameters('stoacctid')]",
                 "keyVault": "[parameters('kvid')]",
                 "applicationInsights": "[parameters('appinsightid')]",
@@ -420,41 +386,35 @@
           "outputs": {
             "amlsName": {
               "type": "string",
-              "value": "[format('{0}{1}-ws', parameters('env'), parameters('baseName'))]"
+              "value": "[format('mlw-{0}', parameters('baseName'))]"
             }
           }
         }
       },
       "dependsOn": [
-        "[extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, parameters('resourceGroupName')), 'Microsoft.Resources/deployments', 'appinsight')]",
-        "[extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, parameters('resourceGroupName')), 'Microsoft.Resources/deployments', 'cr')]",
-        "[extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, parameters('resourceGroupName')), 'Microsoft.Resources/deployments', 'kv')]",
-        "[subscriptionResourceId('Microsoft.Resources/resourceGroups', parameters('resourceGroupName'))]",
-        "[extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, parameters('resourceGroupName')), 'Microsoft.Resources/deployments', 'stoacct')]"
+        "[extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, variables('resourceGroupName')), 'Microsoft.Resources/deployments', 'appinsight')]",
+        "[extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, variables('resourceGroupName')), 'Microsoft.Resources/deployments', 'cr')]",
+        "[extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, variables('resourceGroupName')), 'Microsoft.Resources/deployments', 'kv')]",
+        "[subscriptionResourceId('Microsoft.Resources/resourceGroups', variables('resourceGroupName'))]",
+        "[extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, variables('resourceGroupName')), 'Microsoft.Resources/deployments', 'stoacct')]"
       ]
     },
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2020-10-01",
       "name": "amlci",
-      "resourceGroup": "[parameters('resourceGroupName')]",
+      "resourceGroup": "[variables('resourceGroupName')]",
       "properties": {
         "expressionEvaluationOptions": {
           "scope": "inner"
         },
         "mode": "Incremental",
         "parameters": {
-          "baseName": {
-            "value": "[variables('baseName')]"
-          },
-          "env": {
-            "value": "[parameters('env')]"
-          },
           "location": {
             "value": "[parameters('location')]"
           },
           "workspaceName": {
-            "value": "[reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, parameters('resourceGroupName')), 'Microsoft.Resources/deployments', 'amls')).outputs.amlsName.value]"
+            "value": "[reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, variables('resourceGroupName')), 'Microsoft.Resources/deployments', 'amls')).outputs.amlsName.value]"
           }
         },
         "template": {
@@ -464,22 +424,16 @@
             "_generator": {
               "name": "bicep",
               "version": "0.5.6.12127",
-              "templateHash": "2016431671585526523"
+              "templateHash": "2171038987648938744"
             }
           },
           "parameters": {
             "location": {
               "type": "string"
             },
-            "baseName": {
-              "type": "string"
-            },
-            "env": {
-              "type": "string"
-            },
             "computeInstanceName": {
               "type": "string",
-              "defaultValue": "[format('{0}-{1}-ci', parameters('env'), parameters('baseName'))]"
+              "defaultValue": "cpu-cluster"
             },
             "workspaceName": {
               "type": "string"
@@ -508,8 +462,8 @@
         }
       },
       "dependsOn": [
-        "[extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, parameters('resourceGroupName')), 'Microsoft.Resources/deployments', 'amls')]",
-        "[subscriptionResourceId('Microsoft.Resources/resourceGroups', parameters('resourceGroupName'))]"
+        "[extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, variables('resourceGroupName')), 'Microsoft.Resources/deployments', 'amls')]",
+        "[subscriptionResourceId('Microsoft.Resources/resourceGroups', variables('resourceGroupName'))]"
       ]
     }
   ]
