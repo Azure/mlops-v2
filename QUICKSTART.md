@@ -6,9 +6,9 @@ Note: This demo is based on the beta version for the MLOps Azure Machine Learnin
 
 1. Create Service Principles
 
-For the use of the demo, the creation of two service principles is required. Go into your Azure portal to set those up.
+   For the use of the demo, the creation of two service principles is required. Go into your Azure portal to set those up.
 
-Select Azure Active Directory (AAC)
+   Select Azure Active Directory (AAC)
 
 ![Github Use Template](./images/SP-setup1.png)
 
