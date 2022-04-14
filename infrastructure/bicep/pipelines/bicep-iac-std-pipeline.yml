@@ -31,4 +31,4 @@ stages :
           inlineScript: |
             az --version
             echo "deploying bicep..."
-            az deployment sub create --name $(Build.DefinitionName)    --location $(location) --template-file ./infrastructure/bicep/main.bicep --parameters location=$(location) emv=$(environment) prefix=$(namespace) postfix=$(postfix)
+            az deployment sub create --name $(Build.DefinitionName)    --location $(location) --template-file ./infrastructure/bicep/main.bicep --parameters location=$(location) env=$(environment) prefix=$(namespace) postfix=$(postfix)
