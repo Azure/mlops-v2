@@ -21,7 +21,7 @@ module stoacct './modules/stoacct.bicep' = {
   name: 'stoacct'
   scope: resourceGroup(resgrp.name)
   params: {
-    baseName: '${prefix}-${postfix}${env}'
+    baseName: '${prefix}${postfix}${env}'
     location: location
   }
 }
