@@ -18,6 +18,8 @@ Azure services deployed:
 [Azure Machine Learning Workspace](https://docs.microsoft.com/en-us/azure/machine-learning/concept-workspace)
 
 
+## [For Quickstart click here !](/QUICKSTART.md)
+
 ## 📐 Pattern Architectures: Key concepts
 
 | Link                                                    | AI Pattern                                                              |
