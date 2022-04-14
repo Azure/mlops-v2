@@ -86,7 +86,6 @@ Please follow the instructions to execute the demo accordingly:
 | [TBD]                                                               | Classical machine learning         | Azure Machine Learning, Azure Databricks | [DEPLOY BUTTON] |
 | [TBD]                                                               | Computer Vision                    | Azure Machine Learning, Azure Databricks | [DEPLOY BUTTON] |
 | [TBD]                                                               | Natural Language Processing        | Azure Machine Learning, Azure Databricks | [DEPLOY BUTTON] |
-| [TBD]                                                               | Classical machine learning with R  | Azure Machine Learning                   | [DEPLOY BUTTON] |  
 | [TBD]                                                               | Edge AI                            | Azure Machine Learning                   | [DEPLOY BUTTON] |  
 
 
