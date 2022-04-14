@@ -40,7 +40,7 @@ Following the demo helps to understand the concept of the solution accelerator, 
   
 The demo follows the Classical Machine Learning Pattern with Azure Machine Learning.
   
-![AML CML](/documentation/architecturepattern/AzureML_CML_Architecture_v0.7.jpg)
+![AML CML](/documentation/architecturepattern/AzureML_CML_Architecture_v0.85.png)
   
 Please follow the instructions to execute the demo accordingly:
   
@@ -57,13 +57,12 @@ Please follow the instructions to execute the demo accordingly:
 
 | Link                                                    | AI Pattern                                                              |
 | ------------------------------------------------------- | ----------------------------------------------------------------------- |
-| [Pattern AML CML](https://github.com/Azure/mlops-v2/blob/main/documentation/architecturepattern/AzureML_CML_Architecture_v0.7.jpg) | Azure Machine Learning - Classical Machine Learning                     |
-| [Pattern AML CV](https://github.com/Azure/mlops-v2/blob/main/documentation/architecturepattern/AzureML_SupervisedCV_Architecture_v0.5.jpg)                                                 | Azure Machine Learning - Computer Vision                                |
+| [Pattern AML CML](https://github.com/Azure/mlops-v2/blob/main/documentation/architecturepattern/AzureML_CML_Architecture_v0.85.png) | Azure Machine Learning - Classical Machine Learning                     |
+| [Pattern AML CV](https://github.com/Azure/mlops-v2/blob/main/documentation/architecturepattern/AzureML_SupervisedCV_Architecture_v0.5.png)                                                 | Azure Machine Learning - Computer Vision                                |
 | [TBD]                                                   | Azure Machine Learning - Natural Language Processing                    |
 | [TBD]                                                   | Azure Machine Learning / Azure Databricks - Classical Machine Learning  |
 | [TBD]                                                   | Azure Machine Learning / Azure Databricks - Computer Vision             |
 | [TBD]                                                   | Azure Machine Learning / Azure Databricks - Natural Language Processing |
-| [TBD]                                                   | Azure Machine Learning - Classical Machine Learning using R             |
 | [TBD]                                                   | Azure Machine Learning - Edge AI                                        |
 
   
