@@ -53,7 +53,7 @@ module cr './modules/cr.bicep' = {
   name: 'cr'
   scope: resourceGroup(resgrp.name)
   params:{
-    baseName: baseName
+    baseName: '${prefix}${postfix}${env}'
     location: location
   }
 }
