@@ -1,64 +1,54 @@
-![Header](documentation/repositoryfiles/mlopsheader.jpg)
-
 # Azure MLOps (v2) solution accelerator
 
-MLOps or Machine Learning Ops is a set of practices that aims to automate and operationalise the deployment and maintenance of machine learning models across various stages of the lifecycle of a Data Science process. The purpose of an MLOps process is to drive efficiency, increase repeatability and predictability, enable reuse of code and drive consistency across projects. This enables Data Science teams to deploy Machine Learning models to production reliably and efficiently.  
+![Header](documentation/repositoryfiles/mlopsheader.jpg)
 
-While MLOps has many overlapping concepts with DevOps and can be seen as a derivation of DevOps, it varies significantly from DevOps due to the nature of Data Science projects. The following Microsoft articles provide a perspective on MLOps from various viewpoints: 
+Welcome to the MLOps (v2) solution accelerator repository! This project is intended to serve as *the* starting point for MLOps implementation in Azure.
 
-[MLOps using Azure Machine Learning](https://azure.microsoft.com/en-us/services/machine-learning/mlops/#features) 
+MLOps is a set of repeatable, automated, and collaborative workflows with best practices that empower teams of ML professionals to quickly and easily get their machine learning models deployed into production. You can learn more about MLOps here:
 
-[Cloud Adoption Framework Guidance](https://docs.microsoft.com/en-us/azure/cloud-adoption-framework/ready/azure-best-practices/ai-machine-learning-mlops) 
+- [MLOps with Azure Machine Learning](https://azure.microsoft.com/services/machine-learning/mlops/#features)
+- [Cloud Adoption Framework Guidance](https://docs.microsoft.com/azure/cloud-adoption-framework/ready/azure-best-practices/ai-machine-learning-mlops)
+- [How: Machine Learning Operations](https://docs.microsoft.com/azure/machine-learning/concept-model-management-and-deployment)
 
-[How: Machine Learning Operations](https://docs.microsoft.com/en-us/azure/machine-learning/concept-model-management-and-deployment) 
+## Prerequisites
 
+1. An Azure subscription. If you don't have an Azure subscription, [create a free account](https://aka.ms/AzureMLFree) before you begin.
 
-## Prerequisites: Repository Overview
+## Project overview
 
-The solution accelerator provides a modular end-to-end approach for MLOps in Azure based on pattern architectures. As each organization is unique, we do not expect that each pattern architecture will suit all organizations, however, Digital Natives or enterprises will be able to deploy an MLOps ecosystem fast, simple, reliable, modular, and secure. The time to product is measurable shorter under incerased scalability.
+The solution accelerator provides a modular end-to-end approach for MLOps in Azure based on pattern architectures. As each organization is unique, solutions will often need to be customized to fit the organization's needs.
 
-Following are the key principles that have been applied while building the accelerator: 
+The solution accelerator goals are:
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;✅**Simplicity** 
+- Simplicity
+- Modularity
+- Repeatability
+- Collaboration
+- Enterprise readiness
+
+It accomplishes these goals with a template-based approach for end-to-end data science, driving operational efficiency at each stage. You should be able to get up and running with the solution accelerator in a few hours.
+
+## 👤 Getting started: Azure Machine Learning - classical machine learning demo
   
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;✅**Segregation of duties & Security**
+The demo follows the classical machine learning pattern with Azure Machine Learning.
   
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;✅**Reusability**
-  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;✅**Modularity**
-  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;✅**Enterprise readiness**
-
-This repo provides a templatised approach for the end-to-end Data Science process and focuses on driving efficiency at each stage. For example, it can take a significant amount of time to bootstrap a new Data Science project, hence the repo provides templates that can be reused to establish a cookie cutter approach for the bootstrapping process to shorten the process from days to hours or minutes.
-
-The best way to consume this accelerator will be to choose a complex use case that reflects most of your organisation’s needs from a Data Science perspective and start adjusting this accelerator to accommodate those requirements. The first use case may take longer to deliver, however, once the process has been ironed out, subsequent use cases can be onboarded in a matter of days if not hours.
-
-Following the demo helps to understand the concept of the solution accelerator, architectual pattern, and ongoing work extending the solution accelerator to other patterns. Feel free to replace the inner loop model with your model and rerun accordingly.
-
- 
-## 👤 Getting started: Azure Machine Learning - Classical Machine Learning Demo
-  
-The demo follows the Classical Machine Learning Pattern with Azure Machine Learning.
-  
-![AML CML](/documentation/architecturepattern/AzureML_CML_Architecture.png)
+![AzureML CML](/documentation/architecturepattern/AzureML_CML_Architecture.png)
   
 ‼️ **Please follow the instructions to execute the demo accordingly: [Quickstart](https://github.com/Azure/mlops-v2/blob/main/QUICKSTART.md)** ‼️
- 
 
 ## 📐 Pattern Architectures: Key concepts
 
 | Link                                                    | AI Pattern                                                              |
 | ------------------------------------------------------- | ----------------------------------------------------------------------- |
-| [Pattern AML CML](https://github.com/Azure/mlops-v2/blob/main/documentation/architecturepattern/AzureML_CML_Architecture.png) | Azure Machine Learning - Classical Machine Learning                     |
-| [Pattern AML CV](https://github.com/Azure/mlops-v2/blob/main/documentation/architecturepattern/AzureML_SupervisedCV_Architecture.png)                                                 | Azure Machine Learning - Computer Vision                                |
+| [Pattern AzureML CML](https://github.com/Azure/mlops-v2/blob/main/documentation/architecturepattern/AzureML_CML_Architecture.png) | Azure Machine Learning - Classical Machine Learning                     |
+| [Pattern AzureML CV](https://github.com/Azure/mlops-v2/blob/main/documentation/architecturepattern/AzureML_SupervisedCV_Architecture.png)                                                 | Azure Machine Learning - Computer Vision                                |
 | [TBD]                                                   | Azure Machine Learning - Natural Language Processing                    |
 | [TBD]                                                   | Azure Machine Learning / Azure Databricks - Classical Machine Learning  |
 | [TBD]                                                   | Azure Machine Learning / Azure Databricks - Computer Vision             |
 | [TBD]                                                   | Azure Machine Learning / Azure Databricks - Natural Language Processing |
 | [TBD]                                                   | Azure Machine Learning - Edge AI                                        |
 
-  
-## 📯 (Coming Soon) One-click Deployments:
+## 📯 (Coming Soon) One-click deployments
   
 ## 📯 MLOps infrastructure deployment
 
@@ -80,7 +70,6 @@ The demo follows the Classical Machine Learning Pattern with Azure Machine Learn
 | [TBD]                                                               | Natural Language Processing        | Azure Machine Learning, Azure Databricks | [DEPLOY BUTTON] |
 | [TBD]                                                               | Edge AI                            | Azure Machine Learning                   | [DEPLOY BUTTON] |  
 
-
 ## Contributing
 
 This project welcomes contributions and suggestions. To learn more visit the contributing section, see [CONTRIBUTING.md](CONTRIBUTING.md) for details.
@@ -90,7 +79,6 @@ Most contributions require you to agree to a Contributor License Agreement (CLA)
 When you submit a pull request, a CLA bot will automatically determine whether you need to provide a CLA and decorate the PR appropriately (e.g., status check, comment). Simply follow the instructions provided by the bot. You will only need to do this once across all repos using our CLA.
 
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
-
 
 ## Trademarks
 
