@@ -208,8 +208,8 @@
    >**Train Model
    This component trains a Linear Regressor with the training set.
    Input: Training dataset
-   Output: Trained model (pickle format)
-**
+   Output: Trained model (pickle format)**
+   
    >**Evaluate Model
    This component uses the trained model to predict taxi fares on the test set.
    Input: ML model and Test dataset
