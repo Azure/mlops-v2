@@ -198,6 +198,29 @@
 ## Inner / Outer Loop: Moving to Production
 ---
    
+   >**This is an end-to-end machine learning pipeline which runs a linear regression to predict taxi fares in NYC. The pipeline is made up of components, each serving  different functions, which can be registered with the workspace, versioned, and reused with various inputs and outputs.
+
+   Prepare Data
+   This component takes multiple taxi datasets (yellow and green) and merges/filters the data, and prepare the train/val and evaluation datasets.
+   Input: Local data under ./data/ (multiple .csv files)
+   Output: Single prepared dataset (.csv) and train/val/test datasets.
+
+   Train Model
+   This component trains a Linear Regressor with the training set.
+   Input: Training dataset
+   Output: Trained model (pickle format)
+
+   Evaluate Model
+   This component uses the trained model to predict taxi fares on the test set.
+   Input: ML model and Test dataset
+   Output: Performance of model and a deploy flag whether to deploy or not.
+   This component compares the performance of the model with all previous deployed models on the new test dataset and decides whether to promote or not model into production. Promoting model into production happens by registering the model in AML workspace.
+
+   Register Model
+   This component scores the model based on how accurate the predictions are in the test set.
+   Input: Trained model and the deploy flag.
+   Output: Registered model in Azure Machine Learning.**
+   
    1. Go to ADO pipelines
    
    ![ADO Pipelines](./images/ADO-pipelines.png)
