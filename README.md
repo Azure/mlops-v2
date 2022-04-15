@@ -36,6 +36,8 @@ The demo follows the classical machine learning pattern with Azure Machine Learn
   
 ‼️ **Please follow the instructions to execute the demo accordingly: [Quickstart](https://github.com/Azure/mlops-v2/blob/main/QUICKSTART.md)** ‼️
 
+‼️ **Please submit any issues here: [Issues](https://github.com/Azure/mlops-v2/issues)** ‼️
+
 ## 📐 Pattern Architectures: Key concepts
 
 | Link                                                    | AI Pattern                                                              |
