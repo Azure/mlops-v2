@@ -91,7 +91,7 @@
 
       ![ADO4](./images/ADO-setup2.png)
       
-      3.3.5 Select "Github", select "Next", select "Personal Access Token" and paste your Github SSO Token in the Personal Access token field, name the "Service connection name" accordingly "mlops-v2-service-connection", grand pipeline security access, then select "Save".
+      3.3.5 Select "Github", select "Next", select "Personal Access Token" and paste your Github SSO Token in the Personal Access token field, name the "Service connection name" accordingly "mlops-v2-service-connection", grant pipeline security access, then select "Save".
       
       ![ADO5](./images/ADO-setup4.png)
       
