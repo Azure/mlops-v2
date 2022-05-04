@@ -139,7 +139,7 @@
    
    ![ADO Run4](./images/ADO-run4.png)
    
-   Under global, change postfix: 818 to postfix: 819 (line 8) and save.
+   Under global, there's two values namespace and postfix. These values should render the names of the artifacts to create unique. Especially the name for the storage account, which has the most rigid constraints, like uniqueness Azure wide and 3-24 lowercase characters and numbers. So please change namespace and/or postfix to a value of your liking and remember to stay within the contraints of a storage account name as mentioned above. Then save, commit, push, pr to get these values into the pipeline.
    
    8. Now go back to ADO and "Run". This will take a few minutes to finish. The pipeline should create the following artifacts:
    * Resource Group for your Workspace including Storage Account, Container Registry, Application Insights, Keyvault and the Azure Machine Learning Workspace itself.
