@@ -36,27 +36,78 @@
 
 2. Set up Github Environment
 
-   2.1. Goto https://github.com/Azure/mlops-v2.
+   2.1. Go to https://github.com/Azure/mlops-project-template
    
    2.2. Click the button "Use this template" (if you don't see it, you might have to sign in to Github first). 
    
    ![Github Use Template](./images/gh-usethistemplate.png)
    
-   2.3. After clicking the button you'll choose your github account/org and enter a repository name "MLOps-Test", optionally a description and finally click on "Create Repository from template'". 
+   2.3. After clicking the button you'll choose your github account/org and enter a repository name e.g. "MLOps-Project-Template", optionally a description and finally click on "Create Repository from template'". 
    
    ![Github Create new Repo](./images/gh-createnewrepo.png)
    
    2.4. Now you should have your own Github repository with the solution accelerator.
+
+   2.5 Create an empty repository e.g. "Mlops-Test"
    
-   2.5. Next, create an SSO token in github by selecting "Developer settings" in your github account settings.
+   2.6 Create a new .sh file on your local machine and paste the following code:
+   
+   ```console
+   
+      infrastructure_version=terraform #options: terraform / bicep / arm
+      project_type=classical #options: classical / computer-vision / nlp
+      mlops_version=aml-cli-v2 #options: python-sdk / aml-cli-v2
+      git_folder_location='<local path>' #replace with the local root folder location where you want to create the project folder
+      project_name=Mlops-Test #replace with your project name
+      github_org_name=orgname #replace with your github org name
+      project_template_github_url=https://github.com/azure/mlops-project-template #replace with the url for the project template for your organization created in step 2.2
+
+      cd $git_folder_location
+
+      git clone \
+        --depth 1  \
+        --filter=blob:none  \
+        --sparse \
+        $project_template_github_url \
+        $project_name
+
+      cd $project_name
+      git sparse-checkout init --cone
+      git sparse-checkout set infrastructure/$infrastructure_version $project_type/$mlops_version
+
+      mv $project_type/$mlops_version/data-science data-science
+      mv $project_type/$mlops_version/mlops mlops
+      mv $project_type/$mlops_version/data data
+
+      if [[ "$mlops_version" == "python-sdk" ]]
+      then
+        echo "python-sdk"
+        mv $project_type/$mlops_version/config-aml.yml config-aml.yml
+      fi
+      rm -rf $project_type
+
+      mv infrastructure/$infrastructure_version $infrastructure_version
+      rm -rf infrastructure
+      mv $infrastructure_version infrastructure
+
+      rm -rf .git
+      git init -b main
+      git remote add origin git@github.com:$github_org_name/$project_name.git
+      git add . && git commit -m 'initial commit'
+      git push --set-upstream origin main
+   
+   ```
+   2.7 Execute this script in Git Bash or another terminal. This will create a repo for your project which you can use in subsequent steps
+   
+   2.8. Next, create an SSO token in github by selecting "Developer settings" in your github account settings.
 
    ![GH1](./images/GH-setup1.png)
    
-   2.6. Select "Personal Access Token", then generate new token. Select the check boxes and name your token "MLOpsToken". Select "Generate Token". Copy/Paste token key to a notepate interim.
+   2.9. Select "Personal Access Token", then generate new token. Select the check boxes and name your token "MLOpsToken". Select "Generate Token". Copy/Paste token key to a notepate interim.
    
    ![GH2](./images/GH-setup2.png)
    
-   2.7. Now "Authorize" the token to have access to the Azure organization. If you are not a member of the Azure organization please enable it beforehand in your organisation setting.
+   2.10. Now "Authorize" the token to have access to the Azure organization. If you are not a member of the Azure organization please enable it beforehand in your organisation setting.
    
    ![GH3](./images/GH-setup3.png)
    
