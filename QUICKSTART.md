@@ -19,7 +19,7 @@
 
    ![PS2](./images/SP-setup2.png)
 
-   1.3. Go through the process of creating a Service Principle (SP) selecting "Accounts in any organizational directory (Any Azure AD directory - Multitenant)" and name it  "Azure-ARM-Dev-<projectname>". Once created, repeat and create a new SP named "Azure-ARM-Prod-<projectname>". Please replace <projectname> with the name of your project so that the service principal can be uniquely identified. 
+   1.3. Go through the process of creating a Service Principle (SP) selecting "Accounts in any organizational directory (Any Azure AD directory - Multitenant)" and name it  "Azure-ARM-Dev-ProjectName". Once created, repeat and create a new SP named "Azure-ARM-Prod-ProjectName". Please replace "ProjectName" with the name of your project so that the service principal can be uniquely identified. 
 
    1.4. Go to "Certificates & Secrets" and add for each SP "New client secret", then store the value and secret sepperately.
 
@@ -27,11 +27,11 @@
 
    ![PS3](./images/SP-setup3.png)
 
-   1.6. Select Contributor and add members selecting + Select Members. Add the member "Azure-ARM-Dev-<projectname>" as create before.
+   1.6. Select Contributor and add members selecting + Select Members. Add the member "Azure-ARM-Dev-ProjectName" as create before.
 
    ![SP4](./images/SP-setup4.png)
 
-   1.7. Repeat step with "Azure-ARM-Prod-<projectname>". The SP setup is successfully finished.
+   1.7. Repeat step with "Azure-ARM-Prod-ProjectName". The SP setup is successfully finished.
 
 
 2. Set up Github Environment
