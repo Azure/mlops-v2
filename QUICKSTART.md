@@ -36,9 +36,9 @@
 
 2. Set up Github Environment
 
-   2.1. Go to https://github.com/Azure/mlops-project-template
+   2.1. Go to https://github.com/Azure/mlops-templates/fork to fork the mlops templates repo. This repo has reusable mlops code that can be used across multiple projects. 
    
-   2.2. Click the button "Use this template" (if you don't see it, you might have to sign in to Github first). 
+   2.2 Go to https://github.com/Azure/mlops-project-template and click the button "Use this template" (if you don't see it, you might have to sign in to Github first). 
    
    ![Github Use Template](./images/gh-usethistemplate.png)
    
