@@ -1,5 +1,4 @@
 infrastructure_version=terraform   #options: terraform / bicep / arm
-cicd_agent=azure-devops   #options: azure-devops or github-actions
 project_type=classical   #options: classical / computer-vision / nlp
 mlops_version=aml-cli-v2   #options: python-sdk / aml-cli-v2
 git_folder_location='<local path>'   #replace with the local root folder location where you want to create the project folder
@@ -18,16 +17,16 @@ git clone \
 
 cd $project_name
 git sparse-checkout init --cone
-git sparse-checkout set infrastructure/$infrastructure_version $cicd_agent/$project_type/$mlops_version
+git sparse-checkout set infrastructure/$infrastructure_version $project_type/$mlops_version
 
-mv $cicd_agent/$project_type/$mlops_version/data-science data-science
-mv $cicd_agent/$project_type/$mlops_version/mlops mlops
-mv $cicd_agent/$project_type/$mlops_version/data data
+mv $project_type/$mlops_version/data-science data-science
+mv $project_type/$mlops_version/mlops mlops
+mv $project_type/$mlops_version/data data
 
 if [[ "$mlops_version" == "python-sdk" ]]
 then
   echo "python-sdk"
-  mv $cicd_agent/$project_type/$mlops_version/config-aml.yml config-aml.yml
+  mv $project_type/$mlops_version/config-aml.yml config-aml.yml
 fi
 rm -rf $cicd_agent
 
