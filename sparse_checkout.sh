@@ -30,6 +30,8 @@ then
 fi
 rm -rf $cicd_agent
 
+rm -rf $project_type
+
 mv infrastructure/$infrastructure_version $infrastructure_version
 rm -rf infrastructure
 mv $infrastructure_version infrastructure
