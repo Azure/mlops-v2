@@ -1,11 +1,20 @@
 # Quickstart
 
+## Technical requirements
+
+- Github as the source control repository
+- Azure DevOps as the DevOps orchestration tool
+- Azure service principals to access / create Azure resources from Azure DevOps (or the ability to create them)
+- Git bash or another shell script editor on your local machine
+   
+
 ## Prerequisites
 ---
 
 **Duration: 45min**
 
 **Note: This demo is based on the beta version for the MLOps Azure Machine Learning Classical ML Pattern. Due to ongoing, cli v2 changes and Azure Machine Learning enhencements, the demo can fail. The team is working on keeping the example as up-to-date as possible.**
+
 
 1. Create Service Principles
 
@@ -38,6 +47,8 @@
 
    2.1. Go to https://github.com/Azure/mlops-templates/fork to fork the mlops templates repo. This repo has reusable mlops code that can be used across multiple projects. 
    
+   ![image](./images/gh-fork.png)
+
    2.2 Go to https://github.com/Azure/mlops-project-template and click the button "Use this template" (if you don't see it, you might have to sign in to Github first). 
    
    ![Github Use Template](./images/gh-usethistemplate.png)
@@ -50,7 +61,7 @@
 
    2.5 Create an empty repository e.g. "Mlops-Test"
    
-   2.6 Create a new .sh file on your local machine and paste the following code:
+   2.6 Download this [shell script](sparse_checkout.sh). In the file, please update the variables based on the following choices:
    
    ```console
    
@@ -62,40 +73,6 @@
       project_name=Mlops-Test   #replace with your project name
       github_org_name=orgname   #replace with your github org name
       project_template_github_url=https://github.com/azure/mlops-project-template   #replace with the url for the project template for your organization created in step 2.2
-
-      cd $git_folder_location
-
-      git clone \
-        --depth 1  \
-        --filter=blob:none  \
-        --sparse \
-        $project_template_github_url \
-        $project_name
-
-      cd $project_name
-      git sparse-checkout init --cone
-      git sparse-checkout set infrastructure/$infrastructure_version $cicd_agent/$project_type/$mlops_version
-
-      mv $cicd_agent/$project_type/$mlops_version/data-science data-science
-      mv $cicd_agent/$project_type/$mlops_version/mlops mlops
-      mv $cicd_agent/$project_type/$mlops_version/data data
-
-      if [[ "$mlops_version" == "python-sdk" ]]
-      then
-        echo "python-sdk"
-        mv $cicd_agent/$project_type/$mlops_version/config-aml.yml config-aml.yml
-      fi
-      rm -rf $cicd_agent
-
-      mv infrastructure/$infrastructure_version $infrastructure_version
-      rm -rf infrastructure
-      mv $infrastructure_version infrastructure
-
-      rm -rf .git
-      git init -b main
-      git remote add origin git@github.com:$github_org_name/$project_name.git
-      git add . && git commit -m 'initial commit'
-      git push --set-upstream origin main
    
    ```
    2.7 Execute this script in Git Bash or another terminal. This will create a repo for your project which you can use in subsequent steps. In case you face any authentication issues, follow this link to authenticate yourself using an ssh key: https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent
@@ -108,7 +85,7 @@
    
    ![GH2](./images/GH-setup2.png)
    
-   2.10. Now "Authorize" the token to have access to the Azure organization. If you are not a member of the Azure organization please enable it beforehand in your organisation setting.
+   2.10. If your organization uses single sign on for Github, then click on "Authorize" the token to have access to the github organization. 
    
    ![GH3](./images/GH-setup3.png)
    
