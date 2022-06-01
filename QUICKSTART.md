@@ -17,7 +17,7 @@
 
    For the use of the demo, the creation of two service principals is required. Go into your Azure portal to set those up.
 
-   1.1. Select Azure Active Directory (AAC)
+   1.1. Select Azure Active Directory (AAD)
 
    ![SP1](./images/SP-setup1.png)
 
@@ -41,19 +41,19 @@
 
 2. Set up Github Environment
 
-   2.1. Go to https://github.com/Azure/mlops-templates/fork to fork the mlops templates repo. This repo has reusable mlops code that can be used across multiple projects. 
+   2.1. Go to https://github.com/Azure/mlops-templates/fork to fork the MLOps templates repo. This repo has reusable MLOps code that can be used across multiple projects.
    
    ![image](./images/gh-fork.png)
 
-   2.2 Go to https://github.com/Azure/mlops-project-template and click the button "Use this template" (if you don't see it, you might have to sign in to Github first). 
+   2.2 Go to https://github.com/Azure/mlops-project-template and click the button "Use this template" (if you don't see it, you might have to sign in to Github first).
    
    ![Github Use Template](./images/gh-usethistemplate.png)
    
-   2.3. After clicking the button you'll choose your github account/org and enter a repository name e.g. "MLOps-Project-Template", optionally a description and finally click on "Create Repository from template'". 
+   2.3. After clicking the button you'll choose your github account/organization and enter a repository name e.g. "MLOps-Project-Template", optionally a description and finally click on "Create Repository from template'".
    
    ![Github Create new Repo](./images/gh-createnewrepo.png)
    
-   2.4. Now you should have your own Github repository with the solution accelerator. Please go to the following files and replace the name field "Azure/mlops-templates" in the repositories section with "yourgithuborgname/mlops-templates".
+   2.4. Now you should have your own Github repository with the solution accelerator. Please go to the following files and replace the name field "Azure/mlops-templates" in the repositories section with "<your-organization>/mlops-templates".
    
    - /infrastructure/terraform/pipelines/tf-ado-deploy-infra.yml
    - /infrastructure/bicep/pipelines/bicep-ado-deploy-infra.yml
@@ -63,7 +63,7 @@
    - /classical/python-sdk/mlops/devops-pipelines/deploy-model-batch-scoring.yml
    - /classical/python-sdk/mlops/devops-pipelines/deploy-model-training-pipeline.yml
 
-   2.5 Create an empty repository e.g. "Mlops-Test"
+   2.5 Create an empty repository e.g. "MLOps-Test"
    
    2.6 Download this [shell script](sparse_checkout.sh). In the file, please update the variables based on the following choices:
    
@@ -72,9 +72,9 @@
       infrastructure_version=terraform   #options: terraform / bicep / arm
       cicd_agent=azure-devops   #options: azure-devops or github-actions
       project_type=classical   #options: classical / computer-vision / nlp
-      mlops_version=aml-cli-v2   #options: python-sdk / aml-cli-v2
+      MLOps_version=aml-cli-v2   #options: python-sdk / aml-cli-v2
       git_folder_location='<local path>'   #replace with the local root folder location where you want to create the project folder
-      project_name=Mlops-Test   #replace with your project name
+      project_name=MLOps-Test   #replace with your project name
       github_org_name=orgname   #replace with your github org name
       project_template_github_url=https://github.com/azure/mlops-project-template   #replace with the url for the project template for your organization created in step 2.2
    
@@ -85,11 +85,11 @@
 
    ![GH1](./images/GH-setup1.png)
    
-   2.9. Select "Personal Access Token", then generate new token. Select the check boxes and name your token "MLOpsToken". Select "Generate Token". Copy/Paste token key to a notepate interim.
+   2.9. Select "Personal Access Token", then generate new token. Select the check boxes and name your token "MLOpsToken". Select "Generate Token". Keep a copy of this token for later.
    
    ![GH2](./images/GH-setup2.png)
    
-   2.10. If your organization uses single sign on for Github, then click on "Authorize" the token to have access to the github organization. 
+   2.10. If your organization uses single sign on for Github, then click on "Authorize" the token to have access to the github organization.
    
    ![GH3](./images/GH-setup3.png)
    
@@ -113,7 +113,7 @@
 
       ![ADO2](./images/ADO-setup2.png)
 
-      3.3.2 Select "Azure Resource Manager", select "Next", select "Service principal (manual)", select "Next", select your subscrption where your Service Principal is stored and name the service connection "Azure-ARM-Dev". Fill in the details of the Dev service principal created in step 1. Select "Grant access permission to all pipelines", then select "Save". Repeat this step to create another service connection "Azure-ARM-Prod" using the details of the Prod service principal created in step 1.
+      3.3.2 Select "Azure Resource Manager", select "Next", select "Service principal (manual)", select "Next", select your subscription where your Service Principal is stored and name the service connection "Azure-ARM-Dev". Fill in the details of the Dev service principal created in step 1. Select "Grant access permission to all pipelines", then select "Save". Repeat this step to create another service connection "Azure-ARM-Prod" using the details of the Prod service principal created in step 1.
 
       ![ADO3](./images/ado-service-principal-manual.png)
       
@@ -127,7 +127,7 @@
       
       ![ADO5](./images/ADO-setup4.png)
       
-      Repeat this step, and for the "Service connection name" enter YOUR GITHUB ORGANIZATION NAME or YOUR GITHUB NAME. Finishing this step, your conection should look like this.
+      Repeat this step, and for the "Service connection name" enter YOUR GITHUB ORGANIZATION NAME or YOUR GITHUB USERNAME. Finishing this step, your connection should look like this.
    
       ![ADO6](./images/ADO-setup5.png)
 
@@ -141,7 +141,7 @@
    
    ![ADO Run4](./images/ADO-run4.png)
    
-   Under global, there's two values namespace and postfix. These values should render the names of the artifacts to create unique. Especially the name for the storage account, which has the most rigid constraints, like uniqueness Azure wide and 3-24 lowercase characters and numbers. So please change namespace and/or postfix to a value of your liking and remember to stay within the contraints of a storage account name as mentioned above. Then save, commit, push, pr to get these values into the pipeline.
+   Under global, there's two values: namespace and postfix. These values should render the names of the artifacts to create unique, especially the name for the storage account, which has the most rigid constraints, like uniqueness Azure wide and 3-24 lowercase characters and numbers. Please change namespace and/or postfix to a value of your liking and remember to stay within the constraints of a storage account name as mentioned above. Then save, commit, push, PR to get these values into the pipeline.
 
    2. Go to ADO pipelines
    
@@ -155,7 +155,7 @@
    
    ![ADO Where's your code](./images/ado-wheresyourcode.png)
    
-   5. Select your /MLOps-Test repository.
+   5. Select your /mlops-Test repository.
    
    ![ADO Run2](./images/ADO-run2.png)
    
@@ -170,12 +170,12 @@
    
    ![Select Infrastructure Pipeline](./images/ado-select-pipeline-yaml-file.png)
    
-
    
    8. Run the pipeline. This will take a few minutes to finish. The pipeline should create the following artifacts:
-   * Resource Group for your Workspace including Storage Account, Container Registry, Application Insights, Keyvault and the Azure Machine Learning Workspace itself.
-   * In the workspace there's also a compute cluster created.
-   
+
+      * Resource Group for your Workspace including Storage Account, Container Registry, Application Insights, Keyvault and the Azure Machine Learning Workspace itself.
+      * In the workspace there's also a compute cluster created.
+      
    ![ADO Run5](./images/ADO-run5.png)
    
    Now the Outer Loop of the MLOps Architecture is deployed.
@@ -196,7 +196,7 @@
    
    ![ADO Where's your code](./images/ado-wheresyourcode.png)
    
-   4. Select your /MLOps-Test repository.
+   4. Select your /mlops-Test repository.
    
    ![ADO Run2](./images/ADO-run2.png)
    
@@ -208,7 +208,7 @@
 
    ![ADO Run9](./images/ADO-run9.png)
    
-   >**IMPORTANT: This pipeline needs an additional connection to the Github repo Azure/mlops-templates, where all the templates are stored and maintained, which, like legos, encapsulate certain functionality. That's why you see in the pipeline itself a lot of calls to '-template: template in mlops-templates'. These functionalities are install the azure cli, or ml extension or run a pipeline etc. Therefore we created the connection 'mlops-v2-service-connection' in the beginning currently hard-coded.**
+   >**IMPORTANT: This pipeline needs an additional connection to the Github repo Azure/mlops-templates, where all the templates are stored and maintained, which, like legos, encapsulate certain functionality. That's why you see in the pipeline itself a lot of calls to '-template: template in MLOps-templates'. These functionalities are install the azure cli, or ml extension or run a pipeline etc. Therefore we created the connection 'MLOps-v2-service-connection' in the beginning currently hard-coded.**
    
    7. Due to global subscription issues in Azure change "onlineendpoint1" to "onlineendpoint2", select "Run".
 
@@ -221,7 +221,6 @@
    ![ADO Run8](./images/ADO-run8.png)
 
    Now the Inner Loop of the MLOps Architecture is deployed.
-      
  
 ## Inner / Outer Loop: Moving to Production
    
@@ -260,7 +259,7 @@
    
    ![ADO Where's your code](./images/ado-wheresyourcode.png)
    
-   4. Select your /MLOps-Test repository.
+   4. Select your /mlops-Test repository.
    
    ![ADO Run2](./images/ADO-run2.png)
    
@@ -286,7 +285,7 @@
   
 ## Next Steps
 
-This finishes the demo according to the architecture patters: Azure Machine Learning Classical Machine Learning. Next you can dive into your Azure Machine Learning service in the Azure Portal and see the inference results of this example model. 
+This finishes the demo according to the architecture patters: Azure Machine Learning Classical Machine Learning. Next you can dive into your Azure Machine Learning service in the Azure Portal and see the inference results of this example model.
 
 As the cli v2 is still in development, the following components are not part of this demo:
 
