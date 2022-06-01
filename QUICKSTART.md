@@ -285,7 +285,7 @@
    
    8. When the run completes, you will see:
    
-   ![ADO Run12](./images/ADO-run12.png)
+   ![ADO Run12](./images/ADO-batch-pipeline-run.png)
    
   Now the Inner Loop is connected to the Outer of the MLOps Architecture and inference has been run.
   
