@@ -28,7 +28,8 @@ then
   echo "python-sdk"
   mv $project_type/$mlops_version/config-aml.yml config-aml.yml
 fi
-rm -rf $cicd_agent
+
+rm -rf $project_type
 
 mv infrastructure/$infrastructure_version $infrastructure_version
 rm -rf infrastructure
