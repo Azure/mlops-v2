@@ -6,15 +6,12 @@
 - Azure DevOps as the DevOps orchestration tool
 - Azure service principals to access / create Azure resources from Azure DevOps (or the ability to create them)
 - Git bash or another shell script editor on your local machine
-   
 
 ## Prerequisites
----
 
 **Duration: 45min**
 
 **Note: This demo is based on the beta version for the MLOps Azure Machine Learning Classical ML Pattern. Due to ongoing, cli v2 changes and Azure Machine Learning enhencements, the demo can fail. The team is working on keeping the example as up-to-date as possible.**
-
 
 1. Create Service Principals
 
@@ -28,11 +25,11 @@
 
    ![PS2](./images/SP-setup2.png)
 
-   1.3. Go through the process of creating a Service Principal (SP) selecting "Accounts in any organizational directory (Any Azure AD directory - Multitenant)" and name it  "Azure-ARM-Dev-ProjectName". Once created, repeat and create a new SP named "Azure-ARM-Prod-ProjectName". Please replace "ProjectName" with the name of your project so that the service principal can be uniquely identified. 
+   1.3. Go through the process of creating a Service Principal (SP) selecting "Accounts in any organizational directory (Any Azure AD directory - Multitenant)" and name it  "Azure-ARM-Dev-ProjectName". Once created, repeat and create a new SP named "Azure-ARM-Prod-ProjectName". Please replace "ProjectName" with the name of your project so that the service principal can be uniquely identified.
 
-   1.4. Go to "Certificates & Secrets" and add for each SP "New client secret", then store the value and secret sepperately.
+   1.4. Go to "Certificates & Secrets" and add for each SP "New client secret", then store the value and secret separately.
 
-   1.5. Select your subscription and go to IAM. Select +Add then select "Add Role Assigment.
+   1.5. Select your subscription and go to IAM. Select +Add then select "Add Role Assignment.
 
    ![PS3](./images/SP-setup3.png)
 
@@ -41,7 +38,6 @@
    ![SP4](./images/SP-setup4.png)
 
    1.7. Repeat step with "Azure-ARM-Prod-ProjectName". The SP setup is successfully finished.
-
 
 2. Set up Github Environment
 
@@ -99,7 +95,6 @@
    
    The github setup is successfully finished.
 
-
 3. Set up Azure DevOps
 
    3.1. Go to [Azure DevOps](https://dev.azure.com/) to set up your MLOps deployment environment. To deploy the infrastructure via ADO (Azure DevOps), you will have to have an organization and a project, with a service connection to your subscription configured.
@@ -138,13 +133,9 @@
 
    The Azure DevOps setup is successfully finished.
  
- 
 **This finishes the prerequisite section and the deployment of the solution accelerator can happen accordingly.**
 
-
-   
 ## Outer Loop: Deploying Infrastructure via Azure DevOps
----
    
    1. Go to your Github cloned repo and select the "config-infra-prod.yml" file.
    
@@ -191,9 +182,7 @@
    
    ![ADO Run6](./images/ADO-run6.png)
 
-
-## Inner Loop: Deploying Classical ML Model Development / Moving to Test Environment 
----
+## Inner Loop: Deploying Classical ML Model Development / Moving to Test Environment
 
    1. Go to ADO pipelines
    
@@ -219,7 +208,7 @@
 
    ![ADO Run9](./images/ADO-run9.png)
    
-   >**IMPORTANT: This pipeline needs an additional connection to the Github repo Azure/mlops-templates, where all the templates are stored and maintained, which, like legos, encapsulate certain functionality. That's why you see in the pipeline itself a lot of calls to '-template: template in mlops-templates'. These functionalities are install the azure cli, or ml extension or run a pipeline etc. Therefore we created the connection 'mlops-v2-service-connection' in the beginning currenly hard-coded.**
+   >**IMPORTANT: This pipeline needs an additional connection to the Github repo Azure/mlops-templates, where all the templates are stored and maintained, which, like legos, encapsulate certain functionality. That's why you see in the pipeline itself a lot of calls to '-template: template in mlops-templates'. These functionalities are install the azure cli, or ml extension or run a pipeline etc. Therefore we created the connection 'mlops-v2-service-connection' in the beginning currently hard-coded.**
    
    7. Due to global subscription issues in Azure change "onlineendpoint1" to "onlineendpoint2", select "Run".
 
@@ -233,10 +222,8 @@
 
    Now the Inner Loop of the MLOps Architecture is deployed.
       
-      
  
 ## Inner / Outer Loop: Moving to Production
----
    
    >**NOTE: This is an end-to-end machine learning pipeline which runs a linear regression to predict taxi fares in NYC. The pipeline is made up of components, each serving  different functions, which can be registered with the workspace, versioned, and reused with various inputs and outputs.**
 
@@ -297,26 +284,18 @@
    
   Now the Inner Loop is connected to the Outer of the MLOps Architecture and inference has been run.
   
-  
-
 ## Next Steps
----
 
-This finishes the demo according to the architectual patters: Azure Machine Learning Classical Machine Learning. Next you can dive into your Azure Machine Learning service in the Azure Portal and see the inference results of this example model. 
+This finishes the demo according to the architecture patters: Azure Machine Learning Classical Machine Learning. Next you can dive into your Azure Machine Learning service in the Azure Portal and see the inference results of this example model. 
 
 As the cli v2 is still in development, the following components are not part of this demo:
-- Model Monitoring for Data/Model Drift
-- Automated Retraining
-- Model and Infrastructure triggers
 
-As the development team builds according to the Product Groups release plan, no custom components are going to be developed rather it is intended to wait for full GA release of the cli v2 to address those components. 
+- Model monitoring for data/model drift
+- Automated retraining
+- Model and infrastructure triggers
+
+As the development team builds according to the Product Groups release plan, no custom components are going to be developed rather it is intended to wait for full GA release of the cli v2 to address those components.
 
 Interim it is recommended to schedule the deployment pipeline for development for complete model retraining on a timed trigger.
 
 For questions, please hand in an issue or reach out to the development team at Microsoft.
-
-
-   
-   
-   
- 
