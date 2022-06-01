@@ -96,7 +96,7 @@
 
    3.1. Go to [Azure DevOps](https://dev.azure.com/) to set up your MLOps deployment environment. To deploy the infrastructure via ADO (Azure DevOps), you will have to have an organization and a project, with a service connection to your subscription configured.
    
-   3.2. Create a new organization and project in Azure Devops. Feel free to name both according to your project practices.
+   3.2. Create a new project in Azure Devops. Feel free to name it according to your project practices.
    
    ![ADO Project](./images/ADO-project.png)
    
@@ -110,9 +110,9 @@
 
       ![ADO2](./images/ADO-setup2.png)
 
-      3.3.2 Select "Azure Resource Manager", select "Next", select "Service principal (automatic)", select "Next", select your subscrption where your SP is stored and name the service connection "Azure-ARM-Prod". Select "Grant access permission to all pipelines", then select "Save". 
+      3.3.2 Select "Azure Resource Manager", select "Next", select "Service principal (manual)", select "Next", select your subscrption where your Service Principal is stored and name the service connection "Azure-ARM-Dev". Fill in the details of the Dev service principal created in step 1. Select "Grant access permission to all pipelines", then select "Save". Repeat this step to create another service connection "Azure-ARM-Prod" using the details of the Prod service principal created in step 1.
 
-      ![ADO3](./images/ADO-setup3.png)
+      ![ADO3](./images/ado-service-principal-manual.png)
       
    **Github Connection:**
    
@@ -124,7 +124,7 @@
       
       ![ADO5](./images/ADO-setup4.png)
       
-      If it does not exist already, repeat exactly this step only name name the "Service connection name" accordingly YOUR GITHUB NAME. Finishing this step, your conection should look like this.
+      Repeat this step, and for the "Service connection name" enter YOUR GITHUB ORGANIZATION NAME or YOUR GITHUB NAME. Finishing this step, your conection should look like this.
    
       ![ADO6](./images/ADO-setup5.png)
 
