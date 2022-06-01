@@ -273,15 +273,15 @@
    
    ![ADO Run3](./images/ADO-run3.png)
    
-   6. Select "main" as a branch and choose '/mlops/devops-pipelines/aml-cli-v2/deploy-batch-scoring-pipeline-v2.yml', then select "Continue".  
+   6. Select "main" as a branch and choose '/mlops/devops-pipelines/deploy-batch-endpoint.yml', then select "Continue".  
    
    ![ADO Run10](./images/ADO-run10.png)
    
-   7. Due to global subscription issues in Azure change "batchendpoint1" to "batchendpoint2", select "Run".
+   7. Batch endpoint names need to be unique, so please change "taxi-fare-batch" to another unique name and then select "Run".
 
-   ![ADO Run11](./images/ADO-run11.png)
+   ![ADO Run11](./images/ADO-batch-pipeline.png)
    
-   **IMPORTANT: If the run fails due to an existing online endpoint name, recreate the pipeline as discribed above and change "batchendpoint1" to "batchendpoint[random number]"**
+   **IMPORTANT: If the run fails due to an existing online endpoint name, recreate the pipeline as discribed above and change "taxi-fare-batch" to "taxi-fare-batch[random number]"**
    
    8. When the run completes, you will see:
    
