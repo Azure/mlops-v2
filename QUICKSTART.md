@@ -16,9 +16,9 @@
 **Note: This demo is based on the beta version for the MLOps Azure Machine Learning Classical ML Pattern. Due to ongoing, cli v2 changes and Azure Machine Learning enhencements, the demo can fail. The team is working on keeping the example as up-to-date as possible.**
 
 
-1. Create Service Principles
+1. Create Service Principals
 
-   For the use of the demo, the creation of two service principles is required. Go into your Azure portal to set those up.
+   For the use of the demo, the creation of two service principals is required. Go into your Azure portal to set those up.
 
    1.1. Select Azure Active Directory (AAC)
 
@@ -28,7 +28,7 @@
 
    ![PS2](./images/SP-setup2.png)
 
-   1.3. Go through the process of creating a Service Principle (SP) selecting "Accounts in any organizational directory (Any Azure AD directory - Multitenant)" and name it  "Azure-ARM-Dev-ProjectName". Once created, repeat and create a new SP named "Azure-ARM-Prod-ProjectName". Please replace "ProjectName" with the name of your project so that the service principal can be uniquely identified. 
+   1.3. Go through the process of creating a Service Principal (SP) selecting "Accounts in any organizational directory (Any Azure AD directory - Multitenant)" and name it  "Azure-ARM-Dev-ProjectName". Once created, repeat and create a new SP named "Azure-ARM-Prod-ProjectName". Please replace "ProjectName" with the name of your project so that the service principal can be uniquely identified. 
 
    1.4. Go to "Certificates & Secrets" and add for each SP "New client secret", then store the value and secret sepperately.
 
