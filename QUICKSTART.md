@@ -189,7 +189,7 @@
    
    Now the Outer Loop of the MLOps Architecture is deployed.
    
-   ![ADO Run6](./images/ADO-run6.png)
+   ![ADO Run6](./images/ADO-run-infra-pipeline.png)
 
 
 ## Inner Loop: Deploying Classical ML Model Development / Moving to Test Environment 
