@@ -57,7 +57,15 @@
    
    ![Github Create new Repo](./images/gh-createnewrepo.png)
    
-   2.4. Now you should have your own Github repository with the solution accelerator.
+   2.4. Now you should have your own Github repository with the solution accelerator. Please go to the following files and replace the name field "Azure/mlops-templates" in the repositories section with "yourgithuborgname/mlops-templates".
+   
+   - /infrastructure/terraform/pipelines/tf-ado-deploy-infra.yml
+   - /infrastructure/bicep/pipelines/bicep-ado-deploy-infra.yml
+   - /classical/aml-cli-v2/mlops/devops-pipelines/deploy-batch-endpoint-pipeline.yml
+   - /classical/aml-cli-v2/mlops/devops-pipelines/deploy-model-training-pipeline.yml
+   - /classical/aml-cli-v2/mlops/devops-pipelines/deploy-online-endpoint-pipeline.yml
+   - /classical/python-sdk/mlops/devops-pipelines/deploy-model-batch-scoring.yml
+   - /classical/python-sdk/mlops/devops-pipelines/deploy-model-training-pipeline.yml
 
    2.5 Create an empty repository e.g. "Mlops-Test"
    
@@ -120,7 +128,7 @@
 
       ![ADO4](./images/ADO-setup2.png)
       
-      3.3.5 Select "Github", select "Next", select "Personal Access Token" and paste your Github SSO Token in the Personal Access token field, name the "Service connection name" accordingly "mlops-v2-service-connection", grant pipeline security access, then select "Save".
+      3.3.5 Select "Github", select "Next", select "Personal Access Token" and paste your Github SSO Token in the Personal Access token field, in the "Service connection name" field, enter "github-connection", grant pipeline security access, then select "Save".
       
       ![ADO5](./images/ADO-setup4.png)
       
@@ -137,40 +145,43 @@
    
 ## Outer Loop: Deploying Infrastructure via Azure DevOps
 ---
-
-   1. Go to ADO pipelines
    
-   ![ADO Pipelines](./images/ADO-pipelines.png)
-   
-   2. Select "New Pipeline".
-   
-   ![ADO Run1](./images/ADO-run1.png)
-   
-   3. Select "Github".
-   
-   ![ADO Where's your code](./images/ado-wheresyourcode.png)
-   
-   4. Select your /MLOps-Test repository.
-   
-   ![ADO Run2](./images/ADO-run2.png)
-   
-   5. Select "Existing Azure Pipeline YAML File"
-   
-   ![ADO Run3](./images/ADO-run3.png)
-   
-   6. Select "main" as a branch and choose 'infrastructure/bicep/pipelines/bicep-iac-std-pipelines.yml', then select "Continue".
-   
-   ![Select Infrastructure Pipeline](./images/ADO-selectinfrapipeline.png)
-   
-   7. **IMPORTANT: THIS STEP WILL AUTOMATED SOON** 
-   
-   DO NOT run the pipeline yet. Go to your Github cloned repo and select the "config-infra-prod.yml" file.
+   1. Go to your Github cloned repo and select the "config-infra-prod.yml" file.
    
    ![ADO Run4](./images/ADO-run4.png)
    
    Under global, there's two values namespace and postfix. These values should render the names of the artifacts to create unique. Especially the name for the storage account, which has the most rigid constraints, like uniqueness Azure wide and 3-24 lowercase characters and numbers. So please change namespace and/or postfix to a value of your liking and remember to stay within the contraints of a storage account name as mentioned above. Then save, commit, push, pr to get these values into the pipeline.
+
+   2. Go to ADO pipelines
    
-   8. Now go back to ADO and "Run". This will take a few minutes to finish. The pipeline should create the following artifacts:
+   ![ADO Pipelines](./images/ADO-pipelines.png)
+   
+   3. Select "New Pipeline".
+   
+   ![ADO Run1](./images/ADO-run1.png)
+   
+   4. Select "Github".
+   
+   ![ADO Where's your code](./images/ado-wheresyourcode.png)
+   
+   5. Select your /MLOps-Test repository.
+   
+   ![ADO Run2](./images/ADO-run2.png)
+   
+   If your new repository is not visible, then click on the "provide access" link and on the next screen, click on the "grant" button next to the organization name to grant access to your organization.
+   
+   6. Select "Existing Azure Pipeline YAML File"
+   
+   ![ADO Run3](./images/ADO-run3.png)
+   
+   
+   7. Select "main" as a branch and choose 'infrastructure/pipelines/tf-ado-deploy-infra.yml', then select "Continue".
+   
+   ![Select Infrastructure Pipeline](./images/ado-select-pipeline-yaml-file.png)
+   
+
+   
+   8. Run the pipeline. This will take a few minutes to finish. The pipeline should create the following artifacts:
    * Resource Group for your Workspace including Storage Account, Container Registry, Application Insights, Keyvault and the Azure Machine Learning Workspace itself.
    * In the workspace there's also a compute cluster created.
    
