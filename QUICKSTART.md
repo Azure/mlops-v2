@@ -152,8 +152,6 @@
       
       3.3.5 Select "Github", select "Next", select "Personal Access Token" and paste your Github SSO Token in the Personal Access token field, in the "Service connection name" field, enter "github-connection", grant pipeline security access, then select "Save".
       
-      ![ADO5](./images/ADO-setup4.png)
-      
       Repeat this step, and for the "Service connection name" enter YOUR GITHUB ORGANIZATION NAME or YOUR GITHUB NAME. Finishing this step, your conection should look like this.
    
       ![ADO6](./images/ADO-setup5.png)
