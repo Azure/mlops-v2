@@ -203,7 +203,7 @@
    ![ADO Run3](./images/ADO-run3.png)
    
    
-   7. Select "main" as a branch and choose 'infrastructure/pipelines/tf-ado-deploy-infra.yml', then select "Continue".
+   7. Select "main" as a branch and choose based on your deployment method your preferred yml path. For a terraform schenario choose: 'infrastructure/pipelines/tf-ado-deploy-infra.yml', then select "Continue". For a bicep schenario choose: 'infrastructure/pipelines/bicep-ado-deploy-infra.yml', then select "Continue".
    
    ![Select Infrastructure Pipeline](./images/ado-select-pipeline-yaml-file.png)
    
