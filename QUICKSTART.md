@@ -60,7 +60,6 @@
    2.4. Now you should have your own Github repository with the solution accelerator. Please go to the following files and replace the name field "Azure/mlops-templates" in the repositories section with "yourgithuborgname/mlops-templates".
    
    - /infrastructure/terraform/pipelines/tf-ado-deploy-infra.yml
-   - /infrastructure/bicep/pipelines/bicep-ado-deploy-infra.yml
    - /classical/aml-cli-v2/mlops/devops-pipelines/deploy-batch-endpoint-pipeline.yml
    - /classical/aml-cli-v2/mlops/devops-pipelines/deploy-model-training-pipeline.yml
    - /classical/aml-cli-v2/mlops/devops-pipelines/deploy-online-endpoint-pipeline.yml
