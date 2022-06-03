@@ -76,6 +76,11 @@
    Currently we support classical and cv (computer-vision) pipelines. *NLP is currently under development*, though the CV pipeline can be modified to run NLP models. 
 
    > a few pointers here: 
+   * infrastructure_version gives you deployment choices based on your preferred deployment scenario
+   * cicd_agent selects your favorite CICD methods
+   * project_type defines the AI workload you want to run in your MLOps system
+   * mlops_version selects your preffered environment
+
    * git_folder_location points to mlopsv2root
    * project_name is the same name (case sensitive), that you used when creating the empty repo in step 2.2
    * github_org_name is your github organization, that you used when creating the empty repo
