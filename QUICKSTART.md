@@ -177,6 +177,8 @@
     namespace: [5 max random new letters]
     postfix: [4 max random new digits]
     location: eastus
+    
+   Please repeat this step for "config-infra-dev.yml" and "config-infra-prod.yml".
 
    2. Go to ADO pipelines
    
