@@ -293,7 +293,7 @@
    
    ![ADO Where's your code](./images/ado-wheresyourcode.png)
    
-   4. Select your /MLOps-Test repository.
+   4. Select your /MLOps-Test repository! ("Empty" reposity you created in 2.2)
    
    ![ADO Run2](./images/ADO-run2.png)
    
@@ -301,11 +301,18 @@
    
    ![ADO Run3](./images/ADO-run3.png)
    
-   6. Select "main" as a branch and choose '/mlops/devops-pipelines/deploy-batch-endpoint.yml', then select "Continue".  
+   6. Select "main" as a branch and choose:
+      For Classical Machine Learning:
+         Managed Batch Endpoint '/mlops/devops-pipelines/deploy-batch-endpoint.yml'
+         Managed Online Endpoint '/mlops/devops-pipelines/deploy-batch-endpoint.yml'
+      For Computer Vision: 
+         Managed Online Endpoint '/mlops/devops-pipelines/deploy-batch-endpoint.yml'
+      
+      Then select "Continue".  
    
    ![ADO Run10](./images/ADO-run10.png)
    
-   7. Batch endpoint names need to be unique, so please change "taxi-fare-batch" to another unique name and then select "Run".
+   7. Batch/Online endpoint names need to be unique, so please change [your endpointname] to another unique name and then select "Run".
 
    ![ADO Run11](./images/ADO-batch-pipeline.png)
    
