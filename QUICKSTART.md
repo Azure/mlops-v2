@@ -66,6 +66,9 @@
    - /classical/aml-cli-v2/mlops/devops-pipelines/deploy-online-endpoint-pipeline.yml
    - /classical/python-sdk/mlops/devops-pipelines/deploy-model-batch-scoring.yml
    - /classical/python-sdk/mlops/devops-pipelines/deploy-model-training-pipeline.yml
+   - /cv/aml-cli-v2/mlops/devops-pipelines/deploy-batch-endpoint-pipeline.yml
+   - /cv/aml-cli-v2/mlops/devops-pipelines/deploy-model-training-pipeline.yml
+   - /cv/aml-cli-v2/mlops/devops-pipelines/deploy-online-endpoint-pipeline.yml
 
    2.5 Create an empty repository e.g. "Mlops-Test"
    
@@ -75,7 +78,7 @@
    
       infrastructure_version=terraform   #options: terraform / bicep / arm
       cicd_agent=azure-devops   #options: azure-devops or github-actions
-      project_type=classical   #options: classical / computer-vision / nlp
+      project_type=classical   #options: classical / cv
       mlops_version=aml-cli-v2   #options: python-sdk / aml-cli-v2
       git_folder_location='<local path>'   #replace with the local root folder location where you want to create the project folder
       project_name=Mlops-Test   #replace with your project name
@@ -83,6 +86,8 @@
       project_template_github_url=https://github.com/azure/mlops-project-template   #replace with the url for the project template for your organization created in step 2.2
    
    ```
+   Currently we support classical and cv (computer-vision) pipelines. NLP is currently under development, though the CV pipeline can be modified to run NLP models. 
+   
    2.7 Execute this script in Git Bash or another terminal. This will create a repo for your project which you can use in subsequent steps. In case you face any authentication issues, follow this link to authenticate yourself using an ssh key: https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent
    
    2.8. Next, create an SSO token in github by selecting "Developer settings" in your github account settings.
