@@ -235,7 +235,7 @@
    
    ![ADO Where's your code](./images/ado-wheresyourcode.png)
    
-   4. Select your /MLOps-Test repository.
+   4. Select your /MLOps-Test repository. ("Empty" reposity you created in 2.2)
    
    ![ADO Run2](./images/ADO-run2.png)
    
