@@ -329,7 +329,7 @@
 ## Next Steps
 ---
 
-This finishes the demo according to the architectual patters: Azure Machine Learning Classical Machine Learning. You can also repeat the steps to run the cv (computer vision) models when you do the sparse checkout. Next you can dive into your Azure Machine Learning service in the Azure Portal and see the inference results of this example model. 
+This finishes the demo according to the architectual patters: Azure Machine Learning Classical Machine Learning, Azure Machine Learning Computer Vision. Next you can dive into your Azure Machine Learning service in the Azure Portal and see the inference results of this example model. 
 
 As the cli v2 is still in development, the following components are not part of this demo:
 - Model Monitoring for Data/Model Drift
