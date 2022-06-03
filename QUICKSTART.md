@@ -316,7 +316,7 @@
 
    ![ADO Run11](./images/ADO-batch-pipeline.png)
    
-   **IMPORTANT: If the run fails due to an existing online endpoint name, recreate the pipeline as discribed above and change "taxi-fare-batch" to "taxi-fare-batch[random number]"**
+   **IMPORTANT: If the run fails due to an existing online endpoint name, recreate the pipeline as discribed above and change [your endpointname] to [your endpointname [random number]]"**
    
    8. When the run completes, you will see:
    
