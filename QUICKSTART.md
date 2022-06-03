@@ -76,7 +76,7 @@
    
    ```console
    
-      infrastructure_version=terraform   #options: terraform / bicep / arm
+      infrastructure_version=terraform   #options: terraform / bicep
       cicd_agent=azure-devops   #options: azure-devops or github-actions
       project_type=classical   #options: classical / cv
       mlops_version=aml-cli-v2   #options: python-sdk / aml-cli-v2
