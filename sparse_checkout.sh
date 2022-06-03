@@ -1,5 +1,5 @@
-infrastructure_version=terraform   #options: terraform / bicep / arm
-project_type=classical   #options: classical / computer-vision / nlp
+infrastructure_version=terraform   #options: terraform / bicep 
+project_type=classical   #options: classical / cv
 mlops_version=aml-cli-v2   #options: python-sdk / aml-cli-v2
 git_folder_location='<local path>'   #replace with the local root folder location where you want to create the project folder
 project_name=Mlops-Test   #replace with your project name
