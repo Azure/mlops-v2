@@ -57,7 +57,7 @@
      
    2.3. Now you should have your own, empty Github repository. Let's fill it up!
 
-   2.4 On your local machine create a directory or use an existing one, which is empty (p.ex. mlopsv2root). CD into this directory. Now clone the Azure/mlops-v2 repo, which is going to give you the documentation and the sparse_checkout.sh script with 'git clone https://github.com/Azure/mlops-v2.git'. (If you get a 404, you might need to login to Github). This creates a new directory mlops-v2 under mlopsv2root.
+   2.4 On your local machine create a directory or use an existing one, which is empty (p.ex. mlopsv2root). Use your shell environment (GitBash, Bash or WSL only) and CD into this directory. Now clone the Azure/mlops-v2 repo, which is going to give you the documentation and the sparse_checkout.sh script with 'git clone https://github.com/Azure/mlops-v2.git' (If you get a 404, you might need to login to Github). This creates a new directory mlops-v2 under mlopsv2root.
    
    2.5 Now you need to set a few variables depending on your environment in the script /mlops-v2/sparse_checkout.sh. Open this file in an editor and set the following variables:
    
@@ -73,7 +73,7 @@
       project_template_github_url=https://github.com/azure/mlops-project-template   #replace with the url for the project template for your organization created in step 2.2
    
    ```
-   Currently we support classical and cv (computer-vision) pipelines. NLP is currently under development, though the CV pipeline can be modified to run NLP models. 
+   Currently we support classical and cv (computer-vision) pipelines. *NLP is currently under development*, though the CV pipeline can be modified to run NLP models. 
 
    > a few pointers here: 
    * git_folder_location points to mlopsv2root
@@ -81,22 +81,36 @@
    * github_org_name is your github organization, that you used when creating the empty repo
    * project_template_github_url needs to remain unchanged
    
-      
+   2.6 At the end of the sparse_checkout, it pushes the initilized repo into the new, empty created github repository. In order to do that, we need to authenticate against your github organization by SSH. If not already established, please follow the steps below (see: [Key Setup](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent) ):
+
+   2.6.1 Create a local key in your bash shell by entering: ssh-keygen -t ed25519 -C "your_email@example.com"   Please adjust your email address aligned with your github organization.
+
+   2.6.1.1 You will get promted by 3 different messages regarding your key set-up. You can press "enter" in all three cases and do not have to insert anything. E.g.: Enter a file in which to save the key (/home/you/.ssh/algorithm): [Press enter]
+
+   2.6.2 Add your SSH key to your SSH agent. Start the SSH agent by entering: eval "$(ssh-agent -s)"  It will return your process ID of your agent. Next, add the private key to the SSH agent by executing: ssh-add ~/.ssh/id_ed25519
+
+   2.6.3 Now add your SSH key to your github account ([SSH Key Github](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account))
+
+   2.6.3.1 Execute in your shell: cat ~/.ssh/id_ed25519.pub to get to public key. Copy everything including the email adress as the end and store it e.g.: ssh-ed25519 ... our_email@example.com
+
+   2.6.3.2 Now go to github and open your settings. In settings, select "SSH and GPG Keys". Select "New SSH key" and enter a title to the key. Paste your prior stored public key into the key box. Now select "Add SSH key".
      
-   2.6 Now it's time to execute this script by running in mlopsv2root (if necessary make sure with pwd, that you're in mlopsv2root) in Git Bash or another terminal by running 'bash mlops-v2/sparse_checkout.sh'. This will use the settings in the variables to create a repo for your project which you can use in subsequent steps. In case you face any authentication issues, follow this link to authenticate yourself using an ssh key: https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent.
+   2.7. Now it's time to execute this script by running in mlopsv2root (if necessary make sure with pwd, that you're in mlopsv2root) in Git Bash or another terminal by running 'bash mlops-v2/sparse_checkout.sh'. This will use the settings in the variables to create a repo for your project which you can use in subsequent steps.
+
+   In case you face any authentication issues, follow this link to authenticate yourself using an ssh key: https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent.
    > watch the output of the script, to make sure, no error(s) were happening. And if so remediate them before continuing. You can always delete the project_name named directory and reexecute the script after fixing any error(s). Be sure though, to reposition the current working directory to be mlopsv2root.
 
    After this step ran successfully, you'll have an additional folder locally under mlopsv2root named after the project_name variable. This is a locally, fully initialized repo, which had been pushed to your new, empty repo, which is now no more empty.(make sure by refreshing on github)
    
-   2.7. Next, create an SSO token in github by selecting "Developer settings" in your github account settings.
+   2.8. Next, create an SSO token in github by selecting "Developer settings" in your github account settings.
 
    ![GH1](./images/GH-setup1.png)
    
-   2.8. Select "Personal Access Token", then generate new token. Select the check boxes and name your token "MLOpsToken". Select "Generate Token". Copy/Paste token key to a notepad interim.
+   2.9. Select "Personal Access Token", then generate new token. Select the check boxes and name your token "MLOpsToken". Select "Generate Token". Copy/Paste token key to a notepad interim.
    
    ![GH2](./images/GH-setup2.png)
    
-   2.9. If your organization uses single sign on for Github, then click on "Authorize" the token to have access to the github organization. 
+   2.10. If your organization uses single sign on for Github, then click on "Authorize" the token to have access to the github organization. 
    
    ![GH3](./images/GH-setup3.png)
    
