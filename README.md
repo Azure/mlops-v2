@@ -13,6 +13,8 @@ MLOps is a set of repeatable, automated, and collaborative workflows with best p
 ## Prerequisites
 
 1. An Azure subscription. If you don't have an Azure subscription, [create a free account](https://aka.ms/AzureMLFree) before you begin.
+2. The [Terraform extension for Azure DevOps](https://marketplace.visualstudio.com/items?itemName=ms-devlabs.custom-terraform-tasks) if you are using Terraform to spin up infrastructure
+3. Git bash, WSL or another shell script editor on your local machine
 
 ## Project overview
 
@@ -22,7 +24,7 @@ The solution accelerator goals are:
 
 - Simplicity
 - Modularity
-- Repeatability
+- Repeatability & Security
 - Collaboration
 - Enterprise readiness
 
@@ -30,9 +32,13 @@ It accomplishes these goals with a template-based approach for end-to-end data s
 
 ## 👤 Getting started: Azure Machine Learning - classical machine learning demo
   
-The demo follows the classical machine learning pattern with Azure Machine Learning.
-  
+The demo follows the classical machine learning or computer vision pattern with Azure Machine Learning.
+
+Azure Machine Learning - Classical Machine Learning Architecture:
 ![AzureML CML](/documentation/architecturepattern/AzureML_CML_Architecture.png)
+
+Azure Machine Learning - Computer Vision Architecture:
+![AzureML CV](/documentation/architecturepattern/AzureML_SupervisedCV_Architecture.png)
   
 ‼️ **Please follow the instructions to execute the demo accordingly: [Quickstart](https://github.com/Azure/mlops-v2/blob/main/QUICKSTART.md)** ‼️
 
