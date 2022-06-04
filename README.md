@@ -30,7 +30,7 @@ The solution accelerator goals are:
 
 It accomplishes these goals with a template-based approach for end-to-end data science, driving operational efficiency at each stage. You should be able to get up and running with the solution accelerator in a few hours.
 
-## 👤 Getting started: Azure Machine Learning - classical machine learning demo
+## 👤 Getting started: Azure Machine Learning Pattern Demo
   
 The demo follows the classical machine learning or computer vision pattern with Azure Machine Learning.
 
@@ -62,7 +62,7 @@ Azure Machine Learning - Computer Vision Architecture:
 
 | Name                                                         | Description                                                | Try it out      |
 | ------------------------------------------------------------ | ---------------------------------------------------------- | --------------- |
-| [Outer Loop](https://github.com/Azure/mlops-infra-default)   | Default Azure Machine Learning outer infrastructure setup  | [DEPLOY BUTTON] |
+| [Outer Loop](https://github.com/Azure/mlops-templates)       | Default Azure Machine Learning outer infrastructure setup  | [DEPLOY BUTTON] |
 | [TBD]                                                        | Default Responsible AI for Classical Machine Learning      | [DEPLOY BUTTON] |
 | [Feature Store FEAST](https://github.com/Azure/feast-azure)  | Default Feature Store using FEAST                          | [DEPLOY BUTTON] |
 | [Feature Store Feathr](https://github.com/linkedin/feathr)   | Feature Store Pattern using Feathr                         | [DEPLOY BUTTON] |
@@ -71,8 +71,8 @@ Azure Machine Learning - Computer Vision Architecture:
 
 | Name                                                                | AI Workload Type                   | Services                                 | Try it out      |
 |-------------------------------------------------------------------- | -----------------------------------| ---------------------------------------- | --------------- |
-| [classical-ml](https://github.com/Azure/mlops-project-classical-ml) | Classical machine learning         | Azure Machine Learning                   | [DEPLOY BUTTON] |
-| [TBD]                                                               | Computer Vision                    | Azure Machine Learning                   | [DEPLOY BUTTON] |
+| [classical-ml](https://github.com/Azure/mlops-project-template)     | Classical machine learning         | Azure Machine Learning                   | [DEPLOY BUTTON] |
+| [CV](https://github.com/Azure/mlops-project-template)               | Computer Vision                    | Azure Machine Learning                   | [DEPLOY BUTTON] |
 | [TBD]                                                               | Natural Language Processing        | Azure Machine Learning                   | [DEPLOY BUTTON] |
 | [TBD]                                                               | Classical machine learning         | Azure Machine Learning, Azure Databricks | [DEPLOY BUTTON] |
 | [TBD]                                                               | Computer Vision                    | Azure Machine Learning, Azure Databricks | [DEPLOY BUTTON] |
