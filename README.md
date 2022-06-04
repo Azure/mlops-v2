@@ -71,8 +71,8 @@ Azure Machine Learning - Computer Vision Architecture:
 
 | Name                                                                | AI Workload Type                   | Services                                 | Try it out      |
 |-------------------------------------------------------------------- | -----------------------------------| ---------------------------------------- | --------------- |
-| [classical-ml](https://github.com/Azure/mlops-project-template)     | Classical machine learning         | Azure Machine Learning                   | [DEPLOY BUTTON] |
-| [CV](https://github.com/Azure/mlops-project-template)               | Computer Vision                    | Azure Machine Learning                   | [DEPLOY BUTTON] |
+| [classical-ml](https://github.com/Azure/mlops-project-template/tree/main/classical)     | Classical machine learning         | Azure Machine Learning                   | [DEPLOY BUTTON] |
+| [CV](https://github.com/Azure/mlops-project-template/tree/main/cv)  | Computer Vision                    | Azure Machine Learning                   | [DEPLOY BUTTON] |
 | [TBD]                                                               | Natural Language Processing        | Azure Machine Learning                   | [DEPLOY BUTTON] |
 | [TBD]                                                               | Classical machine learning         | Azure Machine Learning, Azure Databricks | [DEPLOY BUTTON] |
 | [TBD]                                                               | Computer Vision                    | Azure Machine Learning, Azure Databricks | [DEPLOY BUTTON] |
