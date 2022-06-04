@@ -50,7 +50,7 @@ Azure Machine Learning - Computer Vision Architecture:
 | ------------------------------------------------------- | ----------------------------------------------------------------------- |
 | [Pattern AzureML CML](https://github.com/Azure/mlops-v2/blob/main/documentation/architecturepattern/AzureML_CML_Architecture.png) | Azure Machine Learning - Classical Machine Learning                     |
 | [Pattern AzureML CV](https://github.com/Azure/mlops-v2/blob/main/documentation/architecturepattern/AzureML_SupervisedCV_Architecture.png)                                                 | Azure Machine Learning - Computer Vision                                |
-| [TBD]                                                   | Azure Machine Learning - Natural Language Processing                    |
+| [Pattern AzureML NLP](https://github.com/Azure/mlops-v2/blob/main/documentation/architecturepattern/AzureML_NLP_Classification_Architecture.png)                                                 | Azure Machine Learning - Natural Language Processing                    |
 | [TBD]                                                   | Azure Machine Learning / Azure Databricks - Classical Machine Learning  |
 | [TBD]                                                   | Azure Machine Learning / Azure Databricks - Computer Vision             |
 | [TBD]                                                   | Azure Machine Learning / Azure Databricks - Natural Language Processing |
@@ -60,11 +60,12 @@ Azure Machine Learning - Computer Vision Architecture:
   
 ## 📯 MLOps infrastructure deployment
 
-| Name                                                        | Description                                                | Try it out      |
-| ----------------------------------------------------------- | ---------------------------------------------------------- | --------------- |
-| [Outer Loop](https://github.com/Azure/mlops-infra-default)  | Default Azure Machine Learning outer infrastructure setup  | [DEPLOY BUTTON] |
-| [TBD]                                                       | Default Responsible AI for Classical Machine Learning      | [DEPLOY BUTTON] |
-| [Feature Store FEAST](https://github.com/Azure/feast-azure) | Default Feature Store using FEAST                          | [DEPLOY BUTTON] |
+| Name                                                         | Description                                                | Try it out      |
+| ------------------------------------------------------------ | ---------------------------------------------------------- | --------------- |
+| [Outer Loop](https://github.com/Azure/mlops-infra-default)   | Default Azure Machine Learning outer infrastructure setup  | [DEPLOY BUTTON] |
+| [TBD]                                                        | Default Responsible AI for Classical Machine Learning      | [DEPLOY BUTTON] |
+| [Feature Store FEAST](https://github.com/Azure/feast-azure)  | Default Feature Store using FEAST                          | [DEPLOY BUTTON] |
+| [Feature Store Feathr](https://github.com/linkedin/feathr)   | Feature Store Pattern using Feathr                         | [DEPLOY BUTTON] |
 
 ## 📯 MLOps use case deployment
 
