@@ -215,7 +215,7 @@
    * Check if **Repository** name is correct.
    * Change **Name** from "Azure" to your "GitHub organization".
    * Check if **Endpoint** name is correct. This value should be the service connection name defined inside ADO for the GitHub connection.
-   Note: If you use different names for service connections in the 3.3.2 heading, you need to update the "config-infra-dev.yml" file. For example, if you use a different name other than Azure-ARM-Dev for the Azure subscription connection, you need to update the "config-infra-dev.yml" file.
+   Note: If you used different names for service connections step 3.3.2, you need to update the "config-infra-dev.yml" and/or "config-infra-prod.yml" files. For example, if you used a different name other than Azure-ARM-Dev for the Azure subscription connection, you need to update the "config-infra-dev.yml" and/or "config-infra-prod.yml" files.
    
    Run the pipeline. This will take a few minutes to finish. The pipeline should create the following artifacts:
    * Resource Group for your Workspace including Storage Account, Container Registry, Application Insights, Keyvault and the Azure Machine Learning Workspace itself.
