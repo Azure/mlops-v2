@@ -24,7 +24,7 @@ The base architecture for MLOps v2 for Azure Machine Learning is the Classical M
 
 Below is the MLOps v2 architecture for a Classical Machine Learning scenario on tabular data along with explanation of the main elements and details.
 
-![Azure Machine Learning Classical Machine Learning Architecture](documentation/architecturepattern/AzureML_CML_Architecture.png)
+![Azure Machine Learning Classical Machine Learning Architecture](architecturepattern/AzureML_CML_Architecture.png)
 
 1.  **Data Estate**
 
@@ -80,8 +80,8 @@ Below is the MLOps v2 architecture for a Classical Machine Learning scenario on 
 
 ### Azure Machine Learning Computer Vision Architecture
 
-![Azure Machine Learning Computer Vision Architecture](documentation/architecturepattern/AzureML_SupervisedCV_Architecture.png)
+![Azure Machine Learning Computer Vision Architecture](architecturepattern/AzureML_SupervisedCV_Architecture.png)
 
 ### Azure Machine Learning Natural Language Processing Architecture
 
-![Azure Machine Learning Natural Language Processing Architecture](documentation/architecturepattern/AzureML_NLP_Classification_Architecture.png)
+![Azure Machine Learning Natural Language Processing Architecture](architecturepattern/AzureML_NLP_Classification_Architecture.png)
