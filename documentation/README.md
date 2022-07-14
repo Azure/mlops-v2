@@ -94,7 +94,7 @@ The Azure Machine Learning Computer Vision Architecture is based on the Classica
 
 1. **Data Estate**
 
-        Images for Computer Vision scenarios may come from many different data sources. For efficiency when developing and deploying CV models with Azure Machine Learning, recommended Azure data sources for images are Azure Blob Storage and Azure Data Lake Storage.
+    Images for Computer Vision scenarios may come from many different data sources. For efficiency when developing and deploying CV models with Azure Machine Learning, recommended Azure data sources for images are Azure Blob Storage and Azure Data Lake Storage.
 
 2. **Administration & Setup**
 
@@ -102,11 +102,35 @@ The Azure Machine Learning Computer Vision Architecture is based on the Classica
 
 3. **Model Development (Inner Loop)**
 
-        The typical Supervised CV model development loop differs from the Classical Machine Learning scenario in that Image Labeling/Annotation is a key element of this loop. 
+    The typical Supervised CV model development loop differs from the Classical Machine Learning scenario in that Image Labeling/Annotation is a key element of this loop. 
+
+4.  **Azure Machine Learning Registries**
+
+    No changes.
+
+5.  **Model Deployment (Outer Loop)**
+
+    No changes.
+
+6.  **Staging & Test**
+
+    No changes.
+
+7.  **Production Deployment**
+
+    No changes.
+
+8.  **Monitoring**
+
+    No changes.
 
 9. **Data & Model Monitoring - Events and Actions**
 
-        The Data & Model monitoring and event/action phase of MLOps for Computer Vision is the key difference from Classical Machine Learning.  Automated retraining is typically not done in CV scenarios when model performance degradation on new images is detected. In this case, new images for which the model performs poorly must be reviewed and annotated by a human-in-the-loop and often the next action goes back to the Model Development loop for updating the model with the new images.
+    The Data & Model monitoring and event/action phase of MLOps for Computer Vision is the key difference from Classical Machine Learning.  Automated retraining is typically not done in CV scenarios when model performance degradation on new images is detected. In this case, new images for which the model performs poorly must be reviewed and annotated by a human-in-the-loop and often the next action goes back to the Model Development loop for updating the model with the new images.
+
+10. **Infrastructure Monitoring - Events and Actions**
+
+    No changes.
 
 ### Azure Machine Learning Natural Language Processing Architecture
 
@@ -120,8 +144,32 @@ The Azure Machine Learning Natural Language Processing Architecture is based on 
 
 3. **Model Development (Inner Loop)**
 
-        The typical Supervised CV model development loop differs from the Classical Machine Learning scenario in that Annotators for Sentences and Tokenization, Normalization, and Embeddings for text data are the typical development steps for this scenario.
+    The typical Supervised CV model development loop differs from the Classical Machine Learning scenario in that Annotators for Sentences and Tokenization, Normalization, and Embeddings for text data are the typical development steps for this scenario.
+        
+4.  **Azure Machine Learning Registries**
+
+    No changes.
+
+5.  **Model Deployment (Outer Loop)**
+
+    No changes.
+
+6.  **Staging & Test**
+
+    No changes.
+
+7.  **Production Deployment**
+
+    No changes.
+
+8.  **Monitoring**
+
+    No changes.
 
 9. **Data & Model Monitoring - Events and Actions**
 
-        As with the Computer Vision architecture, the Data & Model monitoring and event/action phase of MLOps for Natural Language Processing is the key difference from Classical Machine Learning.  Automated retraining is typically not done in NLP scenarios when model performance degradation on new text is detected. In this case, new text data for which the model performs poorly must be reviewed and annotated by a human-in-the-loop and often the next action goes back to the Model Development loop for updating the model with the new text.
+    As with the Computer Vision architecture, the Data & Model monitoring and event/action phase of MLOps for Natural Language Processing is the key difference from Classical Machine Learning.  Automated retraining is typically not done in NLP scenarios when model performance degradation on new text is detected. In this case, new text data for which the model performs poorly must be reviewed and annotated by a human-in-the-loop and often the next action goes back to the Model Development loop for updating the model with the new text.
+        
+10. **Infrastructure Monitoring - Events and Actions**
+
+    No changes.
