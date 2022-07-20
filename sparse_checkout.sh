@@ -8,7 +8,9 @@ project_template_github_url=https://github.com/azure/mlops-project-template   #r
 
 cd $git_folder_location
 
+# Clone MLOps Project repo
 git clone \
+  --branch 'main' \
   --depth 1  \
   --filter=blob:none  \
   --sparse \
@@ -19,6 +21,7 @@ cd $project_name
 git sparse-checkout init --cone
 git sparse-checkout set infrastructure/$infrastructure_version $project_type/$mlops_version
 
+# Move files to appropiate level
 mv $project_type/$mlops_version/data-science data-science
 mv $project_type/$mlops_version/mlops mlops
 mv $project_type/$mlops_version/data data
@@ -35,6 +38,7 @@ mv infrastructure/$infrastructure_version $infrastructure_version
 rm -rf infrastructure
 mv $infrastructure_version infrastructure
 
+# Upload to custom repo in Github
 rm -rf .git
 git init -b main
 git remote add origin git@github.com:$github_org_name/$project_name.git
