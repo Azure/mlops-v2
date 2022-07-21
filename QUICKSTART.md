@@ -305,10 +305,10 @@
    
    6. Select "main" as a branch and choose:
       For Classical Machine Learning:
-         Managed Batch Endpoint '/mlops/devops-pipelines/deploy-batch-endpoint.yml'
-         Managed Online Endpoint '/mlops/devops-pipelines/deploy-batch-endpoint.yml'
+         Managed Batch Endpoint '/mlops/devops-pipelines/deploy-batch-endpoint-pipeline.yml'
+         Managed Online Endpoint '/mlops/devops-pipelines/deploy-online-endpoint-pipeline.yml'
       For Computer Vision: 
-         Managed Online Endpoint '/mlops/devops-pipelines/deploy-batch-endpoint.yml'
+         Managed Online Endpoint '/mlops/devops-pipelines/deploy-batch-endpoint-pipeline.yml'
       
       Then select "Continue".  
    
