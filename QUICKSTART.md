@@ -117,7 +117,7 @@
    
    ![GH2](./images/GH-setup2.png)
    
-   2.11. If your organization uses single sign on for Github, then click on "Authorize" the token to have access to the github organization. 
+   2.11. If your organization uses single sign on for Github, then click on "Authorize" the token to have access to the github organization. The screenshot below shows an example of authorization for the token to interact with your repository. Your organization maybe different. 
    
    ![GH3](./images/GH-setup3.png)
    
