@@ -166,7 +166,7 @@
 ## Outer Loop: Deploying Infrastructure via GitHub Actions
  1. Set up your Azure Credentials in a GitHub Secret. 
     
-    GitHub Actions need to use an Azure Service Principal to connect to the Azure Machine Learning Service and perform operations. Additional details can be found [here] (https://github.com/marketplace/actions/azure-login#configure-deployment-credentials)
+    GitHub Actions need to use an Azure Service Principal to connect to the Azure Machine Learning Service and perform operations. Additional details can be found [here](https://github.com/marketplace/actions/azure-login#configure-deployment-credentials)
 
  2. Go to your Github cloned repo and select the "config-infra-prod.yml" file.
    
