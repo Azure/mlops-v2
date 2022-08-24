@@ -245,9 +245,11 @@ This step deploys the training pipeline to the Azure Machine Learning workspace 
  
    ![GHA Tab](./images/GHATab.png)
       
- 2. Select the "deploy-model-training-pipeline" from the Actions listed on the left and the click "Run Workflow" to execute the model training workflow. This will take several minutes to run, depending on the compute size. Once completed a successful run will train the model in the Azure Machine Learning Workspace. 
+ 2. Select the "deploy-model-training-pipeline" from the Actions listed on the left and the click "Run Workflow" to execute the model training workflow. This will take several minutes to run, depending on the compute size. 
 
    ![Pipeline Run](./images/PipelineRun.png)
+   
+   Once completed a successful run will train the model in the Azure Machine Learning Workspace. 
  
 ## Inner Loop: Deploying Classical ML Model Development / Moving to Test Environment - Azure DevOps
 ---
@@ -280,7 +282,7 @@ This step deploys the training pipeline to the Azure Machine Learning workspace 
    
 ## Inner Loop: Checkpoint
    
-   Now the Inner Loop of the MLOps Architecture is deployed.      
+   At this point, the infrastructure is configured and the Inner Loop of the MLOps Architecture is deployed. We are ready to move to our trained model to production.      
 
    
 ## Inner / Outer Loop: Moving to Production - Introduction
@@ -309,16 +311,18 @@ This step deploys the training pipeline to the Azure Machine Learning workspace 
    Input: Trained model and the deploy flag.
    Output: Registered model in Azure Machine Learning.**
    
-## Inner / Outer Loop: Moving to Production - Azure DevOps
+## Inner / Outer Loop: Moving to Production - GitHub Actions
 ---
 
    1. Go to the GitHub Actions tab.
  
    ![GHA Tab](./images/GHATab.png)
       
- 2. Select either the "deploy-batch-endpoint-pipeline" or the "deploy-online-endpoint-pipeline" from the Actions listed on the left and the click "Run Workflow" to execute the model training workflow. This will take several minutes to run, depending on the compute size. Once completed, a successful run will deploy the model trained in the previous step to either a batch or online endpoint, depending on which workflow is run. 
+ 2. Select either the "deploy-batch-endpoint-pipeline" or the "deploy-online-endpoint-pipeline" from the Actions listed on the left and the click "Run Workflow" to execute the model training workflow. This will take several minutes to run, depending on the compute size. 
    
    ![GHA Tab](./images/onlineEndpoint.png)
+   
+   Once completed, a successful run will deploy the model trained in the previous step to either a batch or online endpoint, depending on which workflow is run. 
    
 ## Inner / Outer Loop: Moving to Production - Azure DevOps
 ---
