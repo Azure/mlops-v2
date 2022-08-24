@@ -250,6 +250,10 @@ This step deploys the training pipeline to the Azure Machine Learning workspace 
    ![Pipeline Run](./images/PipelineRun.png)
    
    Once completed a successful run will train the model in the Azure Machine Learning Workspace. 
+ >**IMPORTANT: If you want to check the output of each individual step, for example to view output of a failed run, click a job output and then click each step in the job to view any output of that step. 
+
+   ![Output](./images/expandedOutput.png)
+ >
  
 ## Inner Loop: Deploying Classical ML Model Development / Moving to Test Environment - Azure DevOps
 ---
