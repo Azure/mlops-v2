@@ -3,9 +3,9 @@
 ## Technical requirements
 
 - Github as the source control repository
-- Azure DevOps as the DevOps orchestration tool
-- The [Terraform extension for Azure DevOps](https://marketplace.visualstudio.com/items?itemName=ms-devlabs.custom-terraform-tasks) if you are using Terraform to spin up infrastructure
-- Azure service principals to access / create Azure resources from Azure DevOps (or the ability to create them)
+- Azure DevOps or Github Actions as the DevOps orchestration tool
+- The [Terraform extension for Azure DevOps](https://marketplace.visualstudio.com/items?itemName=ms-devlabs.custom-terraform-tasks) if you are using Azure DevOps + Terraform to spin up infrastructure
+- Azure service principals to access / create Azure resources from Azure DevOps or Github Actions (or the ability to create them)
 - Git bash, WSL or another shell script editor on your local machine; version 2.27 or newer required
    
 
