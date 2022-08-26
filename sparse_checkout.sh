@@ -1,16 +1,16 @@
 infrastructure_version=terraform   #options: terraform / bicep 
 project_type=classical   #options: classical / cv
-mlops_version=python-sdk  #options: python-sdk / aml-cli-v2
-git_folder_location=C:\Users\nserafino\Documents\Other\mlops-repos\mlops-sparse  #replace with the local root folder location where you want to create the project folder
-project_name=mlops-sparse   #replace with your project name
-github_org_name=nicoleserafino   #replace with your github org name
-project_template_github_url=https://github.com/nicoleserafino/mlops-project-template   #replace with the url for the project template for your organization created in step 2.2, or leave for demo purposes
+mlops_version=aml-cli-v2   #options: python-sdk / aml-cli-v2
+git_folder_location='<local path>'   #replace with the local root folder location where you want to create the project folder
+project_name=Mlops-Test   #replace with your project name
+github_org_name=orgname   #replace with your github org name
+project_template_github_url=https://github.com/azure/mlops-project-template   #replace with the url for the project template for your organization created in step 2.2, or leave for demo purposes
 
 cd $git_folder_location
 
 # Clone MLOps Project repo
 git clone \
-  --branch 'main-jul31' \
+  --branch 'main' \
   --depth 1  \
   --filter=blob:none  \
   --sparse \
