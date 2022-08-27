@@ -1,0 +1,60 @@
+trigger: none
+
+parameters:
+- name: adoProjectName
+  displayName: ADO project name
+  type: string
+
+- name: repoName
+  displayName: Repo name
+  type: string
+
+- name: mlOpsProjectTemplateAdoProjectName
+  displayName: MLOps Project Template's ADO project name
+  type: string
+  # default: [makes sense to put your default here]
+
+- name: mlOpsProjectRepoName
+  displayName: MLOps Project Template's repo
+  type: string  
+  default: mlops-project-template
+
+- name: projectType
+  displayName: ML project type
+  type: string
+  default: classical
+  values:
+  - classical
+  - cv
+  
+- name: mlopsVersion
+  displayName: MLOps version
+  type: string
+  default: aml-cli-v2
+  values:
+  - python-sdk
+  - aml-cli-v2
+
+stages:
+  - stage: InitialiseRepo
+    displayName: Initialise Repo
+    jobs:
+      - job: InitialiseRepoJob
+        displayName: Checkout repos and initialise your new one
+        steps:
+          - checkout: self
+            persistCredentials: false
+          - checkout: git://${{ parameters.mlOpsProjectTemplateAdoProjectName }}/${{ parameters.mlOpsProjectRepoName }}
+            persistCredentials: false
+          - checkout: git://${{ parameters.adoProjectName }}/${{ parameters.repoName }}
+            persistCredentials: true
+
+          - task: Bash@3
+            displayName: Run script to initialise your repo
+            inputs:
+              targetType: 'filePath'
+              filePath: mlops-v2/.azuredevops/scripts/initialise_repo.sh
+              arguments: >
+                ${{ parameters.repoName }}
+                ${{ parameters.projectType }}
+                ${{ parameters.mlopsVersion }}
