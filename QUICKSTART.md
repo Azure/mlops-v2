@@ -3,9 +3,9 @@
 ## Technical requirements
 
 - Github as the source control repository
-- Azure DevOps as the DevOps orchestration tool
-- The [Terraform extension for Azure DevOps](https://marketplace.visualstudio.com/items?itemName=ms-devlabs.custom-terraform-tasks) if you are using Terraform to spin up infrastructure
-- Azure service principals to access / create Azure resources from Azure DevOps (or the ability to create them)
+- Azure DevOps or Github Actions as the DevOps orchestration tool
+- The [Terraform extension for Azure DevOps](https://marketplace.visualstudio.com/items?itemName=ms-devlabs.custom-terraform-tasks) if you are using Azure DevOps + Terraform to spin up infrastructure
+- Azure service principals to access / create Azure resources from Azure DevOps or Github Actions (or the ability to create them)
 - Git bash, WSL or another shell script editor on your local machine; version 2.27 or newer required
    
 
@@ -161,9 +161,28 @@
    The Azure DevOps setup is successfully finished.
  
  
-**This finishes the prerequisite section and the deployment of the solution accelerator can happen accordingly.**
+**This finishes the prerequisite section and the deployment of the solution accelerator can happen accordingly. The following sections describe how to setup the appriopriate configuration files and run the inner/outer loops using Azure DevOps or GitHub Actions.**
 
+This step deploys the training pipeline to the Azure Machine Learning workspace created in the previous steps. 
 
+## Outer Loop: Deploying Infrastructure via GitHub Actions
+ 1. Set up your Azure Credentials in a GitHub Secret. 
+    
+    GitHub Actions need to use an Azure Service Principal to connect to the Azure Machine Learning Service and perform operations. Additional details can be found [here](https://github.com/marketplace/actions/azure-login#configure-deployment-credentials).
+
+ 2. Go to your Github cloned repo and select the "config-infra-prod.yml" file.
+   
+   ![ADO Run4](./images/ADO-run4.png)
+   
+   Under global, there's two values namespace and postfix. These values should render the names of the artifacts to create unique. Especially the name for the storage account, which has the most rigid constraints, like uniqueness Azure wide and 3-5 lowercase characters and numbers. So please change namespace and/or postfix to a value of your liking and remember to stay within the contraints of a storage account name as mentioned above. Then save, commit, push, pr to get these values into the pipeline.
+   
+   If your are running a Deep Learning workload such as CV or NLP, you have to ensure your GPU compute is availible in your deployment zone. Please replace as shown above your location to eastus. Example:
+   
+    namespace: [5 max random new letters]
+    postfix: [4 max random new digits]
+    location: eastus
+    
+   Please repeat this step for "config-infra-dev.yml" and "config-infra-prod.yml"!   
    
 ## Outer Loop: Deploying Infrastructure via Azure DevOps
 ---
@@ -221,8 +240,22 @@
    
    ![ADO Run6](./images/ADO-run-infra-pipeline.png)
 
+## Inner Loop: Deploying Classical ML Model Development / Moving to Test Environment - GitHub Actions
+ 1. Go to the GitHub Actions tab.
+ 
+   ![GHA Tab](./images/GHATab.png)
+      
+ 2. Select the "deploy-model-training-pipeline" from the Actions listed on the left and the click "Run Workflow" to execute the model training workflow. This will take several minutes to run, depending on the compute size. 
 
-## Inner Loop: Deploying Classical ML Model Development / Moving to Test Environment 
+   ![Pipeline Run](./images/PipelineRun.png)
+   
+   Once completed a successful run will train the model in the Azure Machine Learning Workspace. 
+ >**IMPORTANT: If you want to check the output of each individual step, for example to view output of a failed run, click a job output and then click each step in the job to view any output of that step. 
+
+   ![Output](./images/expandedElement.png)
+ >
+ 
+## Inner Loop: Deploying Classical ML Model Development / Moving to Test Environment - Azure DevOps
 ---
 
    1. Go to ADO pipelines
@@ -251,15 +284,14 @@
    
    >**IMPORTANT: This pipeline needs an additional connection to the Github repo yourorgname/mlops-templates, where all the templates are stored and maintained, which, like legos, encapsulate certain functionality. That's why you see in the pipeline itself a lot of calls to '-template: template in mlops-templates'. These functionalities are install the azure cli, or ml extension or run a pipeline etc. Therefore we created the connection 'github-connection' in the beginning currenly hard-coded.**
    
-   This step deploys the training pipeline to the Azure Machine Learning workspace created in the previous steps. 
-
-   Now the Inner Loop of the MLOps Architecture is deployed.
-      
-      
- 
-## Inner / Outer Loop: Moving to Production
----
+## Inner Loop: Checkpoint
    
+   At this point, the infrastructure is configured and the Inner Loop of the MLOps Architecture is deployed. We are ready to move to our trained model to production.      
+
+   
+## Inner / Outer Loop: Moving to Production - Introduction
+---
+         
    >**NOTE: This is an end-to-end machine learning pipeline which runs a linear regression to predict taxi fares in NYC. The pipeline is made up of components, each serving  different functions, which can be registered with the workspace, versioned, and reused with various inputs and outputs.**
 
    >**Prepare Data
@@ -283,6 +315,22 @@
    Input: Trained model and the deploy flag.
    Output: Registered model in Azure Machine Learning.**
    
+## Inner / Outer Loop: Moving to Production - GitHub Actions
+---
+
+   1. Go to the GitHub Actions tab.
+ 
+   ![GHA Tab](./images/GHATab.png)
+      
+ 2. Select either the "deploy-batch-endpoint-pipeline" or the "deploy-online-endpoint-pipeline" from the Actions listed on the left and the click "Run Workflow" to execute the model training workflow. This will take several minutes to run, depending on the compute size. 
+   
+   ![GHA Tab](./images/onlineEndpoint.png)
+   
+   Once completed, a successful run will deploy the model trained in the previous step to either a batch or online endpoint, depending on which workflow is run. 
+   
+## Inner / Outer Loop: Moving to Production - Azure DevOps
+---
+
    1. Go to ADO pipelines
    
    ![ADO Pipelines](./images/ADO-pipelines.png)
