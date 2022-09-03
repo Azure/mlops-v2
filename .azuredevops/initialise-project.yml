@@ -12,7 +12,7 @@ parameters:
 - name: mlOpsProjectTemplateAdoProjectName
   displayName: MLOps Project Template's ADO project name
   type: string
-  # default: [makes sense to put your default here]
+  # default: [good idea to put your default here]
 
 - name: mlOpsProjectRepoName
   displayName: MLOps Project Template's repo
@@ -36,11 +36,11 @@ parameters:
   - aml-cli-v2
 
 stages:
-  - stage: InitialiseRepo
-    displayName: Initialise Repo
+  - stage: InitialiseProject
+    displayName: Initialise Project
     jobs:
-      - job: InitialiseRepoJob
-        displayName: Checkout repos and initialise your new one
+      - job: InitialiseProjectJob
+        displayName: Checkout repos, initialise your new one and create pipelines
         steps:
           - checkout: self
             persistCredentials: false
@@ -58,3 +58,14 @@ stages:
                 ${{ parameters.repoName }}
                 ${{ parameters.projectType }}
                 ${{ parameters.mlopsVersion }}
+
+          - task: Bash@3
+            displayName: Run script to create pipelines in ADO
+            inputs:
+              targetType: 'filePath'
+              filePath: mlops-v2/.azuredevops/scripts/create_ado_pipelines.sh
+              arguments: >
+                ${{ parameters.repoName }}
+                ${{ parameters.adoProjectName }}
+            env:
+              AZURE_DEVOPS_EXT_PAT: $(System.AccessToken)
