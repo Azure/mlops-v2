@@ -5,6 +5,7 @@ git_folder_location='<local path>'   #replace with the local root folder locatio
 project_name=Mlops-Test   #replace with your project name
 github_org_name=orgname   #replace with your github org name
 project_template_github_url=https://github.com/azure/mlops-project-template   #replace with the url for the project template for your organization created in step 2.2, or leave for demo purposes
+orchestration=azure-devops #options: github-actions / azure-devops
 
 cd $git_folder_location
 
@@ -31,8 +32,22 @@ then
   echo "python-sdk"
   mv $project_type/$mlops_version/config-aml.yml config-aml.yml
 fi
-
 rm -rf $project_type
+
+if [[ "$orchestration" == "github-actions" ]]
+then
+  echo "github-actions"
+  rm -rf mlops/devops-pipelines
+  mkdir -p .github/workflows/
+  mv mlops/github-actions/* .github/workflows/
+  rm -rf mlops/github-actions
+fi
+
+if [[ "$orchestration" == "azure-devops" ]]
+then
+  echo "azure-devops"
+  rm -rf mlops/github-actions
+fi
 
 mv infrastructure/$infrastructure_version $infrastructure_version
 rm -rf infrastructure
