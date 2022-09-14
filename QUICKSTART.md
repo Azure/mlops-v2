@@ -165,7 +165,8 @@
 
 This step deploys the training pipeline to the Azure Machine Learning workspace created in the previous steps. 
 
-## Outer Loop: Deploying Infrastructure via GitHub Actions
+## Outer Loop: Setting up Infrastructure via GitHub Actions
+**IMPORTANT NOTE: Deployment of infrastructure using Terraform or Bicep is not yet enabled yet for Github Actions. It will be available in the next release. This section enables Github Actions to run AML Pipelines.**
  1. Set up your Azure Credentials in a GitHub Secret. 
     
     GitHub Actions need to use an Azure Service Principal to connect to the Azure Machine Learning Service and perform operations. Additional details can be found [here](https://github.com/marketplace/actions/azure-login#configure-deployment-credentials).
