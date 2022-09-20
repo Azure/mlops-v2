@@ -214,7 +214,7 @@ This step deploys the training pipeline to the Azure Machine Learning workspace 
    
    ![ADO Where's your code](./images/ado-wheresyourcode.png)
    
-   5. Select your /MLOps-Test repository. ("Empty" reposity you created in 2.2)
+   5. Select your /MLOps-Test repository. ("Empty" reposity you created in 2.3)
    
    ![ADO Run2](./images/ADO-run2.png)
    
@@ -271,7 +271,7 @@ This step deploys the training pipeline to the Azure Machine Learning workspace 
    
    ![ADO Where's your code](./images/ado-wheresyourcode.png)
    
-   4. Select your /MLOps-Test repository! ("Empty" reposity you created in 2.2)
+   4. Select your /MLOps-Test repository! ("Empty" reposity you created in 2.3)
    
    ![ADO Run2](./images/ADO-run2.png)
    
