@@ -214,7 +214,7 @@ This step deploys the training pipeline to the Azure Machine Learning workspace 
    
    ![ADO Where's your code](./images/ado-wheresyourcode.png)
    
-   5. Select your /MLOps-Test repository. ("Empty" reposity you created in 2.2)
+   5. Select your /MLOps-Test repository. ("Empty" repository you created in 2.3)
    
    ![ADO Run2](./images/ADO-run2.png)
    
@@ -271,7 +271,7 @@ This step deploys the training pipeline to the Azure Machine Learning workspace 
    
    ![ADO Where's your code](./images/ado-wheresyourcode.png)
    
-   4. Select your /MLOps-Test repository! ("Empty" reposity you created in 2.2)
+   4. Select your /MLOps-Test repository! ("Empty" repository you created in 2.3)
    
    ![ADO Run2](./images/ADO-run2.png)
    
@@ -344,7 +344,7 @@ This step deploys the training pipeline to the Azure Machine Learning workspace 
    
    ![ADO Where's your code](./images/ado-wheresyourcode.png)
    
-   4. Select your /MLOps-Test repository! ("Empty" reposity you created in 2.2)
+   4. Select your /MLOps-Test repository! ("Empty" repository you created in 2.3)
    
    ![ADO Run2](./images/ADO-run2.png)
    
@@ -382,7 +382,7 @@ This step deploys the training pipeline to the Azure Machine Learning workspace 
 
 This finishes the demo according to the architectual patters: Azure Machine Learning Classical Machine Learning, Azure Machine Learning Computer Vision. Next you can dive into your Azure Machine Learning service in the Azure Portal and see the inference results of this example model. 
 
-As the cli v2 is still in development, the following components are not part of this demo:
+As the CLI v2 is still in development, the following components are not part of this demo:
 - Model Monitoring for Data/Model Drift
 - Automated Retraining
 - Model and Infrastructure triggers
