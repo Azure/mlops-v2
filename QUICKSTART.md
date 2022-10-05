@@ -74,7 +74,7 @@
       project_name=Mlops-Test   #replace with your project name
       github_org_name=orgname   #replace with your github org name
       project_template_github_url=https://github.com/azure/mlops-project-template   #replace with the url for the project template for your organization created in step 2.2
-   
+      orchestration=azure-devops #options: github-actions / azure-devops
    ```
    Currently we support classical and cv (computer-vision) pipelines. *NLP is currently under development*, though the CV pipeline can be modified to run NLP models. 
 
@@ -82,11 +82,11 @@
    * infrastructure_version gives you deployment choices based on your preferred deployment scenario
    * project_type defines the AI workload you want to run in your MLOps system
    * mlops_version selects your preferred environment
-
    * git_folder_location points to mlopsv2root
    * project_name is the same name (case sensitive), that you used when creating the empty repo in step 2.3
    * github_org_name is your github organization, that you used when creating the empty repo
    * project_template_github_url is the URL of the repo you created in step 2.2
+   * orchestration is the method of deployment
    
    2.7. At the end of the sparse_checkout, it pushes the initilized repo into the new, empty created github repository. In order to do that, we need to authenticate against your github organization by SSH. If not already established, please follow the steps below (see: [Key Setup](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent) ):
 
