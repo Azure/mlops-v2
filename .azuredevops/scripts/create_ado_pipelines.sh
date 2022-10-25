@@ -17,7 +17,7 @@ az pipelines folder create
     --path $repo_name/mlops \
     --project $project_name
 
-mlops_pipeline_files=$(ls $path_to_infrastructure_pipelines)
+mlops_pipeline_files=$(ls $path_to_mlops_pipelines)
 
 for file in $mlops_pipeline_files
 do
