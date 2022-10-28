@@ -41,6 +41,6 @@ mv infrastructure/$infrastructure_version $infrastructure_version
 rm -rf infrastructure
 mv $infrastructure_version infrastructure
 
-git add . && git commit -m 'Initial commit'
+git add . && git commit -m 'initial commit'
 git remote -v
 git push --set-upstream origin here-is-your-template
