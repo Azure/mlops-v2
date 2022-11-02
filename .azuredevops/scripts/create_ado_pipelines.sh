@@ -43,7 +43,7 @@ do
         --detect true \
         --description "Automatically created pipeline for infra $file" \
         --repository $repo_name \
-        --branch here-is-your-template \
+        --branch main \
         --yml-path $path_to_infrastructure_pipelines/$file \
         --project $project_name \
         --repository-type tfsgit \
