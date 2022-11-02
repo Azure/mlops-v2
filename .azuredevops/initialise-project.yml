@@ -26,6 +26,7 @@ parameters:
   values:
   - classical
   - cv
+  - NLP
   
 - name: mlopsVersion
   displayName: MLOps version

@@ -26,7 +26,7 @@ do
         --detect true \
         --description "Automatically created pipeline for MLOps $file" \
         --repository $repo_name \
-        --branch here-is-your-template \
+        --branch main \
         --yml-path $path_to_mlops_pipelines/$file \
         --project $project_name \
         --repository-type tfsgit \
