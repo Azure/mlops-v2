@@ -1,0 +1,72 @@
+trigger: none
+
+parameters:
+- name: adoProjectName
+  displayName: ADO project name
+  type: string
+
+- name: repoName
+  displayName: Repo name
+  type: string
+
+- name: mlOpsProjectTemplateAdoProjectName
+  displayName: MLOps Project Template's ADO project name
+  type: string
+  # default: [good idea to put your default here]
+
+- name: mlOpsProjectRepoName
+  displayName: MLOps Project Template's repo
+  type: string  
+  default: mlops-project-template
+
+- name: projectType
+  displayName: ML project type
+  type: string
+  default: classical
+  values:
+  - classical
+  - cv
+  - nlp
+  
+- name: mlopsVersion
+  displayName: MLOps version
+  type: string
+  default: aml-cli-v2
+  values:
+  - python-sdk
+  - aml-cli-v2
+
+stages:
+  - stage: InitialiseProject
+    displayName: Initialise Project
+    jobs:
+      - job: InitialiseProjectJob
+        displayName: Checkout repos, initialise your new one and create pipelines
+        steps:
+          - checkout: self
+            persistCredentials: false
+          - checkout: git://${{ parameters.mlOpsProjectTemplateAdoProjectName }}/${{ parameters.mlOpsProjectRepoName }}
+            persistCredentials: false
+          - checkout: git://${{ parameters.adoProjectName }}/${{ parameters.repoName }}
+            persistCredentials: true
+
+          - task: Bash@3
+            displayName: Run script to initialise your repo
+            inputs:
+              targetType: 'filePath'
+              filePath: mlops-v2/.azuredevops/scripts/initialise_repo.sh
+              arguments: >
+                ${{ parameters.repoName }}
+                ${{ parameters.projectType }}
+                ${{ parameters.mlopsVersion }}
+
+          - task: Bash@3
+            displayName: Run script to create pipelines in ADO
+            inputs:
+              targetType: 'filePath'
+              filePath: mlops-v2/.azuredevops/scripts/create_ado_pipelines.sh
+              arguments: >
+                ${{ parameters.repoName }}
+                ${{ parameters.adoProjectName }}
+            env:
+              AZURE_DEVOPS_EXT_PAT: $(System.AccessToken)
