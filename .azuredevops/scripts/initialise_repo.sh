@@ -18,7 +18,7 @@ cd ..
 mv mlops-project-template/* files_to_delete
 
 cd $repo_name
-git checkout -b here-is-your-template
+git checkout -b main
 cd ..
 rm $repo_name/*
 mv files_to_keep/* $repo_name
@@ -43,4 +43,4 @@ mv $infrastructure_version infrastructure
 
 git add . && git commit -m 'initial commit'
 git remote -v
-git push --set-upstream origin here-is-your-template
+git push --set-upstream origin main
