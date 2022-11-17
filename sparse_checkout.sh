@@ -12,7 +12,7 @@ cd $git_folder_location
 
 # Clone MLOps Project repo
 git clone \
-  --branch 'main' \
+  --branch 'main-dec31' \
   --depth 1  \
   --filter=blob:none  \
   --sparse \
@@ -35,6 +35,10 @@ then
 fi
 rm -rf $project_type
 
+mv infrastructure/$infrastructure_version $infrastructure_version
+rm -rf infrastructure
+mv $infrastructure_version infrastructure
+
 if [[ "$orchestration" == "github-actions" ]]
 then
   echo "github-actions"
@@ -42,17 +46,16 @@ then
   mkdir -p .github/workflows/
   mv mlops/github-actions/* .github/workflows/
   rm -rf mlops/github-actions
+  mv infrastructure/github-actions/* .github/workflows/
+  rm -rf mlops/github-actions
 fi
 
 if [[ "$orchestration" == "azure-devops" ]]
 then
   echo "azure-devops"
   rm -rf mlops/github-actions
+  rm -rf infrastructure/github-actions
 fi
-
-mv infrastructure/$infrastructure_version $infrastructure_version
-rm -rf infrastructure
-mv $infrastructure_version infrastructure
 
 # Upload to custom repo in Github
 rm -rf .git
