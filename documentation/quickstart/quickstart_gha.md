@@ -1,13 +1,18 @@
-# Quickstart
+# Quickstart: Github Repositories and GitHub Actions Pipelines
 
 ## Technical requirements
 
 - Github as the source control repository
-- Azure DevOps or Github Actions as the DevOps orchestration tool
+- Github Actions as the DevOps orchestration tool
 - The [Terraform extension for Azure DevOps](https://marketplace.visualstudio.com/items?itemName=ms-devlabs.custom-terraform-tasks) if you are using Azure DevOps + Terraform to spin up infrastructure
 - Azure service principals to access / create Azure resources from Azure DevOps or Github Actions (or the ability to create them)
-- Git bash, WSL or another shell script editor on your local machine; version 2.27 or newer required
+- Git bash, WSL or another shell script editor on your local machine
+
+>**Note:**
+>
+>**Git version 2.27 or newer is required. See [these instructions](https://github.com/cli/cli/blob/trunk/docs/install_linux.md#debian-ubuntu-linux-raspberry-pi-os-apt) to upgrade.**
    
+
 
 ## Prerequisites
 ---
@@ -65,7 +70,7 @@
    
    2.6. Now you need to set a few variables depending on your environment in the script /mlops-v2/sparse_checkout.sh. Open this file in an editor and set the following variables:
    
-   ```console
+   ```bash
    
       infrastructure_version=terraform   #options: terraform / bicep
       project_type=classical   #options: classical / cv
