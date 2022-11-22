@@ -13,7 +13,7 @@ The solution accelerator itself is comprised of three code repositories:
 
 A diagram of the respoitories and their relationships is below:
 
-![](images/repository_arch.png)
+![](media/repository_arch.png)
 
 ## Defining a New ML Project
 
@@ -51,6 +51,3 @@ project_template_github_url=https://github.com/azure/mlops-project-template   #r
 ## Creating the new project through sparse checkout
 
 Once the [sparse_checkout.sh](/sparse_checkout.sh) script is configured, running it will perform a git sparse checkout from the template repositories, checking out only the code relevant to your selections in the script. This code is placed into your git_folder_location then the new customized project is pushed into your source code repository. 
-
-<br>
-<div style="text-align: right"><a /documentation/architecture/README.md>Next> Architectural Patterns<a></div>

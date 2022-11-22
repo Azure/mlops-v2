@@ -385,21 +385,13 @@ This step deploys the training pipeline to the Azure Machine Learning workspace 
 ## Next Steps
 ---
 
-This finishes the demo according to the architectual patters: Azure Machine Learning Classical Machine Learning, Azure Machine Learning Computer Vision. Next you can dive into your Azure Machine Learning service in the Azure Portal and see the inference results of this example model. 
+This finishes the demo according to the architectual pattern: Azure Machine Learning Classical Machine Learning. Next you can dive into your Azure Machine Learning service in the Azure Portal and see the inference results of this example model. 
 
-As the CLI v2 is still in development, the following components are not part of this demo:
+As elements of Azure Machine Learning are still in development, the following components are not part of this demo:
 - Model Monitoring for Data/Model Drift
 - Automated Retraining
 - Model and Infrastructure triggers
 
-As the development team builds according to the Product Groups release plan, no custom components are going to be developed rather it is intended to wait for full GA release of the cli v2 to address those components. 
-
 Interim it is recommended to schedule the deployment pipeline for development for complete model retraining on a timed trigger.
 
-For questions, please hand in an issue or reach out to the development team at Microsoft.
-
-
-   
-   
-   
- 
+For questions, please [submit an issue](https://github.com/Azure/mlops-v2/issues) or reach out to the development team at Microsoft.

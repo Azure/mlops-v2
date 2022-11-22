@@ -2,7 +2,7 @@
 
 The Azure Machine Learning Computer Vision Architecture is based on the Classical Machine Learning Architecture with some modifications particular to supervised CV scenarios.
 
-![Azure Machine Learning Computer Vision Architecture](images/AzureML_SupervisedCV_Architecture.png)
+![Azure Machine Learning Computer Vision Architecture](media/AzureML_SupervisedCV_Architecture.png)
 
 
 1. **Data Estate**

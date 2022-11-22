@@ -2,7 +2,7 @@
 
 The Azure Machine Learning Natural Language Processing Architecture is based on the Classical Machine Learning Architecture with some modifications particular to NLP  scenarios.
 
-![Azure Machine Learning Natural Language Processing Architecture](images/AzureML_NLP_Classification_Architecture.png)
+![Azure Machine Learning Natural Language Processing Architecture](media/AzureML_NLP_Classification_Architecture.png)
 
 
 1. **Data Estate**

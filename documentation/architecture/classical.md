@@ -2,7 +2,7 @@
 
 Below is the MLOps v2 architecture for a Classical Machine Learning scenario on tabular data using Azure Machine Learning along with explanation of the main elements and details.
 
-![Azure Machine Learning Classical Machine Learning Architecture](images/AzureML_CML_Architecture.png)
+![Azure Machine Learning Classical Machine Learning Architecture](media/AzureML_CML_Architecture.png)
 
 1. **Data Estate**
 
