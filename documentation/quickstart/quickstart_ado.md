@@ -1,4 +1,4 @@
-# Quickstart: Azure DevOps Repositories and Pipelines
+# Deployment Guide using Azure DevOps Repositories and Pipelines
 
 ## Technical requirements
 
@@ -15,11 +15,6 @@
 
 ## Prerequisites
 ---
-
-**Duration: 45min**
-
-**Note: This demo is based on the beta version for the MLOps Azure Machine Learning Classical ML and CV (Computer Vision) Pattern. Due to ongoing cli v2 changes and Azure Machine Learning enhencements, the demo can fail. The team is working on keeping the example as up-to-date as possible.**
-
 
 1. <details>
    <summary>Create Service Principal </summary>
@@ -257,7 +252,7 @@ This step deploys the training pipeline to the Azure Machine Learning workspace 
    
    ![ADO Where's your code](./images/ado-wheresyourcode.png)
    
-   5. Select your /MLOps-Test repository. ("Empty" repository you created in 2.3)
+   5. Select your /MLOps-Test repository. 
    
    ![ADO Run2](./images/ADO-run2.png)
    
@@ -284,6 +279,7 @@ This step deploys the training pipeline to the Azure Machine Learning workspace 
    
    ![ADO Run6](./images/ADO-run-infra-pipeline.png)
 
+> Note: the "Unable move and reuse existing repository to required location" warnings may be ignored.
 </details>
 
 >
@@ -304,7 +300,7 @@ This step deploys the training pipeline to the Azure Machine Learning workspace 
    
    ![ADO Where's your code](./images/ado-wheresyourcode.png)
    
-   4. Select your /MLOps-Test repository! ("Empty" repository you created in 2.3)
+   4. Select your /MLOps-Test repository
    
    ![ADO Run2](./images/ADO-run2.png)
    

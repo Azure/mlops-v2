@@ -1,6 +1,8 @@
-# Quickstart: Azure Machine Learning Pattern Demo
+# Getting Started
 
-The following guides walk you through deploying a demo project for the classical machine learning pattern with Azure Machine Learning using either Azure DevOps or GitHub Actions for orchestration. 
+## Deploying the Solution Accelerator
+
+The following guides walk you through deploying the solution accelerator using either Azure DevOps or GitHub Workflows for source code management and orchestration. 
 
 * [Azure DevOps ](/documentation/quickstart/quickstart_ado.md)
-* [Github Actions](/documentation/quickstart/quickstart_gha.md)
+* [Github Workflows](/documentation/quickstart/quickstart_gha.md)

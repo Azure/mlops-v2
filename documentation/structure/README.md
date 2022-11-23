@@ -1,17 +1,23 @@
-# Accelerator Structure and Implementation
+# Solution Accelerator Structure and Implementation
+
+The solution accelerator is not a product but rather an adaptable framework for bootstrapping end-to-end machine learning projects based on defined patterns using the tools your organization uses.
 
 The MLOps pattern the solution accelerator deploys is broadly organized into two loops, an inner loop and an outer loop:
 * **Inner loop**: Data Scientists iterate over data wrangling, model development, and experimentation.
 * **Outer loop**: Infrastructure and ML Engineers implement CI/CD patterns to orchestrate the model through testing, staging, production, and monitoring.
 
+> Note that this solution accelerator focuses on implementing end-to-end MLOps from model development through deployment. Beyond light data wrangling and feature engineering that may occur within the inner loop, the accelerator does not address DataOps and larger scale data engineering.
+
 ## Repositories
 
-The solution accelerator itself is comprised of three code repositories:
-* [Azure/mlops-v2](https://github.com/Azure/mlops-v2): This repository, the deployment starting point and "project factory" for repeatable MLOps projects.
-* [Azure/mlops-template](https://github.com/Azure/mlops-templates): defines templates for mlops pipelines and actions such as training, model registration, deployment, etc. using either the CLI or SDK.
-* [Azure/mlops-project-template](https://github.com/Azure/mlops-project-template): defines templates for deploying infastructure based on bicep or terraform as well as project spaces appropriate to each project type ([classical-ml](https://github.com/Azure/mlops-project-template/tree/main/classical), [computer vision](https://github.com/Azure/mlops-project-template/tree/main/cv), [natural language processing](https://github.com/Azure/mlops-project-template/tree/main/nlp)).
+The solution accelerator itself is comprised of three code repositories with templates that allow you to bootstrap a new machine learning project based on your choices of infrastructure management, mlops orchestration, and ML project use case:
+1.  [Azure/mlops-v2](https://github.com/Azure/mlops-v2): This repository, the deployment starting point and "project factory" for repeatable MLOps projects. This repository is cloned to allow for a local copy of documentation and customization of the project deployment script.
 
-A diagram of the respoitories and their relationships is below:
+2. [Azure/mlops-template](https://github.com/Azure/mlops-templates): defines templates for mlops pipelines and actions such as training, model registration, deployment, etc. using either the CLI or SDK. This repository is forked into your organization to provide mlops pipelines that may be modified and reused across multiple projects or kept in sync with the parent repository as updates are made to accomodate new function in Azure Machine Learning.
+
+3. [Azure/mlops-project-template](https://github.com/Azure/mlops-project-template): defines templates for deploying infastructure based on bicep or terraform as well as project spaces appropriate to each project type ([classical-ml](https://github.com/Azure/mlops-project-template/tree/main/classical), [computer vision](https://github.com/Azure/mlops-project-template/tree/main/cv), [natural language processing](https://github.com/Azure/mlops-project-template/tree/main/nlp)). A copy of this repository is generated from a template of base infrastructure deployment patterns which can be modified for suit the requirements of your organization.
+
+A diagram of the repositories and their relationships is below:
 
 ![](media/repository_arch.png)
 

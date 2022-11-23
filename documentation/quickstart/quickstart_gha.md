@@ -1,4 +1,4 @@
-# Quickstart: Github Repositories and GitHub Actions Pipelines
+# Deployment Guide using Github Repositories Workflows
 
 ## Technical requirements
 
@@ -17,9 +17,6 @@
 ## Prerequisites
 ---
 
-**Duration: 45min**
-
-**Note: This demo is based on the beta version for the MLOps Azure Machine Learning Classical ML and CV (Computer Vision) Pattern. Due to ongoing, cli v2 changes and Azure Machine Learning enhencements, the demo can fail. The team is working on keeping the example as up-to-date as possible.**
 
 
 1. Create Service Principal
@@ -59,7 +56,11 @@
    
    ![image](./images/gh-generate.png)
 
-   2.3. Go to your Github organization and create an **empty** repo. This is going to be the repo, into which you'll push your sparse checkout local repo. (more to that later) 
+   2.3. Go to your Github organization and create an empty repo. This is going to be the repo into which you'll push your sparse checkout local repo. (more to that later).
+
+   > **Note:**
+   >
+   > The new repo must be empty to run sparse_checkout. Do not add a README file when creating the repository. The sparse_checkout.sh script creates assets in the local project directory and pushes them into the new repository. If the script is interrupted for any reason, there may be files already created in the local directory and repository. Ensure both are empty before re-running the script.
    
    ![Github Use Template](./images/gh-create-empty-mlops-sparse.png)
    
@@ -81,7 +82,7 @@
       project_template_github_url=https://github.com/azure/mlops-project-template   #replace with the url for the project template for your organization created in step 2.2
       orchestration=azure-devops #options: github-actions / azure-devops
    ```
-   Currently we support classical and cv (computer-vision) pipelines. *NLP is currently under development*, though the CV pipeline can be modified to run NLP models. 
+   Currently we support classical, cv (computer-vision), and nlp (natural language processing) pipelines. 
 
    > a few pointers here: 
    * infrastructure_version gives you deployment choices based on your preferred deployment scenario
@@ -182,13 +183,17 @@ This step deploys the training pipeline to the Azure Machine Learning workspace 
    
    Under global, there's two values namespace and postfix. These values should render the names of the artifacts to create unique. Especially the name for the storage account, which has the most rigid constraints, like uniqueness Azure wide and 3-5 lowercase characters and numbers. So please change namespace and/or postfix to a value of your liking and remember to stay within the contraints of a storage account name as mentioned above. Then save, commit, push, pr to get these values into the pipeline.
    
-   If your are running a Deep Learning workload such as CV or NLP, you have to ensure your GPU compute is availible in your deployment zone. Please replace as shown above your location to eastus. Example:
+   If you are running a Deep Learning workload such as CV or NLP, you have to ensure your GPU compute is availible in your deployment zone. Please replace as shown above your location to eastus. Example:
    
     namespace: [5 max random new letters]
     postfix: [4 max random new digits]
     location: eastus
     
-   Please repeat this step for "config-infra-dev.yml" and "config-infra-prod.yml"!   
+   Please repeat this step for "config-infra-dev.yml" and "config-infra-prod.yml".
+
+   > Note:
+   >
+   > The enable_monitoring flag in these files defaults to False. Enabling this flag will add additional elements to the deployment to support Azure ML monitoring based on https://github.com/microsoft/AzureML-Observability. This will include an ADX cluster and increase the deployment time and cost of the MLOps solution.
    
 ## Outer Loop: Deploying Infrastructure via Azure DevOps
 ---
@@ -245,6 +250,8 @@ This step deploys the training pipeline to the Azure Machine Learning workspace 
    Now the Outer Loop of the MLOps Architecture is deployed.
    
    ![ADO Run6](./images/ADO-run-infra-pipeline.png)
+
+   > Note: the "Unable move and reuse existing repository to required location" warnings may be ignored.
 
 ## Inner Loop: Deploying Classical ML Model Development / Moving to Test Environment - GitHub Actions
  1. Go to the GitHub Actions tab.
