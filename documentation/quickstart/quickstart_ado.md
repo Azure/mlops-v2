@@ -248,7 +248,7 @@ This step deploys the training pipeline to the Azure Machine Learning workspace 
    
    ![ADO Run1](./images/ADO-run1.png)
    
-   4. Select "Github".
+   4. Select "Azure Repos Git".
    
    ![ADO Where's your code](./images/ado-wheresyourcode.png)
    
@@ -296,7 +296,7 @@ This step deploys the training pipeline to the Azure Machine Learning workspace 
    
    ![ADO Run1](./images/ADO-run1.png)
    
-   3. Select "Github".
+   3. Select "Azure Repos Git".
    
    ![ADO Where's your code](./images/ado-wheresyourcode.png)
    
@@ -311,6 +311,11 @@ This step deploys the training pipeline to the Azure Machine Learning workspace 
    6. Select "main" as a branch and choose '/mlops/devops-pipelines/deploy-model-training-pipeline.yml', then select "Continue".  
 
    ![ADO Run9](./images/ADO-run9.png)
+
+   7. Before running the pipeline, the repository location for the mlops-templates will need to be updated. Modify the **resources** section of the pipeline to match the image below
+
+   ![resourceRepoADO](./images/ado-pipeline-resourcesRepoADO.png)
+
    </details>
    
    
@@ -358,7 +363,7 @@ This step deploys the training pipeline to the Azure Machine Learning workspace 
    
    ![ADO Run1](./images/ADO-run1.png)
    
-   3. Select "Github".
+   3. Select "Azure Repos Git".
    
    ![ADO Where's your code](./images/ado-wheresyourcode.png)
    
@@ -380,14 +385,18 @@ This step deploys the training pipeline to the Azure Machine Learning workspace 
       Then select "Continue".  
    
    ![ADO Run10](./images/ADO-run10.png)
+
+   7. The resource repository will need to be modified to request the correct repository from your project. Modify the Repository section as shown below
+
+   ![resourceRepoADO](./images/ado-pipeline-resourcesRepoADO.png)
    
-   7. Batch/Online endpoint names need to be unique, so please change [your endpointname] to another unique name and then select "Run".
+   8. Batch/Online endpoint names need to be unique, so please change [your endpointname] to another unique name and then select "Run".
 
    ![ADO Run11](./images/ADO-batch-pipeline.png)
    
    **IMPORTANT: If the run fails due to an existing online endpoint name, recreate the pipeline as discribed above and change [your endpointname] to [your endpointname [random number]]"**
    
-   8. When the run completes, you will see:
+   9.  When the run completes, you will see:
    
    ![ADO Run12](./images/ADO-batch-pipeline-run.png)
    
