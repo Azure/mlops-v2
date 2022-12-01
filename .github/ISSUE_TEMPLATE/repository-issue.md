@@ -1,0 +1,94 @@
+---
+name: Bug Report
+description: Create a report to help us reproduce and correct the bug or the issue at hand.
+labels: ['Bug', 'Needs Triage']
+assignees: 'setuc'
+---
+
+body:
+- type: markdown
+  attributes:
+    value: >
+      #### Before submitting a bur or an issue, please make sure the issue hasn't been already
+      addressed by searching through [the past issues](https://github.com/Azure/mlops-v2/issues).
+- type: textarea
+  attributes:
+    label: Describe the bug or the issue that you are facing
+    description: >
+      A clear and concise description of what the bug is.
+  validations:
+    required: true
+- type: textarea
+  attributes:
+    label: Steps/Code to Reproduce
+    description: |
+      Please add the steps required for us to reproduce the issue. We acknowledge that some of the information cannot be shared, but it really helps us to quickly
+      identify the issue, able to reproduce the issue/bug/problem, and help analyze the root cause. Giving vague ideas, or sharing screenshots wihout any details doesnt help and will increase the effort and time required to pin point the issue and develop a fix.
+    placeholder: |
+      ```
+      Sample steps to reproduce the problem.
+      ```
+  validations:
+    required: true
+- type: textarea
+  attributes:
+    label: Expected Output
+    description: >
+      Please paste or describe the expected output. Explanation with a screenshot will be helpful.
+    placeholder: >
+      Example: No error is thrown.
+  validations:
+    required: true
+- type: textarea
+  attributes:
+    label: Versions
+    description: |
+      Azure DevOps or GitHub Actions. Which release are you using? Are you working off the main branch of our repository?
+      Bicep or Terraform
+      Azure ML CLI or Azure ML SDK. Please add the version that you are using
+      Examples: Pre built examples from Tabular, Computer Vision (CV), Natural Language Processing (NLP), or your own example
+  validations:
+    required: true
+- type: dropdown
+  id: MLOps Platform
+  attributes:
+    label: Which platform are you using for deploying your infrastrucutre?
+    options:
+      - Azure DevOps (ADO)
+      - GitHub Actions (GitHub)
+      - Others
+  validations:
+    required: true
+- type: textarea
+  attributes:
+    label: If you mentioned Others, please mention which platformm are you using?
+- type: dropdown
+  id: Infrastructure as Code (IaC)
+  attributes:
+    label: What are you using for deploying your infrastrucutre?
+    options:
+      - Bicep
+      - Terraform
+      - Pre-Deployed
+  validations:
+    required: true
+- type: dropdown
+  id: CLISDK
+  attributes:
+    label: Are you using Azure ML CLI v2 or Azure ML Python SDK v2
+    options:
+      - Azure ML CLI v2
+      - Azure ML Python SDK v2
+  validations:
+    required: true
+- type: textarea
+  attributes:
+    label: Describe the example that you are trying to run?
+    description: |
+      Examples: Pre built examples from Tabular, Computer Vision (CV), Natural Language Processing (NLP), or your own example
+  validations:
+    required: true
+- type: markdown
+  attributes:
+    value: >
+      Thank you 👍!
