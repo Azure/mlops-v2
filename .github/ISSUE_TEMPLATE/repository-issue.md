@@ -1,5 +1,4 @@
 name: Bug Report
-about: Create a bug/issue report
 description: Create a report to help us reproduce and correct the bug or the issue at hand.
 labels: ['Bug', 'Needs Triage']
 assignees: 'setuc'
