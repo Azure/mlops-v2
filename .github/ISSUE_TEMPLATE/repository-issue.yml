@@ -61,7 +61,7 @@ body:
   attributes:
     label: If you mentioned Others, please mention which platformm are you using?
 - type: dropdown
-  id: Infrastructure_as_Code_(IaC)
+  id: Infrastructure_as_Code_IaC
   attributes:
     label: What are you using for deploying your infrastrucutre?
     options:
