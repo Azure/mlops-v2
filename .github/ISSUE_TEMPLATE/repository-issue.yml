@@ -48,7 +48,7 @@ body:
   validations:
     required: true
 - type: dropdown
-  id: MLOps Platform
+  id: MLOps_Platform
   attributes:
     label: Which platform are you using for deploying your infrastrucutre?
     options:
@@ -61,7 +61,7 @@ body:
   attributes:
     label: If you mentioned Others, please mention which platformm are you using?
 - type: dropdown
-  id: Infrastructure as Code (IaC)
+  id: Infrastructure_as_Code_(IaC)
   attributes:
     label: What are you using for deploying your infrastrucutre?
     options:
