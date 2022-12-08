@@ -47,7 +47,8 @@ then
   mv mlops/github-actions/* .github/workflows/
   rm -rf mlops/github-actions
   mv infrastructure/github-actions/* .github/workflows/
-  rm -rf mlops/github-actions
+  rm -rf infrastructure/devops-pipelines
+  rm -rf infrastructure/github-actions
 fi
 
 if [[ "$orchestration" == "azure-devops" ]]
