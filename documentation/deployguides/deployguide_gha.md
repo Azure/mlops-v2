@@ -4,6 +4,8 @@
 
 - Github as the source control repository
 - Github Actions as the DevOps orchestration tool
+- [GitHub client](https://cli.github.com/)
+- [Azure CLI ](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli)
 - The [Terraform extension for Azure DevOps](https://marketplace.visualstudio.com/items?itemName=ms-devlabs.custom-terraform-tasks) if you are using Azure DevOps + Terraform to spin up infrastructure
 - Azure service principals to access / create Azure resources from Azure DevOps or Github Actions (or the ability to create them)
 - Git bash, WSL or another shell script editor on your local machine
@@ -13,13 +15,121 @@
 >**Git version 2.27 or newer is required. See [these instructions](https://github.com/cli/cli/blob/trunk/docs/install_linux.md#debian-ubuntu-linux-raspberry-pi-os-apt) to upgrade.**
    
 
+>**Note:**
+>
+>The GitHub-based MLOps pattern uses GitHub Action workflows for model training and deployment. At this time, this CI/CD environment still uses an Azure DevOps pipeline to deploy infrastructure. This will be addressed in the next release of this repository.  
 
-## Prerequisites
+## Configure The GitHub Environment
 ---
 
 
+1. **Replicate MLOps-V2 Template Repositories in your GitHub organization**  
+   Go to https://github.com/Azure/mlops-templates/fork to fork the mlops templates repo into your Github org. This repo has reusable mlops code that can be used across multiple projects. 
 
-1. Create Service Principal
+   ![image](./images/gh-fork.png)
+
+   Go to https://github.com/Azure/mlops-project-template/generate to create a repository in your Github org using the mlops-project-template. This is the monorepo that you will use to pull example projects from in a later step. 
+
+   ![image](./images/gh-generate.png)
+
+2. **Clone the mlops-v2 repository to local system**  
+   On your local machine, select or create a root directory (ex: 'mlprojects') to hold your project repository as well as the mlops-v2 repository. Change to this directory.
+
+   Clone the mlops-v2 repository to this directory. This provides the documentation and the `sparse_checkout.sh` script. This repository and folder will be used to bootstrap your projects:  
+   `# git clone https://github.com/Azure/mlops-v2.git`  
+
+3. **Configure and run sparse checkout**  
+   From your local project root directory, open the `/mlops-v2/sparse_checkout.sh` for editing. Edit the following variables as needed to select the infastructure management tool used by your organization, the type of Open this file in an editor and set the following variables:
+
+   * **infrastructure_version** selects the tool that will be used to deploy cloud resources.
+   * **project_type** selects the AI workload type for your project (classical ml, computer vision, or nlp)
+   * **mlops_version** selects your preferred interaction approach with Azure Machine Learning
+   * **git_folder_location** points to the root project directory to which you cloned mlops-v2 in step 3
+   * **project_name** is the name (case sensitive) of your project for which you created an empty repository in step 2
+   * **github_org_name** is your github organization
+   * **project_template_github_url** is the URL to the original or your generated clone of the mlops_project_template repository from step 1
+   * **orchestration** specifies the CI/CD orchestration to use
+   <br><br>
+   A sparse_checkout.sh example is below:  
+
+   ```bash
+      #options: terraform / bicep
+      infrastructure_version=terraform
+
+      #options: classical / cv / nlp
+      project_type=classical
+      
+      #options: python-sdk / aml-cli-v2
+      mlops_version=aml-cli-v2   
+      
+      #replace with the local root folder location where you want
+      git_folder_location='/home/<username>/mlprojects'    
+      
+      #replace with your project name
+      project_name=taxi-fare-regression   
+      
+      #replace with your github org name
+      github_org_name=<orgname>
+      
+      #replace with the url for the project template for your organization created in step 2.2
+      project_template_github_url=https://github.com/azure/mlops-project-template   
+      
+      #options: github-actions / azure-devops
+      orchestration=github-actions 
+   ```
+   Currently, classical, cv (computer-vision), and nlp (natural language processing) pipelines are supported. 
+
+4. **Run sparse checkout**  
+   The `sparse_checkout.sh` script will use ssh to authenticate to your GitHub organization. If this is not yet configured in your environment, follow the steps below or refer to the documentation at  [GitHub Key Setup](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent).
+   
+   > **GitHub Key Setup**
+   >
+   > On your local machine, create a new ssh key:  
+   > `# ssh-keygen -t ed25519 -C "<your_email@example.com>"`  
+   > You may press enter to all three prompts to create a new key in `/home/<username>/.ssh/id_ed25519`
+   >
+   > Add your SSH key to your SSH agent:  
+   > `# eval "$(ssh-agent -s)" `  
+   > `# ssh-add ~/.ssh/id_ed25519`
+   >
+   > Get your public key to add to GitHub:  
+   > `# cat ~/.ssh/id_ed25519.pub`  
+   > It will be a string of the format '`ssh-ed25519 ... your_email@example.com`'. Copy this string.
+   >
+   > [Add your SSH key to Github](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account). Under your account menu, select "Settings", then "SSH and GPG Keys". Select "New SSH key" and enter a title. Paste your public key into the key box and click "Add SSH key"
+
+   From your root project directory (ex: mlprojects/), execute the `sparse_checkout.sh` script:  
+   `# bash mlops-v2/sparse_checkout.sh`  
+
+   This will run the script, using git sparse checkout to build a local copy of your project repository based on your choices configured in the script. It will then push this repository into your GitHub project.  
+
+   Monitor the script execution for any errors. If there are errors, you can safely remove the local copy of the repository (ex: taxi_fare_regression/) as well as recreate or empty the GitHub project repository. After addressing the errors, run the script again.
+   
+   After the script runs successfully, the GitHub project will be initialized with your project files.
+
+5. **Configure an SSO Personal Access Token in GitHub**  
+The Personal Access Token will be used by Azure DevOps to access the GitHub repositories necessary to deploy the infrastructure for your project.  
+
+   Under your GitHub account Settings, select "Developer Settings" at the bottom left.  
+
+   ![GH1](./images/gh-setup1.png)
+
+   Select "Personal Access Tokens", then "Tokens (classic)", then "Generate New Token". Select the check boxes and name your token "MLOpsToken". Select "Generate Token". Be sure to copy and save the token key to a notepad.  
+
+   Configure the repo, admin, and user OAuth scopes needed for this token:
+
+   ![GH2](./images/gh-setup2.png)  
+   
+    If your organization uses single sign on for Github, then click on "Authorize" the token to have access to the github organization. The screenshot below shows an example of authorization for the token to interact with your repository. Your organization maybe different. 
+
+   ![GH3](./images/gh-setup3.png)
+
+   The GitHub setup is successfully finished.
+
+## Configure Azure DevOps Environment to Deploy Infrastructure
+---
+
+1. Create Service Principal(s) for Dev and Prod environments
 
    For the use of the demo, the creation of one or two service principles is required, depending on how many environments, you want to work on (Dev or Prod or Both). Go into your Azure portal to set those up.
 
@@ -46,88 +156,6 @@
    1.7. Repeat step here, if you deploy Dev and Prod into the same subscription, otherwise change to the prod subscription and repeat with "Azure-ARM-Prod-ProjectName". The basic SP setup is successfully finished.
 
 
-2. Set up Github Environment
-
-   2.1. Go to https://github.com/Azure/mlops-templates/fork to fork the mlops templates repo into your Github org. This repo has reusable mlops code that can be used across multiple projects. 
-   
-   ![image](./images/gh-fork.png)
-   
-   2.2. Go to https://github.com/Azure/mlops-project-template/generate to create a repository in your Github org using the mlops-project-template. This is the monorepo that you will use to pull example projects from in a later step. 
-   
-   ![image](./images/gh-generate.png)
-
-   2.3. Go to your Github organization and create an empty repo. This is going to be the repo into which you'll push your sparse checkout local repo. (more to that later).
-
-   > **Note:**
-   >
-   > The new repo must be empty to run sparse_checkout. Do not add a README file when creating the repository. The sparse_checkout.sh script creates assets in the local project directory and pushes them into the new repository. If the script is interrupted for any reason, there may be files already created in the local directory and repository. Ensure both are empty before re-running the script.
-   
-   ![Github Use Template](./images/gh-create-empty-mlops-sparse.png)
-   
-     
-   2.4. Now you should have your own empty Github repository. Let's fill it up!
-
-   2.5. On your local machine create a directory or use an existing one, which is empty (p.ex. mlopsv2root). Use your shell environment (GitBash, Bash or WSL only) and CD into this directory. Now clone the Azure/mlops-v2 repo, which is going to give you the documentation and the sparse_checkout.sh script with 'git clone https://github.com/Azure/mlops-v2.git' (If you get a 404, you might need to login to Github). This creates a new directory mlops-v2 under mlopsv2root. NOTE: This mlops-v2 folder is only used to bootstrap your project. Your project folder will be generated using the sparse checkout and be linked to the blank repository you created in step 2.3.
-   
-   2.6. Now you need to set a few variables depending on your environment in the script /mlops-v2/sparse_checkout.sh. Open this file in an editor and set the following variables:
-   
-   ```bash
-   
-      infrastructure_version=terraform   #options: terraform / bicep
-      project_type=classical   #options: classical / cv
-      mlops_version=aml-cli-v2   #options: python-sdk / aml-cli-v2
-      git_folder_location='<local path>'   #replace with the local root folder location where you want to create the project folder
-      project_name=Mlops-Test   #replace with your project name
-      github_org_name=orgname   #replace with your github org name
-      project_template_github_url=https://github.com/azure/mlops-project-template   #replace with the url for the project template for your organization created in step 2.2
-      orchestration=azure-devops #options: github-actions / azure-devops
-   ```
-   Currently we support classical, cv (computer-vision), and nlp (natural language processing) pipelines. 
-
-   > a few pointers here: 
-   * infrastructure_version gives you deployment choices based on your preferred deployment scenario
-   * project_type defines the AI workload you want to run in your MLOps system
-   * mlops_version selects your preferred environment
-   * git_folder_location points to mlopsv2root
-   * project_name is the same name (case sensitive), that you used when creating the empty repo in step 2.3
-   * github_org_name is your github organization, that you used when creating the empty repo
-   * project_template_github_url is the URL of the repo you created in step 2.2
-   * orchestration is the method of deployment
-   
-   2.7. At the end of the sparse_checkout, it pushes the initilized repo into the new, empty created github repository. In order to do that, we need to authenticate against your github organization by SSH. If not already established, please follow the steps below (see: [Key Setup](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent) ):
-
-   2.7.1 Create a local key in your bash shell by entering: ssh-keygen -t ed25519 -C "your_email@example.com"   Please adjust your email address aligned with your github organization.
-
-   2.7.1.1 You will get promted by 3 different messages regarding your key set-up. You can press "enter" in all three cases and do not have to insert anything. E.g.: Enter a file in which to save the key (/home/you/.ssh/algorithm): [Press enter]
-
-   2.7.2 Add your SSH key to your SSH agent. Start the SSH agent by entering: eval "$(ssh-agent -s)"  It will return your process ID of your agent. Next, add the private key to the SSH agent by executing: ssh-add ~/.ssh/id_ed25519
-
-   2.7.3 Now add your SSH key to your github account ([SSH Key Github](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account))
-
-   2.7.3.1 Execute in your shell: cat ~/.ssh/id_ed25519.pub to get to public key. Copy everything including the email adress as the end and store it e.g.: ssh-ed25519 ... our_email@example.com
-
-   2.7.3.2 Now go to github and open your settings. In settings, select "SSH and GPG Keys". Select "New SSH key" and enter a title to the key. Paste your prior stored public key into the key box. Now select "Add SSH key".
-     
-   2.8. Now it's time to execute this script by running in mlopsv2root (if necessary make sure with pwd, that you're in mlopsv2root) in Git Bash or another terminal by running 'bash mlops-v2/sparse_checkout.sh'. This will use the settings in the variables to create a repo for your project which you can use in subsequent steps.
-
-   In case you face any authentication issues, follow this link to authenticate yourself using an ssh key: https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent.
-   > watch the output of the script, to make sure, no error(s) were happening. And if so remediate them before continuing. You can always delete the project_name named directory and reexecute the script after fixing any error(s). Be sure though, to reposition the current working directory to be mlopsv2root.
-
-   After this step ran successfully, you'll have an additional folder locally under mlopsv2root named after the project_name variable. This is a locally, fully initialized repo, which had been pushed to your new, empty repo, which is now no more empty.(make sure by refreshing on github)
-   
-   2.9. Next, create an SSO token in github by selecting "Developer settings" in your github account settings.
-
-   ![GH1](./images/GH-setup1.png)
-   
-   2.10. Select "Personal Access Token", then generate new token. Select the check boxes and name your token "MLOpsToken". Select "Generate Token". Copy/Paste token key to a notepad interim.
-   
-   ![GH2](./images/GH-setup2.png)
-   
-   2.11. If your organization uses single sign on for Github, then click on "Authorize" the token to have access to the github organization. The screenshot below shows an example of authorization for the token to interact with your repository. Your organization maybe different. 
-   
-   ![GH3](./images/GH-setup3.png)
-   
-   The github setup is successfully finished.
 
 
 3. Set up Azure DevOps
@@ -171,7 +199,7 @@
 
 This step deploys the training pipeline to the Azure Machine Learning workspace created in the previous steps. 
 
-## Outer Loop: Setting up Infrastructure via GitHub Actions
+## Setting up Infrastructure via GitHub Actions
 **IMPORTANT NOTE: Deployment of infrastructure using Terraform or Bicep is not yet enabled yet for Github Actions. It will be available in the next release. This section enables Github Actions to run AML Pipelines.**
  1. Set up your Azure Credentials in a GitHub Secret. 
     
@@ -195,7 +223,7 @@ This step deploys the training pipeline to the Azure Machine Learning workspace 
    >
    > The enable_monitoring flag in these files defaults to False. Enabling this flag will add additional elements to the deployment to support Azure ML monitoring based on https://github.com/microsoft/AzureML-Observability. This will include an ADX cluster and increase the deployment time and cost of the MLOps solution.
    
-## Outer Loop: Deploying Infrastructure via Azure DevOps
+## Deploying Infrastructure via Azure DevOps
 ---
    
    1. Go to your Github cloned repo and select the "config-infra-prod.yml" file.

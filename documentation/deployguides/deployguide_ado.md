@@ -1,23 +1,20 @@
-# Deployment Guide using Azure DevOps Repositories and Pipelines
+# Deployment Guide - Azure DevOps Repositories and Pipelines
 
-## Technical requirements
+This document will guide you through deploying the MLOps V2 project generator and projects using only Azure DevOps to host source repositories and pipelines.
 
-- Azure DevOps project that will host the source repositories and pipelines
-- The [Terraform extension for Azure DevOps](https://marketplace.visualstudio.com/items?itemName=ms-devlabs.custom-terraform-tasks) if you are using Azure DevOps + Terraform to spin up infrastructure
-- Azure subscriptions based on if you are deploying Prod only or Prod and Dev environments
-- Azure service principals to access / create Azure resources from Azure DevOps (or the ability to create them)
-- Git bash, WSL or another shell script editor on your local machine;
+**Requirements:**
+- If using Terraform to create and manage infrastructure from Azure DevOps, install the [Terraform extension for Azure DevOps](https://marketplace.visualstudio.com/items?itemName=ms-devlabs.custom-terraform-tasks).
+- [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli) with `azure-devops` extension.
+- Azure subscription(s) based on if you are deploying Prod only or Prod and Dev environments
+- Ability to create Azure service principals to access / create Azure resources from Azure DevOps
+- Git bash, WSL, or another shell script editor on your local machine
 
->**Note:**
->
->**Git version 2.27 or newer is required. See [these instructions](https://github.com/cli/cli/blob/trunk/docs/install_linux.md#debian-ubuntu-linux-raspberry-pi-os-apt) to upgrade.**
-   
 
-## Prerequisites
+## Setup MLOps V2 and a New MLOps Project in Azure DevOps
 ---
 
 1. <details>
-   <summary>Create Service Principal </summary>
+   <summary>Create Service Principals</summary>
    For the use of the demo, the creation of one or two service principles is required, depending on how many environments, you want to work on (Dev or Prod or Both). These principles can be created using one of the methods below:
       <details>
       <summary>Create from Azure Cloud Shell</summary>
@@ -36,7 +33,7 @@
       environment="<Dev|Prod>" #First letter should be capitalized
       servicePrincipalName="Azure-ARM-${environment}-${projectName}"
       # Verify the ID of the active subscription
-      echo "Using subscription ID $subscriptionID"
+      echo "Using subscription ID $subscriptionId"
       echo "Creating SP for RBAC with name $servicePrincipalName, with role $roleName and in scopes /subscriptions/$subscriptionId"
       az ad sp create-for-rbac --name $servicePrincipalName --role $roleName --scopes /subscriptions/$subscriptionId
       echo "Please ensure that the information created here is properly save for future use."
@@ -90,9 +87,7 @@
 2. <details>
    <summary>Set up Azure DevOps</summary>
 
-   ## Prerequisites 
-   ---
-
+   ### Requirements:  
    - An Organization in Azure DevOps (<a href="https://learn.microsoft.com/en-us/azure/devops/organizations/accounts/create-organization?view=azure-devops">Create your Organization</a>)
 
    2.1. Navigate to [Azure DevOps](https://go.microsoft.com/fwlink/?LinkId=2014676&githubsi=true&clcid=0x409&WebUserId=2ecdcbf9a1ae497d934540f4edce2b7d). 
@@ -201,7 +196,7 @@
      - Choose **aml-cli-v2** to yse the cli tools for training and deployment of your model
    - Infrastructure Version: 
      - Choose **Bicep** to deploy using Azure ARM based templates
-     - Choose **terrform** to use terraform based templates. 
+     - Choose **terraform** to use terraform based templates. 
 
    3.8.1 The first run of the pipeline will require you to grant access to the repositories you created. Click **View** 
 
@@ -216,6 +211,9 @@
    ![ADO_view_repoSparseCheckout](./images/ado-view-repoSparseCheckout.png)
    - Pipelines for the creation of infrastructure and the training and deployment of machine learning models. 
    ![ADO_view_allPipelines](./images/ado-view-allPipelines.png)
+   
+   3.10 Under Pipelines, select Environments and ensure both "Prod" and "Dev" environments are created. Create the "Dev" environment manually, if necessary.
+
    **This finishes the prerequisite section and the deployment of the solution accelerator can happen accordingly.**
    </details>
 

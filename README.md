@@ -27,14 +27,20 @@ It accomplishes these goals with a template-based approach for end-to-end data s
 ## Prerequisites
 
 1. An Azure subscription. If you don't have an Azure subscription, [create a free account](https://azure.microsoft.com/en-us/free/machine-learning/search/?OCID=AIDcmm5edswduu_SEM_822a7351b5b21e0f1ffe102c9ca9e99f:G:s&ef_id=822a7351b5b21e0f1ffe102c9ca9e99f:G:s&msclkid=822a7351b5b21e0f1ffe102c9ca9e99f) before you begin.
-2. The [Terraform extension for Azure DevOps](https://marketplace.visualstudio.com/items?itemName=ms-devlabs.custom-terraform-tasks) if you are using Terraform to spin up infrastructure
-3. Git bash, WSL or another shell script editor on your local machine
+2. For Azure DevOps-based deployments and projects:
+    * [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli) with `azure-devops` extension.
+    * [Terraform extension for Azure DevOps](https://marketplace.visualstudio.com/items?itemName=ms-devlabs.custom-terraform-tasks) if you are using Terraform to spin up infrastructure
+3. For GitHub-based deployments and projects:
+    * [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli)
+    * [GitHub client](https://cli.github.com/)
+3. Git bash, WSL, or another shell script editor on your local machine
 
 ## Documentation
 
-1. [Solution Accelerator Concepts and Structure](documentation/structure/README.md)
-2. [Architectural Patterns](documentation/architecture/README.md)
-3. [Getting Started](documentation/quickstart/README.md)
+1. [Solution Accelerator Concepts and Structure](documentation/structure/README.md) - Philosophy and organization
+2. [Architectural Patterns](documentation/architecture/README.md) - Supported Machine Learning patterns
+3. [Accelerator Deployment Guides](documentation/deploymentguides/README.md) - How to deploy and use the soluation accelerator with Azure DevOps or GitHub
+4. **Coming soon** Quickstarts - Precreated project scenarios for demos/POCs
 
 ## Contributing
 
