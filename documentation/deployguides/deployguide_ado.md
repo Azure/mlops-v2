@@ -409,6 +409,7 @@ This step deploys the training pipeline to the Azure Machine Learning workspace 
 This finishes the demo according to the architectual pattern: Azure Machine Learning Classical Machine Learning. Next you can dive into your Azure Machine Learning service in the Azure Portal and see the inference results of this example model. 
 
 As elements of Azure Machine Learning are still in development, the following components are not part of this demo:
+- Secure Workspaces
 - Model Monitoring for Data/Model Drift
 - Automated Retraining
 - Model and Infrastructure triggers

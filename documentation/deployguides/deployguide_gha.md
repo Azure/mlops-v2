@@ -15,10 +15,6 @@
 >**Git version 2.27 or newer is required. See [these instructions](https://github.com/cli/cli/blob/trunk/docs/install_linux.md#debian-ubuntu-linux-raspberry-pi-os-apt) to upgrade.**
    
 
->**Note:**
->
->The GitHub-based MLOps pattern uses GitHub Action workflows for model training and deployment. At this time, this CI/CD environment still uses an Azure DevOps pipeline to deploy infrastructure. This will be addressed in the next release of this repository.  
-
 ## Configure The GitHub Environment
 ---
 
@@ -45,8 +41,8 @@
    * **project_type** selects the AI workload type for your project (classical ml, computer vision, or nlp)
    * **mlops_version** selects your preferred interaction approach with Azure Machine Learning
    * **git_folder_location** points to the root project directory to which you cloned mlops-v2 in step 3
-   * **project_name** is the name (case sensitive) of your project for which you created an empty repository in step 2
-   * **github_org_name** is your github organization
+   * **project_name** is the name (case sensitive) of your project. A  GitHub repository will be created with this name
+   * **github_org_name** is your GitHub organization
    * **project_template_github_url** is the URL to the original or your generated clone of the mlops_project_template repository from step 1
    * **orchestration** specifies the CI/CD orchestration to use
    <br><br>
@@ -99,323 +95,189 @@
    > [Add your SSH key to Github](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account). Under your account menu, select "Settings", then "SSH and GPG Keys". Select "New SSH key" and enter a title. Paste your public key into the key box and click "Add SSH key"
 
    From your root project directory (ex: mlprojects/), execute the `sparse_checkout.sh` script:  
-   `# bash mlops-v2/sparse_checkout.sh`  
+   >  `# bash mlops-v2/sparse_checkout.sh`  
 
-   This will run the script, using git sparse checkout to build a local copy of your project repository based on your choices configured in the script. It will then push this repository into your GitHub project.  
+   This will run the script, using git sparse checkout to build a local copy of your project repository based on your choices configured in the script. It will then create the GitHub repository and push the project code to it.  
 
-   Monitor the script execution for any errors. If there are errors, you can safely remove the local copy of the repository (ex: taxi_fare_regression/) as well as recreate or empty the GitHub project repository. After addressing the errors, run the script again.
+   Monitor the script execution for any errors. If there are errors, you can safely remove the local copy of the repository (ex: taxi_fare_regression/) as well as delete the GitHub project repository. After addressing the errors, run the script again.
    
    After the script runs successfully, the GitHub project will be initialized with your project files.
 
-5. **Configure an SSO Personal Access Token in GitHub**  
-The Personal Access Token will be used by Azure DevOps to access the GitHub repositories necessary to deploy the infrastructure for your project.  
+5. **Configure GitHub Actions Secrets**
 
-   Under your GitHub account Settings, select "Developer Settings" at the bottom left.  
+   This step creates a service principal and GitHub secrets to allow the GitHub action workflows to create and interact with Azure Machine Learning Workspace resources.
 
-   ![GH1](./images/gh-setup1.png)
+      From the command line, execute the following Azure CLI command with your choice of a service principal name:
+      > `# az ad sp create-for-rbac --name <service_principal_name> --role contributor --scopes /subscriptions/<subscription_id> --sdk-auth`
 
-   Select "Personal Access Tokens", then "Tokens (classic)", then "Generate New Token". Select the check boxes and name your token "MLOpsToken". Select "Generate Token". Be sure to copy and save the token key to a notepad.  
+      You will get output similar to below:
 
-   Configure the repo, admin, and user OAuth scopes needed for this token:
+      >`{`  
+      > `"clientId": "<service principal client id>",`  
+      > `"clientSecret": "<service principal client secret>",`  
+      > `"subscriptionId": "<Azure subscription id>",`  
+      > `"tenantId": "<Azure tenant id>",`  
+      > `"activeDirectoryEndpointUrl": "https://login.microsoftonline.com",`  
+      > `"resourceManagerEndpointUrl": "https://management.azure.com/",`  
+      > `"activeDirectoryGraphResourceId": "https://graph.windows.net/",`  
+      > `"sqlManagementEndpointUrl": "https://management.core.windows.net:8443/",`  
+      > `"galleryEndpointUrl": "https://gallery.azure.com/",`  
+      > `"managementEndpointUrl": "https://management.core.windows.net/"`  
+      > `}`
 
-   ![GH2](./images/gh-setup2.png)  
+      Copy all of this output, braces included.
+
+      From your GitHub project, select **Settings**:
+
+      ![GitHub Settings](./images/gh-settings.png)
+
+      Then select **Secrets**, then **Actions**:
+
+      ![GitHub Secrets](./images/gh-secrets.png)
+
+      Select **New repository secret**. Name this secret **AZURE_CREDENTIALS** and paste the service principal output as the content of the secret.  Select **Add secret**.
+
+      > **Note:**  
+      > If deploying the infrastructure using terraform, add the following additional GitHub secrets using the corresponding values from the service principal output as the content of the secret:  
+      > 
+      > **ARM_CLIENT_ID**  
+      > **ARM_CLIENT_SECRET**  
+      > **ARM_SUBSCRIPTION_ID**  
+      > **ARM_TENANT_ID**  
+
+      The GitHub configuration is complete.
+
+## Deploy Machine Learning Project Infrastructure Using GitHub Actions
+
+1. **Configure Azure ML Environment Parameters**
+
+   In your Github project repository (ex: taxi-fare-regression), there are two configuration files in the root, `config-infra-dev.yml` and `config-infra-prod.yml`. These files are used to define and deploy Dev and Prod Azure Machine Learning environments. With the default deployment, `config-infra-prod.yml` will be used when working with the main branch or your project and `config-infra-dev.yml` will be used when working with any non-main branch.
+
+   It is recommended to first create a dev branch from main and deploy this environment first.
+
+   Edit each file to configure a namespace, postfix string, Azure location, and environment for deploying your Dev and Prod Azure ML environments. Default values and settings in the files are show below:
+
+   > ```bash
+   > namespace: mlopsv2 #Note: A namespace with many characters will cause storage account creation to fail due to storage account names having a limit of 24 characters.  
+   > postfix: 0001  
+   > location: eastus  
+   > environment: dev  
+   > enable_aml_computecluster: true  
+   > enable_monitoring: false  
+   >```
    
-    If your organization uses single sign on for Github, then click on "Authorize" the token to have access to the github organization. The screenshot below shows an example of authorization for the token to interact with your repository. Your organization maybe different. 
+   The first four values are used to create globally unique names for your Azure environment and contained resources. Edit these values to your liking then save, commit, push, or pr to update these files in the project repository.
 
-   ![GH3](./images/gh-setup3.png)
-
-   The GitHub setup is successfully finished.
-
-## Configure Azure DevOps Environment to Deploy Infrastructure
----
-
-1. Create Service Principal(s) for Dev and Prod environments
-
-   For the use of the demo, the creation of one or two service principles is required, depending on how many environments, you want to work on (Dev or Prod or Both). Go into your Azure portal to set those up.
-
-   1.1. Select Azure Active Directory (AAC)
-
-   ![SP1](./images/SP-setup1.png)
-
-   1.2. Select App Registrations on the left panel, then select "new registration".
-
-   ![PS2](./images/SP-setup2.png)
-
-   1.3. Go through the process of creating a Service Principle (SP) selecting "Accounts in any organizational directory (Any Azure AD directory - Multitenant)" and name it  "Azure-ARM-Dev-ProjectName". Once created, repeat and create a new SP named "Azure-ARM-Prod-ProjectName". Please replace "ProjectName" with the name of your project so that the service principal can be uniquely identified. 
-
-   1.4. Go to "Certificates & Secrets" and add for each SP "New client secret", then store the value and secret sepperately.
-
-   1.5. To assign the necessary permissions to these principals, select your respective subscription and go to IAM. Select +Add then select "Add Role Assigment.
-
-   ![PS3](./images/SP-setup3.png)
-
-   1.6. Select Contributor and add members selecting + Select Members. Add the member "Azure-ARM-Dev-ProjectName" as create before.
-
-   ![SP4](./images/SP-setup4.png)
-
-   1.7. Repeat step here, if you deploy Dev and Prod into the same subscription, otherwise change to the prod subscription and repeat with "Azure-ARM-Prod-ProjectName". The basic SP setup is successfully finished.
-
-
-
-
-3. Set up Azure DevOps
-
-   3.1. Go to [Azure DevOps](https://dev.azure.com/) to set up your MLOps deployment environment. To deploy the infrastructure via ADO (Azure DevOps), you will have to have an organization and a project, with a service connection to your subscription configured.
+   If you are running a Deep Learning workload such as CV or NLP, ensure your subscription and Azure location has available GPU compute. 
    
-   3.2. Create a new project in Azure Devops. Feel free to name it according to your project practices.
-   
-   ![ADO Project](./images/ADO-project.png)
-   
-   3.3. In the project under 'Project Settings (at the bottom of the screen when in the project)' select "Service Connections".
-   
-   ![ADO1](./images/ADO-setup1.png)
-   
-   **Azure Subscription Connection:**
-   
-      3.3.1 Select "New Service Connection".
-
-      ![ADO2](./images/ADO-setup2.png)
-
-      3.3.2 Select "Azure Resource Manager", select "Next", select "Service principal (manual)", select "Next", select your subscrption where your Service Principal is stored and name the service connection "Azure-ARM-Dev". Fill in the details of the Dev service principal created in step 1. Select "Grant access permission to all pipelines", then select "Save". Repeat this step to create another service connection "Azure-ARM-Prod" using the details of the Prod service principal created in step 1.
-
-      ![ADO3](./images/ado-service-principal-manual.png)
-      
-   **Github Connection:**
-   
-      3.3.4 Select "New Service Connection".
-
-      ![ADO4](./images/ADO-setup2.png)
-      
-      3.3.5 Select "Github", select "Next", select "Personal Access Token" and paste your Github SSO Token in the Personal Access token field, in the "Service connection name" field, enter "github-connection", grant pipeline security access, then select "Save".
-      
-      Repeat this step, and for the "Service connection name" enter YOUR GITHUB ORGANIZATION NAME or YOUR GITHUB NAME. Finishing this step, your conection should look like this.
-   
-      ![ADO6](./images/ADO-setup5.png)
-
-   The Azure DevOps setup is successfully finished.
- 
- 
-**This finishes the prerequisite section and the deployment of the solution accelerator can happen accordingly. The following sections describe how to setup the appriopriate configuration files and run the inner/outer loops using Azure DevOps or GitHub Actions.**
-
-This step deploys the training pipeline to the Azure Machine Learning workspace created in the previous steps. 
-
-## Setting up Infrastructure via GitHub Actions
-**IMPORTANT NOTE: Deployment of infrastructure using Terraform or Bicep is not yet enabled yet for Github Actions. It will be available in the next release. This section enables Github Actions to run AML Pipelines.**
- 1. Set up your Azure Credentials in a GitHub Secret. 
-    
-    GitHub Actions need to use an Azure Service Principal to connect to the Azure Machine Learning Service and perform operations. Additional details can be found [here](https://github.com/marketplace/actions/azure-login#configure-deployment-credentials).
-
- 2. Go to your Github cloned repo and select the "config-infra-prod.yml" file.
-   
-   ![ADO Run4](./images/ADO-run4.png)
-   
-   Under global, there's two values namespace and postfix. These values should render the names of the artifacts to create unique. Especially the name for the storage account, which has the most rigid constraints, like uniqueness Azure wide and 3-5 lowercase characters and numbers. So please change namespace and/or postfix to a value of your liking and remember to stay within the contraints of a storage account name as mentioned above. Then save, commit, push, pr to get these values into the pipeline.
-   
-   If you are running a Deep Learning workload such as CV or NLP, you have to ensure your GPU compute is availible in your deployment zone. Please replace as shown above your location to eastus. Example:
-   
-    namespace: [5 max random new letters]
-    postfix: [4 max random new digits]
-    location: eastus
-    
-   Please repeat this step for "config-infra-dev.yml" and "config-infra-prod.yml".
-
    > Note:
    >
    > The enable_monitoring flag in these files defaults to False. Enabling this flag will add additional elements to the deployment to support Azure ML monitoring based on https://github.com/microsoft/AzureML-Observability. This will include an ADX cluster and increase the deployment time and cost of the MLOps solution.
    
-## Deploying Infrastructure via Azure DevOps
----
-   
-   1. Go to your Github cloned repo and select the "config-infra-prod.yml" file.
-   
-   ![ADO Run4](./images/ADO-run4.png)
-   
-   Under global, there's two values namespace and postfix. These values should render the names of the artifacts to create unique. Especially the name for the storage account, which has the most rigid constraints, like uniqueness Azure wide and 3-5 lowercase characters and numbers. So please change namespace and/or postfix to a value of your liking and remember to stay within the contraints of a storage account name as mentioned above. Then save, commit, push, pr to get these values into the pipeline.
-   
-   If your are running a Deep Learning workload such as CV or NLP, you have to ensure your GPU compute is availible in your deployment zone. Please replace as shown above your location to eastus. Example:
-   
-    namespace: [5 max random new letters]
-    postfix: [4 max random new digits]
-    location: eastus
-    
-   Please repeat this step for "config-infra-dev.yml" and "config-infra-prod.yml"!
+2. **Deploy Azure Machine Learning Infrastructure**
 
-   2. Go to ADO pipelines
-   
-   ![ADO Pipelines](./images/ADO-pipelines.png)
-   
-   3. Select "New Pipeline".
-   
-   ![ADO Run1](./images/ADO-run1.png)
-   
-   4. Select "Github".
-   
-   ![ADO Where's your code](./images/ado-wheresyourcode.png)
-   
-   5. Select your /MLOps-Test repository. ("Empty" repository you created in 2.3)
-   
-   ![ADO Run2](./images/ADO-run2.png)
-   
-   If your new repository is not visible, then click on the "provide access" link and on the next screen, click on the "grant" button next to the organization name to grant access to your organization.
-   
-   6. Select "Existing Azure Pipeline YAML File"
-   
-   ![ADO Run3](./images/ADO-run3.png)
-   
-   
-   7. Select "main" as a branch and choose based on your deployment method your preferred yml path. For a terraform schenario choose: 'infrastructure/pipelines/tf-ado-deploy-infra.yml', then select "Continue". For a bicep schenario choose: 'infrastructure/pipelines/bicep-ado-deploy-infra.yml', then select "Continue".
-   
-   ![Select Infrastructure Pipeline](./images/ado-select-pipeline-yaml-file.png)
-   
+   In your GitHub project repository (ex: taxi-fare-regression), select **Actions**
 
-   
-   8. Run the pipeline. This will take a few minutes to finish. The pipeline should create the following artifacts:
-   * Resource Group for your Workspace including Storage Account, Container Registry, Application Insights, Keyvault and the Azure Machine Learning Workspace itself.
-   * In the workspace there's also a compute cluster created.
-   
-   ![ADO Run5](./images/ADO-run5.png)
-   
-   Now the Outer Loop of the MLOps Architecture is deployed.
-   
-   ![ADO Run6](./images/ADO-run-infra-pipeline.png)
+   ![GH-actions](./images/gh-actions.png)
 
-   > Note: the "Unable move and reuse existing repository to required location" warnings may be ignored.
+   This will display the pre-defined GitHub workflows associated with your project. For a classical machine learning project, the available workflows will look similar to this:
 
-## Inner Loop: Deploying Classical ML Model Development / Moving to Test Environment - GitHub Actions
- 1. Go to the GitHub Actions tab.
+   ![GH-workflows](./images/gh-workflows.png)
+
+   Depending on the the use case, available workflows may vary. Select the workflow to 'deploy-infra'. In this scenario, the workflow to select would be **tf-gha-deploy-infra.yml**. This would deploy the Azure ML infrastructure using GitHub Actions and Terraform.
+
+   ![GH-deploy-infra](./images/gh-deploy-infra.png)
+
+   On the right side of the page, select **Run workflow** and select the branch to run the workflow on. This may deploy Dev Infrastructure if you've created a dev branch or Prod infrastructure if deploying from main. Monitor the pipline for successful completion.
+
+   ![GH-infra-pipeline](./images/gh-infra-pipeline.png)
+
+   When the pipline has complete successfully, you can find your Azure ML Workspace and associated resources by logging in to the Azure Portal.
+
+   Next, a model training and scoring pipelines will be deployed into the new Azure Machine Learning environment.
+
+## Sample Training and Deployment Scenario
+
+The solution accelerator includes code and data for a sample end-to-end machine learning pipeline which runs a linear regression to predict taxi fares in NYC. The pipeline is made up of components, each serving  different functions, which can be registered with the workspace, versioned, and reused with various inputs and outputs. Sample pipelines and workflows for the Computer Vision and NLP scenarios will have different steps and deployment steps.
+
+This training pipeline contains the following steps:
+
+**Prepare Data**  
+This component takes multiple taxi datasets (yellow and green) and merges/filters the data, and prepare the train/val and evaluation datasets.  
+Input: Local data under ./data/ (multiple .csv files)  
+Output: Single prepared dataset (.csv) and train/val/test datasets.
+
+**Train Model**  
+This component trains a Linear Regressor with the training set.  
+Input: Training dataset  
+Output: Trained model (pickle format)  
+   
+**Evaluate Model**  
+   This component uses the trained model to predict taxi fares on the test set.  
+   Input: ML model and Test dataset  
+   Output: Performance of model and a deploy flag whether to deploy or not.  
+   This component compares the performance of the model with all previous deployed models on the new test dataset and decides whether to promote or not model into production. Promoting model into production happens by registering the model in AML workspace.
+
+**Register Model**  
+   This component scores the model based on how accurate the predictions are in the test set.  
+   Input: Trained model and the deploy flag.  
+   Output: Registered model in Azure Machine Learning.  
+
+## Deploying the Model Training Pipeline to the Test Environment
+
+Next, you will deploy the model training pipeline to your new Azure Machine Learning workspace. This pipeline will create a compute cluster instance, register a training environment defining the necessary Docker image and python packages, register a training dataset, then start the training pipeline described in the last section. When the job is complete, the trained model will be registered in the Azure ML workspace and be available for deployment.
+
+In your GitHub project repository (ex: taxi-fare-regression), select **Actions**  
  
-   ![GHA Tab](./images/GHATab.png)
+   ![GH-actions](./images/gh-actions.png)
       
- 2. Select the "deploy-model-training-pipeline" from the Actions listed on the left and the click "Run Workflow" to execute the model training workflow. This will take several minutes to run, depending on the compute size. 
+Select the **deploy-model-training-pipeline** from the workflows listed on the left and the click **Run Workflow** to execute the model training workflow. This will take several minutes to run, depending on the compute size. 
 
-   ![Pipeline Run](./images/PipelineRun.png)
+   ![Pipeline Run](./images/gh-training-pipeline.png)
    
-   Once completed a successful run will train the model in the Azure Machine Learning Workspace. 
- >**IMPORTANT: If you want to check the output of each individual step, for example to view output of a failed run, click a job output and then click each step in the job to view any output of that step. 
+   Once completed, a successful run will register the model in the Azure Machine Learning workspace. 
 
-   ![Output](./images/expandedElement.png)
- >
+ >**Note**: If you want to check the output of each individual step, for example to view output of a failed run, click a job output, and then click each step in the job to view any output of that step. 
+
+   ![Training Step](./images/gh-training-step.png)
+
+With the trained model registered in the Azure Machine learning workspace, you are ready to deploy the model for scoring.
+
+## Deploying the Trained Model in Dev
+
+This scenario includes prebuilt workflows for two approaches to deploying a trained model, batch scoring or a deploying a model to an endpoint for real-time scoring. You may run either or both of these workflows in your dev branch to test the performance of the model in your Dev Azure ML workspace.
+
+In your GitHub project repository (ex: taxi-fare-regression), select **Actions**  
  
-## Inner Loop: Deploying Classical ML Model Development / Moving to Test Environment - Azure DevOps
----
+   ![GH-actions](./images/gh-actions.png)
 
-   1. Go to ADO pipelines
-   
-   ![ADO Pipelines](./images/ADO-pipelines.png)
+ ### Online Endpoint  
+      
+Select the **deploy-online-endpoint-pipeline** from the workflows listed on the left and click **Run workflow** to execute the online endpoint deployment pipeline workflow. The steps in this pipeline will create an online endpoint in your Azure Machine Learning workspace, create a deployment of your model to this endpoint, then allocate traffic to the endpoint.
 
-   2. Select "New Pipeline".
+   ![gh online endpoint](./images/gh-online-endpoint.png)
    
-   ![ADO Run1](./images/ADO-run1.png)
-   
-   3. Select "Github".
-   
-   ![ADO Where's your code](./images/ado-wheresyourcode.png)
-   
-   4. Select your /MLOps-Test repository! ("Empty" repository you created in 2.3)
-   
-   ![ADO Run2](./images/ADO-run2.png)
-   
-   5. Select "Existing Azure Pipeline YAML File"
-   
-   ![ADO Run3](./images/ADO-run3.png)
-   
-   6. Select "main" as a branch and choose '/mlops/devops-pipelines/deploy-model-training-pipeline.yml', then select "Continue".  
+   Once completed, you will find the online endpoint deployed in the Azure ML workspace and available for testing.
 
-   ![ADO Run9](./images/ADO-run9.png)
-   
-   >**IMPORTANT: This pipeline needs an additional connection to the Github repo yourorgname/mlops-templates, where all the templates are stored and maintained, which, like legos, encapsulate certain functionality. That's why you see in the pipeline itself a lot of calls to '-template: template in mlops-templates'. These functionalities are install the azure cli, or ml extension or run a pipeline etc. Therefore we created the connection 'github-connection' in the beginning currenly hard-coded.**
-   
-## Inner Loop: Checkpoint
-   
-   At this point, the infrastructure is configured and the Inner Loop of the MLOps Architecture is deployed. We are ready to move to our trained model to production.      
+ ![aml-taxi-oep](./images/aml-taxi-oep.png)
 
+### Batch Endpoint
+      
+Select the **deploy-batch-endpoint-pipeline** from the workflows and click **Run workflow** to execute the batch endpoint deployment pipeline workflow. The steps in this pipeline will create a new AmlCompute cluster on which to execute batch scoring, create the batch endpoint in your Azure Machine Learning workspace, then create a deployment of your model to this endpoint.
+
+![gh batch endpoint](./images/gh-batch-endpoint.png)
+
+Once completed, you will find the batch endpoint deployed in the Azure ML workspace and available for testing.
+
+![aml-taxi-bep](./images/aml-taxi-bep.png)
    
-## Inner / Outer Loop: Moving to Production - Introduction
----
-         
-   >**NOTE: This is an end-to-end machine learning pipeline which runs a linear regression to predict taxi fares in NYC. The pipeline is made up of components, each serving  different functions, which can be registered with the workspace, versioned, and reused with various inputs and outputs.**
-
-   >**Prepare Data
-   This component takes multiple taxi datasets (yellow and green) and merges/filters the data, and prepare the train/val and evaluation datasets.
-   Input: Local data under ./data/ (multiple .csv files)
-   Output: Single prepared dataset (.csv) and train/val/test datasets.**
-
-   >**Train Model
-   This component trains a Linear Regressor with the training set.
-   Input: Training dataset
-   Output: Trained model (pickle format)**
-   
-   >**Evaluate Model
-   This component uses the trained model to predict taxi fares on the test set.
-   Input: ML model and Test dataset
-   Output: Performance of model and a deploy flag whether to deploy or not.
-   This component compares the performance of the model with all previous deployed models on the new test dataset and decides whether to promote or not model into production. Promoting model into production happens by registering the model in AML workspace.**
-
-   >**Register Model
-   This component scores the model based on how accurate the predictions are in the test set.
-   Input: Trained model and the deploy flag.
-   Output: Registered model in Azure Machine Learning.**
-   
-## Inner / Outer Loop: Moving to Production - GitHub Actions
----
-
-   1. Go to the GitHub Actions tab.
  
-   ![GHA Tab](./images/GHATab.png)
-      
- 2. Select either the "deploy-batch-endpoint-pipeline" or the "deploy-online-endpoint-pipeline" from the Actions listed on the left and the click "Run Workflow" to execute the model training workflow. This will take several minutes to run, depending on the compute size. 
-   
-   ![GHA Tab](./images/onlineEndpoint.png)
-   
-   Once completed, a successful run will deploy the model trained in the previous step to either a batch or online endpoint, depending on which workflow is run. 
-   
-## Inner / Outer Loop: Moving to Production - Azure DevOps
----
+## Moving to Production
 
-   1. Go to ADO pipelines
-   
-   ![ADO Pipelines](./images/ADO-pipelines.png)
+Example scenarios can be trained and deployed both for Dev and Prod branches and environments. When you are satisfied with the performance of the model training pipeline, model, and deployment in Testing, Dev pipelines and models can be replicated and deployed in the Production environment.
 
-   2. Select "New Pipeline".
-   
-   ![ADO Run1](./images/ADO-run1.png)
-   
-   3. Select "Github".
-   
-   ![ADO Where's your code](./images/ado-wheresyourcode.png)
-   
-   4. Select your /MLOps-Test repository! ("Empty" repository you created in 2.3)
-   
-   ![ADO Run2](./images/ADO-run2.png)
-   
-   5. Select "Existing Azure Pipeline YAML File"
-   
-   ![ADO Run3](./images/ADO-run3.png)
-   
-   6. Select "main" as a branch and choose:
-      For Classical Machine Learning:
-         Managed Batch Endpoint '/mlops/devops-pipelines/deploy-batch-endpoint-pipeline.yml'
-         Managed Online Endpoint '/mlops/devops-pipelines/deploy-online-endpoint-pipeline.yml'
-      For Computer Vision: 
-         Managed Online Endpoint '/mlops/devops-pipelines/deploy-batch-endpoint-pipeline.yml'
-      
-      Then select "Continue".  
-   
-   ![ADO Run10](./images/ADO-run10.png)
-   
-   7. Batch/Online endpoint names need to be unique, so please change [your endpointname] to another unique name and then select "Run".
+The sample training and deployment Azure ML pipelines and GitHub workflows can be used as a starting point to adapt your own modeling code and data.
 
-   ![ADO Run11](./images/ADO-batch-pipeline.png)
-   
-   **IMPORTANT: If the run fails due to an existing online endpoint name, recreate the pipeline as discribed above and change [your endpointname] to [your endpointname [random number]]"**
-   
-   8. When the run completes, you will see:
-   
-   ![ADO Run12](./images/ADO-batch-pipeline-run.png)
-   
-  Now the Inner Loop is connected to the Outer of the MLOps Architecture and inference has been run.
-  
-  
 
 ## Next Steps
 ---
@@ -423,6 +285,8 @@ This step deploys the training pipeline to the Azure Machine Learning workspace 
 This finishes the demo according to the architectual pattern: Azure Machine Learning Classical Machine Learning. Next you can dive into your Azure Machine Learning service in the Azure Portal and see the inference results of this example model. 
 
 As elements of Azure Machine Learning are still in development, the following components are not part of this demo:
+- Model and pipeline promotion from Dev to Prod
+- Secure Workspaces
 - Model Monitoring for Data/Model Drift
 - Automated Retraining
 - Model and Infrastructure triggers
