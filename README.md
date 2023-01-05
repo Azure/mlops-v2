@@ -1,20 +1,14 @@
-# Azure MLOps (v2) solution accelerator
+# Azure MLOps (v2) Solution Accelerator
 
-![Header](documentation/repositoryfiles/mlopsheader.jpg)
+![Header](media/mlopsheader.jpg)
 
-Welcome to the MLOps (v2) solution accelerator repository! This project is intended to serve as *the* starting point for MLOps implementation in Azure.
+Welcome to the MLOps (v2) solution accelerator repository! This project is intended to serve as the starting point for MLOps implementation in Azure.
 
 MLOps is a set of repeatable, automated, and collaborative workflows with best practices that empower teams of ML professionals to quickly and easily get their machine learning models deployed into production. You can learn more about MLOps here:
 
 - [MLOps with Azure Machine Learning](https://azure.microsoft.com/services/machine-learning/mlops/#features)
 - [Cloud Adoption Framework Guidance](https://docs.microsoft.com/azure/cloud-adoption-framework/ready/azure-best-practices/ai-machine-learning-mlops)
 - [How: Machine Learning Operations](https://docs.microsoft.com/azure/machine-learning/concept-model-management-and-deployment)
-
-## Prerequisites
-
-1. An Azure subscription. If you don't have an Azure subscription, [create a free account](https://aka.ms/AzureMLFree) before you begin.
-2. The [Terraform extension for Azure DevOps](https://marketplace.visualstudio.com/items?itemName=ms-devlabs.custom-terraform-tasks) if you are using Terraform to spin up infrastructure
-3. Git bash, WSL or another shell script editor on your local machine
 
 ## Project overview
 
@@ -30,54 +24,23 @@ The solution accelerator goals are:
 
 It accomplishes these goals with a template-based approach for end-to-end data science, driving operational efficiency at each stage. You should be able to get up and running with the solution accelerator in a few hours.
 
-## 👤 Getting started: Azure Machine Learning Pattern Demo
-  
-The demo follows the classical machine learning or computer vision pattern with Azure Machine Learning.
+## Prerequisites
 
-Azure Machine Learning - Classical Machine Learning Architecture:
-![AzureML CML](/documentation/architecturepattern/AzureML_CML_Architecture.png)
+1. An Azure subscription. If you don't have an Azure subscription, [create a free account](https://azure.microsoft.com/en-us/free/machine-learning/search/?OCID=AIDcmm5edswduu_SEM_822a7351b5b21e0f1ffe102c9ca9e99f:G:s&ef_id=822a7351b5b21e0f1ffe102c9ca9e99f:G:s&msclkid=822a7351b5b21e0f1ffe102c9ca9e99f) before you begin.
+2. For Azure DevOps-based deployments and projects:
+    * [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli) with `azure-devops` extension.
+    * [Terraform extension for Azure DevOps](https://marketplace.visualstudio.com/items?itemName=ms-devlabs.custom-terraform-tasks) if you are using Terraform to spin up infrastructure
+3. For GitHub-based deployments and projects:
+    * [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli)
+    * [GitHub client](https://cli.github.com/)
+3. Git bash, WSL, or another shell script editor on your local machine
 
-Azure Machine Learning - Computer Vision Architecture:
-![AzureML CV](/documentation/architecturepattern/AzureML_SupervisedCV_Architecture.png)
-  
-‼️ **Please follow the instructions to execute the demo accordingly: [Quickstart](https://github.com/Azure/mlops-v2/blob/main/QUICKSTART.md)** ‼️
+## Documentation
 
-‼️ **Please submit any issues here: [Issues](https://github.com/Azure/mlops-v2/issues)** ‼️
-
-## 📐 Pattern Architectures: Key concepts
-
-| Link                                                    | AI Pattern                                                              |
-| ------------------------------------------------------- | ----------------------------------------------------------------------- |
-| [Pattern AzureML CML](https://github.com/Azure/mlops-v2/blob/main/documentation/architecturepattern/AzureML_CML_Architecture.png) | Azure Machine Learning - Classical Machine Learning                     |
-| [Pattern AzureML CV](https://github.com/Azure/mlops-v2/blob/main/documentation/architecturepattern/AzureML_SupervisedCV_Architecture.png)                                                 | Azure Machine Learning - Computer Vision                                |
-| [Pattern AzureML NLP](https://github.com/Azure/mlops-v2/blob/main/documentation/architecturepattern/AzureML_NLP_Classification_Architecture.png)                                                 | Azure Machine Learning - Natural Language Processing                    |
-| [TBD]                                                   | Azure Machine Learning / Azure Databricks - Classical Machine Learning  |
-| [TBD]                                                   | Azure Machine Learning / Azure Databricks - Computer Vision             |
-| [TBD]                                                   | Azure Machine Learning / Azure Databricks - Natural Language Processing |
-| [TBD]                                                   | Azure Machine Learning - Edge AI                                        |
-
-## 📯 (Coming Soon) One-click deployments
-  
-## 📯 MLOps infrastructure deployment
-
-| Name                                                         | Description                                                | Try it out      |
-| ------------------------------------------------------------ | ---------------------------------------------------------- | --------------- |
-| [Outer Loop](https://github.com/Azure/mlops-templates)       | Default Azure Machine Learning outer infrastructure setup  | [DEPLOY BUTTON] |
-| [TBD]                                                        | Default Responsible AI for Classical Machine Learning      | [DEPLOY BUTTON] |
-| [Feature Store FEAST](https://github.com/Azure/feast-azure)  | Default Feature Store using FEAST                          | [DEPLOY BUTTON] |
-| [Feature Store Feathr](https://github.com/linkedin/feathr)   | Feature Store Pattern using Feathr                         | [DEPLOY BUTTON] |
-
-## 📯 MLOps use case deployment
-
-| Name                                                                | AI Workload Type                   | Services                                 | Try it out      |
-|-------------------------------------------------------------------- | -----------------------------------| ---------------------------------------- | --------------- |
-| [classical-ml](https://github.com/Azure/mlops-project-template/tree/main/classical)     | Classical machine learning         | Azure Machine Learning                   | [DEPLOY BUTTON] |
-| [CV](https://github.com/Azure/mlops-project-template/tree/main/cv)  | Computer Vision                    | Azure Machine Learning                   | [DEPLOY BUTTON] |
-| [TBD]                                                               | Natural Language Processing        | Azure Machine Learning                   | [DEPLOY BUTTON] |
-| [TBD]                                                               | Classical machine learning         | Azure Machine Learning, Azure Databricks | [DEPLOY BUTTON] |
-| [TBD]                                                               | Computer Vision                    | Azure Machine Learning, Azure Databricks | [DEPLOY BUTTON] |
-| [TBD]                                                               | Natural Language Processing        | Azure Machine Learning, Azure Databricks | [DEPLOY BUTTON] |
-| [TBD]                                                               | Edge AI                            | Azure Machine Learning                   | [DEPLOY BUTTON] |  
+1. [Solution Accelerator Concepts and Structure](documentation/structure/README.md) - Philosophy and organization
+2. [Architectural Patterns](documentation/architecture/README.md) - Supported Machine Learning patterns
+3. [Accelerator Deployment Guides](documentation/deploymentguides/README.md) - How to deploy and use the soluation accelerator with Azure DevOps or GitHub
+4. **Coming soon** Quickstarts - Precreated project scenarios for demos/POCs
 
 ## Contributing
 
