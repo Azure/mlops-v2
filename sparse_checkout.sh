@@ -11,7 +11,7 @@ cd $git_folder_location
 
 # Clone MLOps Project repo
 git clone \
-  --branch 'main-dec31' \
+  --branch 'main' \
   --depth 1  \
   --filter=blob:none  \
   --sparse \
