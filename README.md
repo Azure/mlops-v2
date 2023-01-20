@@ -41,7 +41,7 @@ It accomplishes these goals with a template-based approach for end-to-end data s
 2. [Architectural Patterns](documentation/architecture/README.md) - Supported Machine Learning patterns
 3. [Accelerator Deployment Guides](documentation/deployguides/README.md) - How to deploy and use the soluation accelerator with Azure 
 DevOps or GitHub
-4. [Deploy feature store](documentation/architecture/README.md) - Supported Feathr feature store deployment
+4. [Deploy feature store](documentation/deployguides/deployguide_fs_ado.md) - Supported Feathr feature store deployment
 5. **Coming soon** Quickstarts - Precreated project scenarios for demos/POCs
 
 ## Contributing
