@@ -1,40 +1,50 @@
 trigger: none
 
 parameters:
-- name: adoProjectName
-  displayName: ADO project name
-  type: string
+  - name: adoProjectName
+    displayName: Azure DevOps ProjectName
+    type: string
 
-- name: repoName
-  displayName: Repo name
-  type: string
+  - name: repoName
+    displayName: New Project Repository Name
+    type: string
 
-- name: mlOpsProjectTemplateAdoProjectName
-  displayName: MLOps Project Template's ADO project name
-  type: string
-  # default: [good idea to put your default here]
+  #- name: mlOpsProjectTemplateAdoProjectName
+  #  displayName: MLOps Project Template's ADO project name
+  #  type: string
+  #  # default: [good idea to put your default here]
 
-- name: mlOpsProjectRepoName
-  displayName: MLOps Project Template's repo
-  type: string  
-  default: mlops-project-template
+  - name: mlOpsProjectRepoName
+    displayName: MLOps Project Template's repo
+    type: string
+    default: mlops-project-template
 
-- name: projectType
-  displayName: ML project type
-  type: string
-  default: classical
-  values:
-  - classical
-  - cv
-  - nlp
-  
-- name: mlopsVersion
-  displayName: MLOps version
-  type: string
-  default: aml-cli-v2
-  values:
-  - python-sdk
-  - aml-cli-v2
+  - name: projectType
+    displayName: ML Project Type
+    type: string
+    default: classical
+    values:
+      - classical
+      - cv
+      - nlp
+
+  - name: mlopsVersion
+    displayName: MLOps Interface
+    type: string
+    default: aml-cli-v2
+    values:
+      - aml-cli-v2
+      - python-sdk-v1
+      - python-sdk-v2
+      - rai-aml-cli-v2
+
+  - name: infrastructure_version
+    displayName: Infrastructure Provider
+    type: string
+    default: bicep
+    values:
+      - bicep
+      - terraform
 
 stages:
   - stage: InitialiseProject
@@ -45,7 +55,9 @@ stages:
         steps:
           - checkout: self
             persistCredentials: false
-          - checkout: git://${{ parameters.mlOpsProjectTemplateAdoProjectName }}/${{ parameters.mlOpsProjectRepoName }}
+          #- checkout: git://${{ parameters.mlOpsProjectTemplateAdoProjectName }}/${{ parameters.mlOpsProjectRepoName }}
+          #  persistCredentials: false
+          - checkout: git://${{ parameters.adoProjectName }}/${{ parameters.mlOpsProjectRepoName }}
             persistCredentials: false
           - checkout: git://${{ parameters.adoProjectName }}/${{ parameters.repoName }}
             persistCredentials: true
@@ -53,20 +65,19 @@ stages:
           - task: Bash@3
             displayName: Run script to initialise your repo
             inputs:
-              targetType: 'filePath'
+              targetType: "filePath"
               filePath: mlops-v2/.azuredevops/scripts/initialise_repo.sh
               arguments: >
-                ${{ parameters.repoName }}
-                ${{ parameters.projectType }}
-                ${{ parameters.mlopsVersion }}
+                ${{ parameters.repoName }} ${{ parameters.projectType }} ${{ parameters.mlopsVersion }} ${{ parameters.infrastructure_version}}
+
 
           - task: Bash@3
             displayName: Run script to create pipelines in ADO
             inputs:
-              targetType: 'filePath'
+              targetType: "filePath"
               filePath: mlops-v2/.azuredevops/scripts/create_ado_pipelines.sh
               arguments: >
-                ${{ parameters.repoName }}
-                ${{ parameters.adoProjectName }}
+                ${{ parameters.repoName }} ${{ parameters.adoProjectName }}
+
             env:
               AZURE_DEVOPS_EXT_PAT: $(System.AccessToken)

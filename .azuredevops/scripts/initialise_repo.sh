@@ -1,7 +1,8 @@
 repo_name=$1
 project_type=$2
 mlops_version=$3
-infrastructure_version=bicep #options: terraform / bicep 
+#infrastructure_version=bicep #options: terraform / bicep 
+infrastructure_version=$4 #options: terraform / bicep 
 
 git config --global user.email "hosted.agent@dev.azure.com"
 git config --global user.name "Azure Pipeline"
