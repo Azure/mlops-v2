@@ -184,18 +184,21 @@ This document will guide you through deploying the MLOps V2 project generator an
 
    ![image](./images/ado-parameters-sparepipeline.png)
 
-   - **ADO project name** : This is the name of the Azure DevOps project you created
-   - **Project repo name**: This is the name of the mlops-v2 accelerator project you imported from GitHub (Default is **mlops-v2** unless you changed it during import)
-   - **MLOps Project Template name**: Name of the shared templates you imported previously (Default is **mlops-project-template**)
-   - ML Project type: 
+   - **Azure DevOps Project Name** : This is the name of the Azure DevOps project you are running the pipeline from.
+   - **New Project Repository Name**: The name of your new project repository created in 3.5.1.
+   - **MLOps Project Template Repo Name**: Name of the shared templates you imported previously (Default is **mlops-project-template**)
+   - **ML Project type**:
      - Choose **classical** for a regression or classification project.
      - Choose **cv** for a computer vision project
      - Choose **nlp** for natural language  projects
-   - MLOps version
-     - choose **python-sdk** to use the python SDK for training and deployment of your model
-     - Choose **aml-cli-v2** to yse the cli tools for training and deployment of your model
-   - Infrastructure Version: 
-     - Choose **Bicep** to deploy using Azure ARM based templates
+   - **MLOps Interface**: Select the interface to the ML platform, either CLI or SDK.
+     - Choose **aml-cli-v2** for the Azure ML CLI v2 interface. This is supported for all ML project types.
+     - Choose **python-sdk-v1** to use the Azure ML python SDK v1 for training and deployment of your model. This is supported for Classical and CV project types.
+     - Choose **python-sdk-v1** to use the Azure ML python SDK v2 for training and deployment of your model. This is supported for Classical and NLP project types.
+     - Choose **rai-aml-cli-v2** to use the Responsible AI cli tools for training and deployment of your model. This is supported only for Classical project types at this time.
+
+   - **Infrastructure Provider**: Choose the provider to use to deploy Azure infrastructure for your project.
+     - Choose **Bicep** to deploy using Azure ARM-based templates
      - Choose **terraform** to use terraform based templates. 
 
    3.8.1 The first run of the pipeline will require you to grant access to the repositories you created. Click **View** 
