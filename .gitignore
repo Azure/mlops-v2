@@ -138,3 +138,5 @@ terraform.tfstate.backup
 .terraform.tfstate.lock.info
 .terraform
 terraform.tfvars
+
+.vscode/
