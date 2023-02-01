@@ -8,7 +8,7 @@
 - [Azure CLI ](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli)
 - The [Terraform extension for Azure DevOps](https://marketplace.visualstudio.com/items?itemName=ms-devlabs.custom-terraform-tasks) if you are using Azure DevOps + Terraform to spin up infrastructure
 - Azure service principals to access / create Azure resources from Azure DevOps or Github Actions (or the ability to create them)
-- Git bash, WSL or another shell script editor on your local machine
+- Git bash, [WSL](https://learn.microsoft.com/en-us/windows/wsl/install) or another shell script runner on your local machine
 
 >**Note:**
 >
@@ -73,7 +73,10 @@
       #options: github-actions / azure-devops
       orchestration=github-actions 
    ```
-   Currently, classical, cv (computer-vision), and nlp (natural language processing) pipelines are supported. 
+   Currently, the following pipelines are supported:
+   - classical 
+   - cv (computer-vision) 
+   - nlp (natural language processing)
 
 4. **Run sparse checkout**  
    The `sparse_checkout.sh` script will use ssh to authenticate to your GitHub organization. If this is not yet configured in your environment, follow the steps below or refer to the documentation at  [GitHub Key Setup](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent).
