@@ -9,10 +9,17 @@
 - The [Terraform extension for Azure DevOps](https://marketplace.visualstudio.com/items?itemName=ms-devlabs.custom-terraform-tasks) if you are using Azure DevOps + Terraform to spin up infrastructure
 - Azure service principals to access / create Azure resources from Azure DevOps or Github Actions (or the ability to create them)
 - Git bash, [WSL](https://learn.microsoft.com/en-us/windows/wsl/install) or another shell script runner on your local machine
+   -  When using WSL, make sure to completely work in the context of the unix env (cloning of the repo, defining the file paths,...). You can then connect to this environment with VSCode (if that is your editor) if you install the ["Remote - SSH"](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-ssh) extension
 
 >**Note:**
 >
 >**Git version 2.27 or newer is required. See [these instructions](https://github.com/cli/cli/blob/trunk/docs/install_linux.md#debian-ubuntu-linux-raspberry-pi-os-apt) to upgrade.**
+
+>**Note2:**
+> When running the script through a : vanilla" WSL, then you'll most likely get errors... In that case it suffices to work with dos2unix
+> 1. (in WSL) run; `sudo apt-get install dos2unix`
+> 2. (in WSL) run; `dos2unix sparse_checkout.sh` (in the mlops-v2 repo folder)
+
    
 
 ## Configure The GitHub Environment
