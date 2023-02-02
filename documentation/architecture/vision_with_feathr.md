@@ -12,7 +12,7 @@ The Azure Machine Learning Computer Vision Architecture is based on the Classica
    This element is the first step in the MLOps v2 Accelerator deployment. It consists of all tasks related to creation and management of resources and roles associated with the project. For CV scenarios, Administration & Setup of the MLOps v2 environment is largely the same as for Classical Machine Learning with the addition of creation of Image Labeling and Annotation projects that can use the Labeling feature of Azure Machine Learning or other tools.
 3. **Model Development (Inner Loop)**
 
-   The inner loop element consists of your iterative data science workflow performed within a dedicated, secure Azure Machine Learning Workspace. The primary difference between this workflow and the Classical Machine Learning scenario in that Image Labeling/Annotation is a key element of this development loop.
+   The inner loop element consists of your iterative data science workflow performed within a dedicated, secure Azure Machine Learning Workspace. The primary difference between this workflow and the Classical Machine Learning scenario in that Image Labeling/Annotation is a key element of this development loop. Feathr supports embedding as a data type for CV scenarios.
 4. **Azure Machine Learning Registries**
 
    When the Data Science team has developed a model that is a candidate for deploying to production, the model can be registered in the Azure Machine Learning workspace registry. Continuous Integration (CI) pipelines triggered either automatically by model registration and/or gated human-in-the-loop approval promote the model and any other model dependencies to the model Deployment phase.

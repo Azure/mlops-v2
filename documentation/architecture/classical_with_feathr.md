@@ -12,6 +12,7 @@ Below is the MLOps v2 architecture for a Classical Machine Learning scenario on 
    This element is the first step in the MLOps v2 Accelerator deployment. It consists of all tasks related to creation and management of resources and roles associated with the project. These can include but may not be limited to:
 
    - Creation of project source code repositories.
+   - Creation of Feathr Feature store using Bicep, ARM or Teraform.
    - Creation of Azure Machine Learning Workspaces for the project using Bicep, ARM, or Terraform.
    - Creation/modification of Data Sets and Compute Resources used for model development and deployment.
    - Definition of project team users, their roles, and access controls to other resources.
@@ -21,7 +22,7 @@ Below is the MLOps v2 architecture for a Classical Machine Learning scenario on 
    Personas associated with this phase may be primarily Infrastructure Team but may also include all of Data Engineers, Machine Learning Engineers, and Data Scientists.
 3. **Model Development (Inner Loop)**
 
-   The inner loop element consists of your iterative data science workflow performed within a dedicated, secure Azure Machine Learning Workspace. A typical workflow is illustrated here from data ingestion, EDA (Exploratory Data Analysis), experimentation, model development and evaluation, to registration of a candidate model for production. This modular element as implemented in the MLOps v2 accelerator is agnostic and adaptable to the process your data science team may use to develop models.
+   The inner loop element consists of your iterative data science workflow performed within a dedicated, secure Azure Machine Learning Workspace.  A typical workflow is illustrated here from data ingestion, EDA (Exploratory Data Analysis), experimentation, model development and evaluation, to registration of a candidate model for production.  However, with the added option of the Feathr feature store,  you can do feature engineering and store the features in the feature store, or use existing features already registered in the Feathr to do you your experimentation.   This modular element as implemented in the MLOps v2 accelerator is agnostic and adaptable to the process your data science team may use to develop models.
 
    Personas associated with this phase include Data Scientists and ML Engineers.
 4. **Azure Machine Learning Registries**
@@ -39,7 +40,7 @@ Below is the MLOps v2 architecture for a Classical Machine Learning scenario on 
    The Staging & Test phase can vary with customer practices but typically includes operations such as retraining and testing of the model candidate on production data,  test deployments for endpoint performance, data quality checks, unit testing, and Responsible AI checks for model and data bias.  This phase takes place in one or more dedicated, secure Azure Machine Learning Workspaces.
 7. **Production Deployment**
 
-   After a model passes the Staging & Test phase, the model can be promoted to production via a human-in-the-loop gated approvals. Model deployment options include a Batch Managed Endpoint for batch scenarios or, for online, near-realtime scenarios, either an Online Managed Endpoint or to Kubernetes using Azure Arc. Production typically takes place in one or more dedicated, secure Azure Machine Learning Workspaces.
+   After a model passes the Staging & Test phase, the model can be promoted to production via a human-in-the-loop gated approvals. Model deployment options include a Batch Managed Endpoint for batch scenarios or, for online, near-realtime scenarios, either an Online Managed Endpoint or to Kubernetes using Azure Arc. Production typically takes place in one or more dedicated, secure Azure Machine Learning Workspaces.  Once the model is deployed, you can materalize the features into an online store using Feathr, which then can be used to do high performance low latency inferencing.  Feathr also supports dynamic online-transformation with very low latency requirements.
 8. **Monitoring**
 
    Monitoring in staging/test and production enables you to collect metrics for and act on changes in performance of the model, data, and infrastructure. Model and data monitoring may include checking for model and data drift, model performance on new data, and Responsible AI issues.  Infrastructure monitoring can watch for issues with endpoint response time, problems with deployment compute capacity, or network issues.
