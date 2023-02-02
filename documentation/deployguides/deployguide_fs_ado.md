@@ -13,7 +13,7 @@ This guide will help you through deploying all components required for [Feathr f
 ## Repository setup and infrastructure deployment:
 
 - Clone the [MLops v2 repository and checkout the feature/featurestore_tf branch](https://github.com/Ritaja/mlops-v2/tree/feature/featurestore_tf)
-- The `sparse_checkout.sh` file is already configured for basic setup, please change the `project_name` and the `github_org_name` in the sparse_checkout file to match your project name (new project emplate that will be generated for you) and github org name (your github org name)
+- The `sparse_checkout.sh` file is already configured for basic setup, please change the `project_name` and the `github_org_name` in the sparse_checkout file to match your project name (new project template that will be generated for you) and github org name (your github org name)
 - Run the `sparse_checkout.sh` file to create the new project template, the script tries to push the template to your github org, this will fail as we have not created a project yet matching the template.
 - Create a new project in your github org matching the project name you have provided in the sparse_checkout.sh file
 - make the following modification in the generated project (the generated project matches the `project_name` you have provided in the sparse_checkout.sh file): 
