@@ -40,7 +40,8 @@ It accomplishes these goals with a template-based approach for end-to-end data s
 1. [Solution Accelerator Concepts and Structure](documentation/structure/README.md) - Philosophy and organization
 2. [Architectural Patterns](documentation/architecture/README.md) - Supported Machine Learning patterns
 3. [Accelerator Deployment Guides](documentation/deployguides/README.md) - How to deploy and use the soluation accelerator with Azure DevOps or GitHub
-4. **Coming soon** Quickstarts - Precreated project scenarios for demos/POCs
+4. Quickstarts - Precreated project scenarios for demos/POCs. [Azure DevOps ADO Quickstart](https://learn.microsoft.com/en-us/azure/machine-learning/how-to-setup-mlops-azureml?tabs=azure-shell). 
+5. YouTube Videos: [Deploy MLOps on Azure in Less Than an Hour](https://www.youtube.com/watch?v=5yPDkWCMmtk) and [AI Show](https://www.youtube.com/watch?v=xaW_A0sV6PU)
 
 ## Contributing
 
