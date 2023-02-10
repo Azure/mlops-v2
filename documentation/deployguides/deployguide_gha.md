@@ -9,10 +9,17 @@
 - The [Terraform extension for Azure DevOps](https://marketplace.visualstudio.com/items?itemName=ms-devlabs.custom-terraform-tasks) if you are using Azure DevOps + Terraform to spin up infrastructure
 - Azure service principals to access / create Azure resources from Azure DevOps or Github Actions (or the ability to create them)
 - Git bash, [WSL](https://learn.microsoft.com/en-us/windows/wsl/install) or another shell script runner on your local machine
-
+-  When using WSL, 
+   -  make sure to completely work in the context of the unix env (cloning of the repo, defining the file paths,...). You can then connect to this environment with VSCode (if that is your editor) if you install the ["Remote - SSH"](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-ssh) extension
+   - dos2unix: `sudo apt-get install dos2unix`
+   - set up GitHub cli (mentioned above) (or via `sudo apt-get install gh`)
+    - Login to GitHub: `gh auth login`
+    - Config Git locally: `git config --global user.email "you@example.com"` and `git config --global user.name "Your Name"`
+    - 
 >**Note:**
 >
 >**Git version 2.27 or newer is required. See [these instructions](https://github.com/cli/cli/blob/trunk/docs/install_linux.md#debian-ubuntu-linux-raspberry-pi-os-apt) to upgrade.**
+
    
 
 ## Configure The GitHub Environment
@@ -32,17 +39,22 @@
    On your local machine, select or create a root directory (ex: 'mlprojects') to hold your project repository as well as the mlops-v2 repository. Change to this directory.
 
    Clone the mlops-v2 repository to this directory. This provides the documentation and the `sparse_checkout.sh` script. This repository and folder will be used to bootstrap your projects:  
-   `# git clone https://github.com/Azure/mlops-v2.git`  
+   `# git clone https://github.com/Azure/mlops-v2.git` 
 
 3. **Configure and run sparse checkout**  
    From your local project root directory, open the `/mlops-v2/sparse_checkout.sh` for editing. Edit the following variables as needed to select the infastructure management tool used by your organization, the type of Open this file in an editor and set the following variables:
+   
+   >**Note:**
+> When running the script through a  "vanilla" WSL, then you'll most likely get strange errors... In that case it might suffice to use dos2unix on the file
+> (in WSL) run; `dos2unix sparse_checkout.sh` (in the mlops-v2 repo folder)
+   
 
    * **infrastructure_version** selects the tool that will be used to deploy cloud resources.
    * **project_type** selects the AI workload type for your project (classical ml, computer vision, or nlp)
    * **mlops_version** selects your preferred interaction approach with Azure Machine Learning
    * **git_folder_location** points to the root project directory to which you cloned mlops-v2 in step 3
    * **project_name** is the name (case sensitive) of your project. A  GitHub repository will be created with this name
-   * **github_org_name** is your GitHub organization
+   * **github_org_name** is your GitHub organization (or GitHub username)
    * **project_template_github_url** is the URL to the original or your generated clone of the mlops_project_template repository from step 1
    * **orchestration** specifies the CI/CD orchestration to use
    <br><br>
