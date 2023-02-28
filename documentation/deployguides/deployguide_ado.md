@@ -13,8 +13,7 @@ This document will guide you through deploying the MLOps V2 project generator an
 ## Setup MLOps V2 and a New MLOps Project in Azure DevOps
 ---
 
-1. <details>
-   <summary>Create Service Principals</summary>
+1. Create Service Principals
    For the use of the demo, the creation of one or two service principles is required, depending on how many environments, you want to work on (Dev or Prod or Both). These principles can be created using one of the methods below:
       <details>
       <summary>Create from Azure Cloud Shell</summary>
@@ -84,8 +83,7 @@ This document will guide you through deploying the MLOps V2 project generator an
       </details>
    </details>
 
-2. <details>
-   <summary>Set up Azure DevOps</summary>
+2. Set up Azure DevOps
 
    ### Requirements:  
    - An Organization in Azure DevOps (<a href="https://learn.microsoft.com/en-us/azure/devops/organizations/accounts/create-organization?view=azure-devops">Create your Organization</a>)
@@ -111,9 +109,8 @@ This document will guide you through deploying the MLOps V2 project generator an
       ![ADO3](./images/ado-service-principal-manual.png)
 
    The Azure DevOps setup is successfully finished.
-   </details>
-3. <details>
-   <summary> Set up source repository with Azure DevOps </summary>
+  
+3. Set up source repository with Azure DevOps
    
    3.1 Open the project you created in [Azure DevOps](https://dev.azure.com/)
    
@@ -218,15 +215,14 @@ This document will guide you through deploying the MLOps V2 project generator an
    3.10 Under Pipelines, select Environments and ensure both "Prod" and "Dev" environments are created. Create the "Dev" environment manually, if necessary.
 
    **This finishes the prerequisite section and the deployment of the solution accelerator can happen accordingly.**
-   </details>
+   
 
 
 ## Outer Loop: Deploying Infrastructure via Azure DevOps
 ---
 This step deploys the training pipeline to the Azure Machine Learning workspace created in the previous steps. 
 
-<details>
-<summary> Run Azure Infrastructure pipeline </summary>
+Run Azure Infrastructure pipeline
  1. Go to your Github cloned repo and select the "config-infra-prod.yml" file.
    
    ![ADO Run4](./images/ADO-run4.png)
@@ -281,14 +277,13 @@ This step deploys the training pipeline to the Azure Machine Learning workspace 
    ![ADO Run6](./images/ADO-run-infra-pipeline.png)
 
 > Note: the "Unable move and reuse existing repository to required location" warnings may be ignored.
-</details>
+
 
 >
  
 ## Inner Loop: Deploying Classical ML Model Development / Moving to Test Environment - Azure DevOps
 ---
-   <details>
-   <summary> Deploy Classical ML Model </summary>
+   Deploy Classical ML Model
    1. Go to ADO pipelines
    
    ![ADO Pipelines](./images/ADO-pipelines.png)
@@ -317,7 +312,7 @@ This step deploys the training pipeline to the Azure Machine Learning workspace 
 
    ![resourceRepoADO](./images/ado-pipeline-resourcesRepoADO.png)
 
-   </details>
+
    
    
 ## Inner Loop: Checkpoint
@@ -354,8 +349,7 @@ This step deploys the training pipeline to the Azure Machine Learning workspace 
 
 ## Inner / Outer Loop: Moving to Production - Azure DevOps
 ---
-   <details>
-   <summary> Deploy ML model endpoint</summary>
+   Deploy ML model endpoint
    1. Go to ADO pipelines
    
    ![ADO Pipelines](./images/ADO-pipelines.png)
@@ -402,7 +396,7 @@ This step deploys the training pipeline to the Azure Machine Learning workspace 
    ![ADO Run12](./images/ADO-batch-pipeline-run.png)
    
   Now the Inner Loop is connected to the Outer of the MLOps Architecture and inference has been run.
-  </details>
+
   
 
 
