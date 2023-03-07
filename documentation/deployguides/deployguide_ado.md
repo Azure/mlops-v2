@@ -3,11 +3,64 @@
 This document will guide you through deploying the MLOps V2 project generator and projects using only Azure DevOps to host source repositories and pipelines.
 
 **Requirements:**
+- One or more Azure subscription(s) based on if you are deploying Prod only or Prod and Dev environments
+- An Azure DevOps organization
+- Ability to create Azure service principals to access / create Azure resources from Azure DevOps
 - If using Terraform to create and manage infrastructure from Azure DevOps, install the [Terraform extension for Azure DevOps](https://marketplace.visualstudio.com/items?itemName=ms-devlabs.custom-terraform-tasks).
 - [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli) with `azure-devops` extension.
-- Azure subscription(s) based on if you are deploying Prod only or Prod and Dev environments
-- Ability to create Azure service principals to access / create Azure resources from Azure DevOps
 - Git bash, WSL, or another shell script editor on your local machine
+
+## Steps to Deploy
+
+To deploy the MLOps V2 project generator and an example project, follow the steps below:
+
+1. [Create an Azure DevOps project to contain the MLOps V2 project generator and ML project.](#create-an-azure-devops-project)
+2. Import MLOps V2, set main branch
+3. Configure MLOps V2 pipelines
+4. Create new project, create a dev branch, create dev env?
+5. Configure environments for the new project
+5. Create Azure Service Principals for each ML environment
+6. Deploy infrastructure
+7. Deploy model training pipeline
+8. Deploy model
+
+## Create an Azure DevOps project for the MLOps V2 project  
+
+
+
+   1. Navigate to [Azure DevOps](https://go.microsoft.com/fwlink/?LinkId=2014676&githubsi=true&clcid=0x409&WebUserId=2ecdcbf9a1ae497d934540f4edce2b7d) and the organization where you want to create the project. [Create a new organization](https://learn.microsoft.com/en-us/azure/devops/organizations/accounts/create-organization?view=azure-devops) for your project, if needed. 
+   
+   2. Create a new project. In this deployment, it is named mlopsv2.
+   
+      <p align="center">
+      <img src="./images/ado-create-project.png" alt="Create project in ADO" width="50%" height="50%"/>
+      </p>
+
+   3. Import the Set up source repository with Azure DevOps
+   
+   4. Open the project you created in [Azure DevOps](https://dev.azure.com/)
+   
+   5. Open the Repos section. Click on  the default repo name at the top of the screen and select **Import Repository**
+
+      <p align="left">
+      <img src="./images/ado-import-repo.png" alt="Import repo into ADO" width="75%" height="75%"/>
+      </p>
+
+   6. Enter https://github.com/Azure/mlops-templates into the Clone URL field. Click import at the bottom of the page.
+
+      <p align="center">
+      <img src="./images/ado-import-mlops-templates.png" alt="Import mlops templates" width="50%" height="50%"/>
+      </p>
+
+   7. Open the Repos section again and repeat the import for the following repositories: 
+      - https://github.com/Azure/mlops-project-template
+      - https://github.com/Azure/mlops-v2 
+
+   8. You should have [all three MLOps V2 repositories](../structure/README.md#repositories) imported into your Azure DevOps project.
+
+      <p align="center">
+         <img src="./images/ado-import-mlops-templates.png" alt="Import mlops templates" width="50%" height="50%"/>
+      </p>
 
 
 ## Setup MLOps V2 and a New MLOps Project in Azure DevOps
@@ -83,16 +136,7 @@ This document will guide you through deploying the MLOps V2 project generator an
       </details>
    </details>
 
-2. Set up Azure DevOps
 
-   ### Requirements:  
-   - An Organization in Azure DevOps (<a href="https://learn.microsoft.com/en-us/azure/devops/organizations/accounts/create-organization?view=azure-devops">Create your Organization</a>)
-
-   2.1. Navigate to [Azure DevOps](https://go.microsoft.com/fwlink/?LinkId=2014676&githubsi=true&clcid=0x409&WebUserId=2ecdcbf9a1ae497d934540f4edce2b7d). 
-   
-   2.2. Create a new project.
-   
-   ![ADO Project](./images/ado-create-project.png)
    
    2.3. In the project under **Project Settings** (at the bottom left of the project page) select **Service Connections**.
    
@@ -110,23 +154,7 @@ This document will guide you through deploying the MLOps V2 project generator an
 
    The Azure DevOps setup is successfully finished.
   
-3. Set up source repository with Azure DevOps
-   
-   3.1 Open the project you created in [Azure DevOps](https://dev.azure.com/)
-   
-   3.2 Open the Repos section. Click on  the default repo name at the top of the screen and select **Import Repository**
-
-   ![image](./images/ado-import-repo.png)
-
-   3.3 Enter https://github.com/Azure/mlops-templates into the Clone URL field. Click import at the bottem of the page
-
-   ![image](./images/ado-import-mlops-templates.png)
-
-   3.4 Open the Repos section again and import the following repositories: 
-   - https://github.com/Azure/mlops-project-template
-   - https://github.com/Azure/mlops-v2 
-
-
+3. 
    3.5.1 Open the Repos section. Click on the default repo name at the top of the screen and select **New Repository**
 
    ![image](./images/ado-add-demoproject.png)
