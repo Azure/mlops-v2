@@ -1,254 +1,366 @@
-# Deployment Guide - Azure DevOps Repositories and Pipelines
+# Deployment Guide - Azure DevOps 
 
-This document will guide you through deploying the MLOps V2 project generator and projects using only Azure DevOps to host source repositories and pipelines.
+This document will guide you through deploying the MLOps V2 project generator and example project using only Azure DevOps to host source repositories and pipelines.
 
-**Requirements:**
-- One or more Azure subscription(s) based on if you are deploying Prod only or Prod and Dev environments
+**Prerequisites:**
+- One or more Azure subscription(s) based on whether you are deploying Prod only or Prod and Dev environments
 - An Azure DevOps organization
 - Ability to create Azure service principals to access / create Azure resources from Azure DevOps
 - If using Terraform to create and manage infrastructure from Azure DevOps, install the [Terraform extension for Azure DevOps](https://marketplace.visualstudio.com/items?itemName=ms-devlabs.custom-terraform-tasks).
-- [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli) with `azure-devops` extension.
-- Git bash, WSL, or another shell script editor on your local machine
-
-## Steps to Deploy
-
-To deploy the MLOps V2 project generator and an example project, follow the steps below:
-
-1. [Create an Azure DevOps project to contain the MLOps V2 project generator and ML project.](#create-an-azure-devops-project)
-2. Import MLOps V2, set main branch
-3. Configure MLOps V2 pipelines
-4. Create new project, create a dev branch, create dev env?
-5. Configure environments for the new project
-5. Create Azure Service Principals for each ML environment
-6. Deploy infrastructure
-7. Deploy model training pipeline
-8. Deploy model
-
-## Create an Azure DevOps project for the MLOps V2 project  
 
 
+# Steps to Deploy
+
+1. [Clone and Configure the MLOps V2 Solution Accelerator](#clone-and-configure-the-mlops-v2-solution-accelerator)  
+Create a copy of the MLOps V2 Solution Accelerator in your organization that can be used to bootstrap new ML projects.
+
+2. [Create and Configure a New ML Project Repo](#create-and-configure-a-new-ml-project-repo)  
+Use the solution accelerator to create a new ML project according to your scenario and environments and configure it for deployment. 
+
+3. [Deploy and Execute Azure Machine Learning Pipelines](#deploy-and-execute-azure-machine-learning-pipelines)  
+Run Azure DevOps pipelines in your new project to deploy Azure Machine Learning infrastructure, deploy and run a training pipeline, and a deployment pipeline.
+ 
+
+# **Clone and Configure the MLOps V2 Solution Accelerator**
+
+This section guides you through creating an Azure DevOps project to contain the MLOps repositories and your ML projects, importing the MLOps repositories, and configuring the project with permissions to create new pipelines in the ML projects you generate.
 
    1. Navigate to [Azure DevOps](https://go.microsoft.com/fwlink/?LinkId=2014676&githubsi=true&clcid=0x409&WebUserId=2ecdcbf9a1ae497d934540f4edce2b7d) and the organization where you want to create the project. [Create a new organization](https://learn.microsoft.com/en-us/azure/devops/organizations/accounts/create-organization?view=azure-devops) for your project, if needed. 
    
-   2. Create a new project. In this deployment, it is named mlopsv2.
+   2. Create a new project named `mlops-v2`. 
    
-      <p align="center">
+   <p align="center">
       <img src="./images/ado-create-project.png" alt="Create project in ADO" width="50%" height="50%"/>
+    </p>
+
+   3.  Import the MLOps V2 repositories. In your new `mlops-v2` project, select the Repos section on the left side.
+   
+         <p align="center">
+            <img src="./images/ado-repos.png" alt="ADO Repos" width="50%" height="50%"/>
+         </p>
+            
+         The default repo, `mlops-v2`, is empty. Under "Import a repository", select **Import**.
+         
+         <p align="center">
+            <img src="./images/ado-import-repo.png" alt="Import repo into ADO" width="50%" height="50%"/>
+         </p>
+
+         Enter https://github.com/Azure/mlops-v2 into the Clone URL field. Click import at the bottom of the page.
+
+         <p align="center">
+            <img src="./images/ado-import-mlops-v2.png" alt="Import mlops-v2" width="50%" height="50%"/>
+         </p>
+
+         At the top of the page, open the Repos drop-down and repeat the import for the following repositories:  
+         - https://github.com/Azure/mlops-project-template
+         - https://github.com/Azure/mlops-templates 
+
+         <p align="center">
+            <img src="./images/ado-import-mlops-templates.png" alt="Import mlops-templates" width="50%" height="50%"/>
+         </p>
+
+         When done, you should see [all three MLOps V2 repositories](../structure/README.md#repositories) in your project.
+
+         <p align="center">
+            <img src="./images/ado-all-mlops-repos.png" alt="All repos" width="50%" height="50%"/>
+         </p>
+
+         >**Important:**
+         >
+         >Azure DevOps may not import the three MLOps V2 repos with the default branch set to `main`. If not, select **Branches** under the **Repos** section and [reset the default branch](https://learn.microsoft.com/en-us/azure/devops/repos/git/change-default-branch?view=azure-devops) to `main` for each of the three imported repos
+
+   4. Lastly, you will grant the MLOps Solution Accelerator permission to create new pipelines in the ML projects you will create. In your mlops-v2 project, select the Pipelines section on the left side.
+
+      <p align="center">
+         <img src="./images/ado-pipelines.png" alt="ADO Pipelines" width="50%" height="50%"/>
       </p>
 
-   3. Import the Set up source repository with Azure DevOps
-   
-   4. Open the project you created in [Azure DevOps](https://dev.azure.com/)
-   
-   5. Open the Repos section. Click on  the default repo name at the top of the screen and select **Import Repository**
+      Select the three vertical dots next to **Create Pipeline** and select **Manage Security**.
+
+      <p align="center">
+         <img src="./images/ado-manage-security.png" alt="ADO Manage Security" width="50%" height="50%"/>
+      </p>
+
+      Select the "`<projectname> Build Service`" account for your project under the Users section. Change the permission for **Edit build pipeline** to **Allow**
+
+      <p align="center">
+            <img src="./images/ado-add-pipelinesSecurity.png" alt="ADO Pipeline Security"/>
+      </p>
+
+You are done cloning and configuring the MLOps V2 Solution Accelerator. Next, you will create a new ML project using the accelerator templates.
+
+
+# Create and Configure a New ML Project Repo
+
+In this section, you will create your ML project repository, set permissions to allow the solution accelerator to interact with your project, and create service principals so your Azure pipelines can interact with Azure Machine Learning.
+
+### Creating the project repository
+
+ 1. Open the **Repos** drop-down once more and select **New repository**. Create a new repository for your ML project. In this example, the repo is named `taxi-fare-regression`. The MLOps V2 templates will be used to populate this repo based on your  choices for ML scenario, Azure ML interface, and infrastructure provider.
+
+      Leave **Add a README** selected to initialize the repo with a `main` branch.
+
+      <p align="center">
+         <img src="./images/ado-create-demoprojectrepo.png" alt="All repos" width="50%" height="50%"/>
+      </p>
+
+      You should now have your `taxi-fare-regression` repo and [all three MLOps V2 repositories](../structure/README.md#repositories) in your Azure DevOps project.
+      
+      <p align="center">
+         <img src="./images/ado-all-repos.png" alt="All repos" width="50%" height="50%"/>
+      </p>
+
+### Setting project permissions
+
+2. Next, set access permissions on your ML project repository. Open the **Project settings** at the bottom of the left hand navigation pane
 
       <p align="left">
-      <img src="./images/ado-import-repo.png" alt="Import repo into ADO" width="75%" height="75%"/>
+            <img src="./images/ado-open-projectSettings.png" alt="Open Project Settings" width="30%" height="30%"/>
       </p>
 
-   6. Enter https://github.com/Azure/mlops-templates into the Clone URL field. Click import at the bottom of the page.
+      Under the **Repos** section, select **Repositories**.  
+      * Select the `taxi-fare-regression`  repository.  
+      * Select the **Security** tab.  
+      * Under **User permissions**, select the "`<projectname> Build Service`" account for your project under the Users section.  
+      * Change the permissions for **Contribute** and **Create branch** to **Allow**.
 
       <p align="center">
-      <img src="./images/ado-import-mlops-templates.png" alt="Import mlops templates" width="50%" height="50%"/>
+            <img src="./images/ado-permissions-repo.png" alt="Repo Permissions"/>
       </p>
-
-   7. Open the Repos section again and repeat the import for the following repositories: 
-      - https://github.com/Azure/mlops-project-template
-      - https://github.com/Azure/mlops-v2 
-
-   8. You should have [all three MLOps V2 repositories](../structure/README.md#repositories) imported into your Azure DevOps project.
-
-      <p align="center">
-         <img src="./images/ado-import-mlops-templates.png" alt="Import mlops templates" width="50%" height="50%"/>
-      </p>
-
-
-## Setup MLOps V2 and a New MLOps Project in Azure DevOps
----
-
-1. Create Service Principals
-   For the use of the demo, the creation of one or two service principles is required, depending on how many environments, you want to work on (Dev or Prod or Both). These principles can be created using one of the methods below:
-      <details>
-      <summary>Create from Azure Cloud Shell</summary>
-      1.1 Launch the <a href="https://shell.azure.com"> Azure Cloud Shell </a>. (If this the first time you have launched the cloud shell, you will be required to create a storage account for the cloud shell.)
-      
-      1.2 If prompted, choose **Bash** as the environment used in the Cloud Shell. You can also change environments in the drop-down on the top navigation bar
-
-      ![PS_CLI_1](./images/PS_CLI1_1.png)
-
-      1.3 Copy the bash commands below to your computer and update the **projectName**, **subscriptionId**, and **environment** variables with the values for your project. If you are creating both a Dev and Prod environment you will need to run this script once for each environment, creating a service principal for each. This command will also grant the **Contributor** role to the service principal in the subscription provided. This is required for Azure DevOps to properly deploy resources to that subscription. 
-
-      ``` bash
-      projectName="<your project name>"
-      roleName="Contributor"
-      subscriptionId="<subscription Id>"
-      environment="<Dev|Prod>" #First letter should be capitalized
-      servicePrincipalName="Azure-ARM-${environment}-${projectName}"
-      # Verify the ID of the active subscription
-      echo "Using subscription ID $subscriptionId"
-      echo "Creating SP for RBAC with name $servicePrincipalName, with role $roleName and in scopes /subscriptions/$subscriptionId"
-      az ad sp create-for-rbac --name $servicePrincipalName --role $roleName --scopes /subscriptions/$subscriptionId
-      echo "Please ensure that the information created here is properly save for future use."
-      ```
-      
-      1.4 Copy your edited commmands into the Azure Shell and run them (<kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>v</kbd>).
-
-      ![PS_CLI_1_4](./images/PS_CLI1_4.png) 
-
-      
-      1.4 After running these commands you will be presented with information related to the service principal. Save this information to a safe location, it will be used later in the demo to configure Azure DevOps.
-
-      ```
-      {
-         "appId": "<application id>",
-         "displayName": "Azure-ARM-dev-Sample_Project_Name",
-         "password": "<password>",
-         "tenant": "<tenant id>"
-      }
-      ```
-
-      1.5 Repeat step 1.3 if you are creating service principals for Dev and Prod environments.
-
-      1.6 Close the Cloud Shell once the service principals are created. 
-      
-      </details>
-      <details>
-      <summary>Create from Azure Portal</summary>
-      1.1. Navigate to <a href="https://entra.microsoft.com/#view/Microsoft_AAD_RegisteredApps/ApplicationsListBlade/quickStartType~/null/sourceType/Microsoft_AAD_IAM">Azure App Registrations</a> 
-
-      1.2. Select "new registration".
-
-      ![PS2](./images/SP-setup2.png)
-
-      1.3. Go through the process of creating a Service Principle (SP) selecting "Accounts in any organizational directory (Any Azure AD directory - Multitenant)" and name it  "Azure-ARM-Dev-ProjectName". Once created, repeat and create a new SP named "Azure-ARM-Prod-ProjectName". Please replace "ProjectName" with the name of your project so that the service principal can be uniquely identified. 
-
-      1.4. Go to "Certificates & Secrets" and add for each SP "New client secret", then store the value and secret seperately.
-
-      1.5. To assign the necessary permissions to these principals, select your respective <a href="https://portal.azure.com/#view/Microsoft_Azure_Billing/SubscriptionsBlade?">subscription</a>  and go to IAM. Select +Add then select "Add Role Assigment.
-
-      ![PS3](./images/SP-setup3.png)
-
-      1.6. Select Contributor and add members selecting + Select Members. Add the member "Azure-ARM-Dev-ProjectName" as create before.
-
-      ![SP4](./images/SP-setup4.png)
-
-      1.7. Repeat step here, if you deploy Dev and Prod into the same subscription, otherwise change to the prod subscription and repeat with "Azure-ARM-Prod-ProjectName". The basic SP setup is successfully finished.
-      </details>
-   </details>
-
-
-   
-   2.3. In the project under **Project Settings** (at the bottom left of the project page) select **Service Connections**.
-   
-   ![ADO1](./images/ADO-setup1.png)
-   
-   **Azure Subscription Connection:**
-   
-      2.3.1 Select "New Service Connection".
-
-      ![ADO2](./images/ADO-setup2.png)
-
-      3.3.2 Select "Azure Resource Manager", select "Next", select "Service principal (manual)", select "Next", select your subscrption where your Service Principal is stored and name the service connection "Azure-ARM-Dev". Fill in the details of the Dev service principal created in step 1. Select "Grant access permission to all pipelines", then select "Save". Repeat this step to create another service connection "Azure-ARM-Prod" using the details of the Prod service principal created in step 1.
-
-      ![ADO3](./images/ado-service-principal-manual.png)
-
-   The Azure DevOps setup is successfully finished.
   
-3. 
-   3.5.1 Open the Repos section. Click on the default repo name at the top of the screen and select **New Repository**
+### Initializing the new ML project repo
 
-   ![image](./images/ado-add-demoproject.png)
+3. Now you will create and initialize your MLOps project repository. Open the Pipelines section again and select **Create Pipeline** in the center of the page.
+      <p align="center">
+            <img src="./images/ado-create-pipeline.png" alt="Creaet Pipeline"/>
+      </p>
 
-   3.5.2  Enter a name for the repository. This will be used to store the files for the project type you choose. Click **Create**
-
-   ![image](./images/ado-create-demoprojectrepo.png)
-
-   3.5.3 Open the **project settings** at the bottom of the left hand navigation pane
-
-   ![image](./images/ado-open-projectSettings.png)
-
-   3.5.4  Under the Repos section, click **Repositories**. Select the repository you created in step 3.5.2. Select the **Security** tab
-
-   3.5.5 Under the User permissions section, select the \<projectname> Build Service user
-   
-   3.5.6 Change the permissions for **Contribute** and **Create branch** to **Allow**
-   ![image](./images/ado-permissions-repo.png)
-
-   
-
-   3.6 Open the Pipelines section and click on the 3 vertical dots next to the **Create Pipelines** button. Select **Manage Security**
-
-   ![image](./images/ado-open-pipelinesSecurity.png)
-
-   3.6.1 Select the \<projectname> Build Service account for your project under the Users section. Change the permission **Edit build pipeline** to **Allow**
-
-   ![image](./images/ado-add-pipelinesSecurity.png)
-
-   
-   3.5 Open the Pipelines section and create a new pipeline
-
-   ![image](./images/ado-pipeline-sparsecheckout.png)
-
-   3.6 
-   - Select Azure Repos Git
-   - Select the mlops-v2 repository
-   - Select existing Azure Pipelines YAML file
+   - Select **Azure Repos Git**
+   - Select the **mlops-v2** repository
+   - Select **Existing Azure Pipelines YAML file**
    - Ensure the selected branch is **main**
-   - Select the /.azuredevops/initialise-project.yml file in the patch drop-down
+   - Select the `/.azuredevops/initialise-project.yml` file in the Path drop-down
    - Click Continue 
 
-   On the pipeline review page chose to **save** the pipeline before running it. 
+   On the pipeline review page, drop-down the **Run** menu and select **Save** the pipeline before running it. 
 
-   ![image](./images/ado-save-sparepipeline.png)
+      <p align="center">
+            <img src="./images/ado-save-pipeline.png" alt="Create Pipeline"/>
+      </p>
 
-   3.7 Click run pipeline
 
-   ![image](./images/ado-run-sparepipeline.png)
+   Now select **Run pipeline**.
 
-   You will need to complete the required parameters to configure your project
+      <p align="center">
+            <img src="./images/ado-run-sparepipeline.png" alt="Run pipeline"/>
+      </p>
+   
 
-   ![image](./images/ado-parameters-sparepipeline.png)
+   This action will run an Azure DevOps pipeline that prompts you for some parameters of your project. You can select the ML scenario, the interface the ML pipelines will use to interact with Azure Machine Learning, and the Infrastructure-as-Code provider for your organization. Below shows the parameter selection panel followed by explanations of each option:
 
-   - **Azure DevOps Project Name** : This is the name of the Azure DevOps project you are running the pipeline from.
-   - **New Project Repository Name**: The name of your new project repository created in 3.5.1.
-   - **MLOps Project Template Repo Name**: Name of the shared templates you imported previously (Default is **mlops-project-template**)
+      <p align="center">
+            <img src="./images/ado-parameters-pipeline.png" alt="Pipeline parameters" width="50%" height="50%"/>
+      </p>
+
+   ### Project Parameters
+
+   - **Azure DevOps Project Name** : This is the name of the Azure DevOps project you are running the pipeline from. In this case, `mlops-v2`.
+   - **New Project Repository Name**: The name of your new project repository created in step 1. In this example, `taxi-fare-regression`.
+   - **MLOps Project Template Repo Name**: Name of the MLOps project template repo you imported previously. The default is **mlops-project-template**. Leave as default.
    - **ML Project type**:
-     - Choose **classical** for a regression or classification project.
+     - Choose **classical** for a regression or classification project
      - Choose **cv** for a computer vision project
      - Choose **nlp** for natural language  projects
-   - **MLOps Interface**: Select the interface to the ML platform, either CLI or SDK.
+   - **MLOps Interface**: Select the interface to the Azure ML platform, either CLI or SDK.
      - Choose **aml-cli-v2** for the Azure ML CLI v2 interface. This is supported for all ML project types.
      - Choose **python-sdk-v1** to use the Azure ML python SDK v1 for training and deployment of your model. This is supported for Classical and CV project types.
-     - Choose **python-sdk-v1** to use the Azure ML python SDK v2 for training and deployment of your model. This is supported for Classical and NLP project types.
+     - Choose **python-sdk-v2** to use the Azure ML python SDK v2 for training and deployment of your model. This is supported for Classical and NLP project types.
      - Choose **rai-aml-cli-v2** to use the Responsible AI cli tools for training and deployment of your model. This is supported only for Classical project types at this time.
 
    - **Infrastructure Provider**: Choose the provider to use to deploy Azure infrastructure for your project.
-     - Choose **Bicep** to deploy using Azure ARM-based templates
+     - Choose **Bicep** to deploy using Azure Bicep templates
      - Choose **terraform** to use terraform based templates. 
 
-   3.8.1 The first run of the pipeline will require you to grant access to the repositories you created. Click **View** 
+   
+   After selecting the parameters, click **Run** at the bottom of the panel. The first run of the pipeline will prompt you to grant access to the repositories you created.
 
-   ![ADO_Pipeline_permissions](./images/ado-pipeline-permissions.png)
 
-   3.8.2  Click **Permit** for all repositories waiting for review
+      <p align="center">
+               <img src="./images/ado-pipeline-permissions.png" alt="Pipeline permit" />
+      </p>
 
-   ![ADO_Pipeline_permissionsReview](./images/ado-pipeline-permissionsPermit.png)
+      Click **View** to see the permissions waiting for review.
+
+      <p align="center">
+               <img src="./images/ado-pipeline-permit.png" alt="Pipeline permit" width="50%" height="50%"/>
+      </p>
+
+      For each of the repos, click **Permit** waiting for review.
+
+   The pipeline run should take a few minutes. When the pipeline run is complete and successful, go back to **Repos** and look at the contents of your ML project repo, `taxi-fare-regression`. The solution accelerator has populated the project repository according to your configuration selections. 
+
+      <p align="center">
+               <img src="./images/ado-new-mlrepo.png" alt="Pipeline permit" />
+      </p>
+
+   The structure of the project repo is as follows:   
+
+   | File | Purpose |
+   | --- | --------- |
+   | `/data` |     Sample data for the example project  |
+   | `/data-science` | Contains python code for the data science workflow |
+   | `/infrastructure` | IaC code for deploying the Azure Machine Learning infrastructure  |
+   | `/mlops` | Azure DevOps pipelines and Azure Machine Learning pipelines for orchestrating deployment of infrastructure and ML workflows.  |
+   | `config-infra-dev.yml`  | Configuration file to define dev environment resources |
+   | `config-infra-prod.yml` | Configuration file to define production environment resources |
+
+### (Optional) Create a development branch
+
+   If you are deploying to explore the Taxi Fare Regression example, you may work with only the `main` branch to understand the components of the project, the pipelines, and workflow. If you wish to use trunk-based development, doing work in a development branch, merging to main and deploying from the main branch, you can create the dev branch now.
+   
+   From the new `taxi-fare-regression` repo, select the `main` branch drop-down and select **New branch**. Name the new branch `dev` and click **Create**. Your development work will be done in the `dev` branch and the development environment is deployed from this branch. The production environment is deployed from the `main` branch.
+
+   <p align="center">
+               <img src="./images/ado-create-dev-branch.png" alt="Create dev branch" width="50%" height="50%"/>
+   </p>
+ 
+### Create and Configure Service Principals and Connections
+
+For Azure DevOps pipelines to create Azure Machine Learning infrastructure and deploy and execute Azure ML pipelines, it is necessary to create a an Azure service principal for each Azure ML environment (Dev and/or Prod) and configure Azure DevOps service connections using those service principals. These service princiapls can be created using one of the two methods below:
+
+<details>
+<summary>Create Service Principal from Azure Cloud Shell</summary>
+
+1. Launch the <a href="https://shell.azure.com"> Azure Cloud Shell </a>. (If this the first time you have launched the cloud shell, you will be required to create a storage account for the cloud shell.)  
+
+2. If prompted, choose **Bash** as the environment used in the Cloud Shell. You can also change environments in the drop-down on the top navigation bar
+
+   <p align="center">
+                  <img src="./images/PS_CLI1_1.png" alt="Open Azure cloud shell"/>
+   </p>
+
+
+3. Copy the bash commands below to your computer and update the **projectName**, **subscriptionId**, and **environment** variables with the values for your project. If you are creating both a Dev and Prod environment you will need to run this script once for each environment, creating a service principal for each. This command will also grant the **Contributor** role to the service principal in the subscription provided. This is required for Azure DevOps to properly deploy resources to that subscription. 
+
+   ``` bash
+   projectName="<your project name>"
+   roleName="Contributor"
+   subscriptionId="<subscription Id>"
+   environment="<Dev|Prod>" #First letter should be capitalized
+   servicePrincipalName="Azure-ARM-${environment}-${projectName}"
+   # Verify the ID of the active subscription
+   echo "Using subscription ID $subscriptionId"
+   echo "Creating SP for RBAC with name $servicePrincipalName, with role $roleName and in scopes /subscriptions/$subscriptionId"
+   az ad sp create-for-rbac --name $servicePrincipalName --role $roleName --scopes /subscriptions/$subscriptionId
+   echo "Please ensure that the information created here is properly save for future use."
+   ```
+
+4. Copy your edited commmands into the Azure Shell and run them (<kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>v</kbd>).
+
+   <p align="center">
+                  <img src="./images/PS_CLI1_4.png" alt="Open Azure cloud shell"/>
+   </p>
+
+
+
+5. After running these commands you will be presented with information related to the service principal. Save this information to a safe location, it will be used later in the demo to configure Azure DevOps.
+
+   ```
+   {
+      "appId": "<application id>",
+      "displayName": "Azure-ARM-dev-Sample_Project_Name",
+      "password": "<password>",
+      "tenant": "<tenant id>"
+   }
+   ```
+
+6. Repeat **step 3** if you are creating service principals for Dev and Prod environments.
+
+7. Close the Cloud Shell once the service principals are created. 
+
+</details>
+
+<details>
+<summary>Create Service Principal from the Azure Portal</summary>
+
+1. Navigate to <a href="https://entra.microsoft.com/#view/Microsoft_AAD_RegisteredApps/ApplicationsListBlade/quickStartType~/null/sourceType/Microsoft_AAD_IAM">Azure App Registrations</a> 
+
+2. Select **New registration**.
+
+   <p align="center">
+                  <img src="./images/SP-setup2.png" alt="New SP registration"/>
+   </p>
+
+
+3. Go through the process of creating a Service Principle (SP) selecting "Accounts in any organizational directory (Any Azure AD directory - Multitenant)" and name it  "Azure-ARM-Dev-ProjectName". Once created, repeat and create a new SP named "Azure-ARM-Prod-ProjectName". Please replace "ProjectName" with the name of your project so that the service principal can be uniquely identified. 
+
+4. Go to "Certificates & Secrets" and add for each SP "New client secret", then store the value and secret seperately.
+
+5. To assign the necessary permissions to these principals, select your respective <a href="https://portal.azure.com/#view/Microsoft_Azure_Billing/SubscriptionsBlade?">subscription</a>  and go to **Access control (IAM)**. Select +Add then select "Add Role Assigment.
+
+   <p align="center">
+                  <img src="./images/SP-setup3.png" alt="Access control"/>
+   </p>
+
+
+6. Select Contributor and add members selecting + Select Members. Add the member "Azure-ARM-Dev-ProjectName" as create before.
+
+   <p align="center">
+                  <img src="./images/SP-setup4.png" alt="SP Contributor"/>
+   </p>
+
+
+7. Repeat step here, if you deploy Dev and Prod into the same subscription, otherwise change to the prod subscription and repeat with "Azure-ARM-Prod-ProjectName". The basic SP setup is successfully finished.
+</details>
+
+
+### Create Service Connections
+   
+Select **Project Settings** at the bottom left of the project page and select **Service connections**.
+   
+   <p align="left">
+      <img src="./images/ado-setup1.png" alt="Service connection" width="30%" height=30%"/>
+   </p>
+
+   
+Select **Create service connection**
+
+* For service, select **Azure Resource Manager** and **Next**  
+* For authentication method, select **Service principal (manual)** and **Next**  
+
+Complete the new service connection configuration using the information from your tenant, subscription, and the service principal you created for Prod.
+
+   <p align="left">
+      <img src="./images/ado-service-principal-manual.png" alt="Service connection" width="35%" height="35%"/>
+   </p>
+
+Name this service connection **Azure-ARM-Prod**.  Check **Grant access permission to all pipelines**. and click **Verify and save**.
+
+
+
+If you created a dev/Dev environment as well, crerepeat these steps to create a second service connection using the service principal you created for dev with the service connection name **Azure-ARM-Dev**.
+
+
+The configuration of your new ML project repo is complete and you are ready to deploy your Azure Machine Learning infrastructure and deploy ML training and model deployment pipelines in the next section.
+
+
+# Deploy and Execute Azure Machine Learning Pipelines
+
+# TO-DO
+
+Deploy Azure Machine Learning infrastructure  
+Deploy model training pipeline  
+Deploy model 
+
+   
+   3.10 Under Pipelines, select Environments and ensure both "Prod" and "Dev" environments are created. Create the "Dev" environment manually, if necessary.
 
    3.9 The pipeline will run the following actions:
    - Your project repository will be populated with the files needed to create the Azure Machine Learning project and resources. 
    ![ADO_view_repoSparseCheckout](./images/ado-view-repoSparseCheckout.png)
-   - Pipelines for the creation of infrastructure and the training and deployment of machine learning models. 
+
+    - Pipelines for the creation of infrastructure and the training and deployment of machine learning models. 
    ![ADO_view_allPipelines](./images/ado-view-allPipelines.png)
-   
-   3.10 Under Pipelines, select Environments and ensure both "Prod" and "Dev" environments are created. Create the "Dev" environment manually, if necessary.
-
-   **This finishes the prerequisite section and the deployment of the solution accelerator can happen accordingly.**
-   
-
-
-## Outer Loop: Deploying Infrastructure via Azure DevOps
----
-This step deploys the training pipeline to the Azure Machine Learning workspace created in the previous steps. 
 
 Run Azure Infrastructure pipeline
  1. Go to your Github cloned repo and select the "config-infra-prod.yml" file.
