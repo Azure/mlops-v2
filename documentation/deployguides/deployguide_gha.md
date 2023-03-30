@@ -6,7 +6,6 @@
 - Github Actions as the DevOps orchestration tool
 - [GitHub client](https://cli.github.com/)
 - [Azure CLI ](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli)
-- The [Terraform extension for Azure DevOps](https://marketplace.visualstudio.com/items?itemName=ms-devlabs.custom-terraform-tasks) if you are using Azure DevOps + Terraform to spin up infrastructure
 - Azure service principals to access / create Azure resources from Azure DevOps or Github Actions (or the ability to create them)
 - Git bash, [WSL](https://learn.microsoft.com/en-us/windows/wsl/install) or another shell script runner on your local machine
 -  When using WSL, 
