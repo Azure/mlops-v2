@@ -25,13 +25,22 @@ Run Azure DevOps pipelines in your new project to deploy Azure Machine Learning 
 
 This section guides you through creating an Azure DevOps project to contain the MLOps repositories and your ML projects, importing the MLOps repositories, and configuring the project with permissions to create new pipelines in the ML projects you generate.
 
+Below are the three repositories that you will import. They each serve a different purpose and together make up the MLOPs V2 Solution Accelerator. They will used as a "project factory" to help you bootstrap new ML projects customized for your ML scenario, preferred Azure ML interface, CI/CD platform, and infrastructure provider.
+
+| Repository | Role |
+| ---        | ---  |
+| https://github.com/Azure/mlops-v2 | The parent MLOps V2 repo. This contains project creation scripts and pipelines and MLOps V2 documentation |
+| https://github.com/Azure/mlops-project-template | This repo contains templates for the supported ML scenarios and their associated ML and CI/CD pipelines. |
+| https://github.com/Azure/mlops-templates | This repo contains Azure ML interface helpers and infrastructure deployment templates. |
+
+
    1. Navigate to [Azure DevOps](https://go.microsoft.com/fwlink/?LinkId=2014676&githubsi=true&clcid=0x409&WebUserId=2ecdcbf9a1ae497d934540f4edce2b7d) and the organization where you want to create the project. [Create a new organization](https://learn.microsoft.com/en-us/azure/devops/organizations/accounts/create-organization?view=azure-devops) for your project, if needed. 
    
    2. Create a new project named `mlops-v2`. 
    
    <p align="center">
       <img src="./images/ado-create-project.png" alt="Create project in ADO" width="50%" height="50%"/>
-    </p>
+   </p>
 
    3.  Import the MLOps V2 repositories. In your new `mlops-v2` project, select the Repos section on the left side.
    
@@ -67,7 +76,7 @@ This section guides you through creating an Azure DevOps project to contain the 
 
          >**Important:**
          >
-         >Azure DevOps may not import the three MLOps V2 repos with the default branch set to `main`. If not, select **Branches** under the **Repos** section and [reset the default branch](https://learn.microsoft.com/en-us/azure/devops/repos/git/change-default-branch?view=azure-devops) to `main` for each of the three imported repos
+         >Azure DevOps may not import the three MLOps V2 repos with the default branch set to `main`. If not, select **Branches** under the **Repos** section on the left and [reset the default branch](https://learn.microsoft.com/en-us/azure/devops/repos/git/change-default-branch?view=azure-devops) to `main` for each of the three imported repos.
 
    4. Lastly, you will grant the MLOps Solution Accelerator permission to create new pipelines in the ML projects you will create. In your mlops-v2 project, select the Pipelines section on the left side.
 
@@ -130,7 +139,10 @@ In this section, you will create your ML project repository, set permissions to 
   
 ### Initializing the new ML project repo
 
-3. Now you will create and initialize your MLOps project repository. Open the Pipelines section again and select **Create Pipeline** in the center of the page.
+In this step, you will run an Azure DevOps pipeline, `initialise-project`, that will prompt you for the properties of the ML project you want to build including the ML scenario (classical, computer vision, or natural language processing), the interface you will use to interface with Azure ML (CLI or SDK), and the CI/CD tool and infrastructure provider your organization uses. When run, the pipeline will populate the empty repo you created in the previous steps with the correct elements of the template repos to build your project.
+
+
+3. Open the Pipelines section again and select **Create Pipeline** in the center of the page.
       <p align="center">
             <img src="./images/ado-create-pipeline.png" alt="Creaet Pipeline"/>
       </p>
