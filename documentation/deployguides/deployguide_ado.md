@@ -226,15 +226,7 @@ In this step, you will run an Azure DevOps pipeline, `initialise-project`, that 
    | `config-infra-dev.yml`  | Configuration file to define dev environment resources |
    | `config-infra-prod.yml` | Configuration file to define production environment resources |
 
-### (Optional) Create a development branch
 
-   If you are deploying to explore the Taxi Fare Regression example, you may work with only the `main` branch to understand the components of the project, the pipelines, and workflow. If you wish to use trunk-based development, doing work in a development branch, merging to main and deploying from the main branch, you can create the dev branch now.
-   
-   From the new `taxi-fare-regression` repo, select the `main` branch drop-down and select **New branch**. Name the new branch `dev` and click **Create**. Your development work will be done in the `dev` branch and the development environment is deployed from this branch. The production environment is deployed from the `main` branch.
-
-   <p align="center">
-               <img src="./images/ado-create-dev-branch.png" alt="Create dev branch" width="50%" height="50%"/>
-   </p>
  
 ### Create and Configure Service Principals and Connections
 
@@ -348,92 +340,103 @@ Complete the new service connection configuration using the information from you
 
 Name this service connection **Azure-ARM-Prod**.  Check **Grant access permission to all pipelines**. and click **Verify and save**.
 
+### Create Azure DevOps Environment
 
+The pipelines in each branch of your ML project repository will depend on an Azure DevOps environment. These environments should be created before deployment.
 
-If you created a dev/Dev environment as well, crerepeat these steps to create a second service connection using the service principal you created for dev with the service connection name **Azure-ARM-Dev**.
+To create the prod environment, select **Pipeline** in the left menu and **Environments**. Select **New environment**
 
+   <p align="center">
+      <img src="./images/ado-new-env.png" alt="New environment" width="50%" height="50%"/>
+   </p>
+
+Name the new environment `prod` and click **Create**. The environment will initially be empty and indicate "Never deployed" but this status will update after the first deployment.
 
 The configuration of your new ML project repo is complete and you are ready to deploy your Azure Machine Learning infrastructure and deploy ML training and model deployment pipelines in the next section.
 
 
 # Deploy and Execute Azure Machine Learning Pipelines
 
-# TO-DO
+Now that your ML project is created, this last section will guide you through executing Azure DevOps pipelines created for you that will first deploy Azure Machine Learning infrastructure for your project then deploy a model training pipeline followed by a model deployment pipeline. 
 
-Deploy Azure Machine Learning infrastructure  
-Deploy model training pipeline  
-Deploy model 
+Each pipeline may have different roles associated with its deployment and management. For example, infrastructure by your IT team, model training by your data scientists and ML engineers, and model deployment by ML engineers. Likewise, depending on the environments and project branches you have created, you may deploy infrastructure for both **dev** and **prod** Azure ML infrastructure, with data scientists developing the training pipeline in the **dev** environment and branch and, when the model is acceptable, opening a pull request to the **main** branch to merge updates and run the model deployment pipeline in the **prod** environment.
 
-   
-   3.10 Under Pipelines, select Environments and ensure both "Prod" and "Dev" environments are created. Create the "Dev" environment manually, if necessary.
-
-   3.9 The pipeline will run the following actions:
-   - Your project repository will be populated with the files needed to create the Azure Machine Learning project and resources. 
-   ![ADO_view_repoSparseCheckout](./images/ado-view-repoSparseCheckout.png)
-
-    - Pipelines for the creation of infrastructure and the training and deployment of machine learning models. 
-   ![ADO_view_allPipelines](./images/ado-view-allPipelines.png)
-
-Run Azure Infrastructure pipeline
- 1. Go to your Github cloned repo and select the "config-infra-prod.yml" file.
-   
-   ![ADO Run4](./images/ADO-run4.png)
-   
-   Under global, there's two values namespace and postfix. These values should render the names of the artifacts to create unique. Especially the name for the storage account, which has the most rigid constraints, like uniqueness Azure wide and 3-5 lowercase characters and numbers. So please change namespace and/or postfix to a value of your liking and remember to stay within the contraints of a storage account name as mentioned above. Then save, commit, push, pr to get these values into the pipeline.
-   
-   If your are running a Deep Learning workload such as CV or NLP, you have to ensure your GPU compute is availible in your deployment zone. Please replace as shown above your location to eastus. Example:
-   
-    namespace: [5 max random new letters]
-    postfix: [4 max random new digits]
-    location: eastus
-    
-   Please repeat this step for "config-infra-dev.yml" and "config-infra-prod.yml"!
-
-   2. Go to ADO pipelines
-   
-   ![ADO Pipelines](./images/ADO-pipelines.png)
-   
-   3. Select "New Pipeline".
-   
-   ![ADO Run1](./images/ADO-run1.png)
-   
-   4. Select "Azure Repos Git".
-   
-   ![ADO Where's your code](./images/ado-wheresyourcode.png)
-   
-   5. Select your /MLOps-Test repository. 
-   
-   ![ADO Run2](./images/ADO-run2.png)
-   
-   If your new repository is not visible, then click on the "provide access" link and on the next screen, click on the "grant" button next to the organization name to grant access to your organization.
-   
-   6. Select "Existing Azure Pipeline YAML File"
-   
-   ![ADO Run3](./images/ADO-run3.png)
-   
-   
-   7. Select "main" as a branch and choose based on your deployment method your preferred yml path. For a terraform schenario choose: 'infrastructure/pipelines/tf-ado-deploy-infra.yml', then select "Continue". For a bicep schenario choose: 'infrastructure/pipelines/bicep-ado-deploy-infra.yml', then select "Continue".
-   
-   ![Select Infrastructure Pipeline](./images/ado-select-pipeline-yaml-file.png)
-   
-
-   
-   8. Run the pipeline. This will take a few minutes to finish. The pipeline should create the following artifacts:
-   * Resource Group for your Workspace including Storage Account, Container Registry, Application Insights, Keyvault and the Azure Machine Learning Workspace itself.
-   * In the workspace there's also a compute cluster created.
-   
-   ![ADO Run5](./images/ADO-run5.png)
-   
-   Now the Outer Loop of the MLOps Architecture is deployed.
-   
-   ![ADO Run6](./images/ADO-run-infra-pipeline.png)
-
-> Note: the "Unable move and reuse existing repository to required location" warnings may be ignored.
+Depending on the options you chose when initializing the project, you should have one infrastructure deployment pipeline, one model training pipeline, and one or two model deployment pipelines in your ML project. Model deployment options are online-endpoint for near real-time scoring and batch-endpoint for batch scoring. To see all pipelines in your project, select the **Pipelines** section from the left navigation menu, then **Pipelines**, then the **All** tab. For the example project in this guide, you should see:
 
 
->
+   <p align="left">
+      <img src="./images/ado-view-all-pipelines.png" alt="View all pipelines" />
+   </p>
+
+
+
+### Deploy Azure Machine Learning Infrastructure
+
+The first task for your ML project is to deploy Azure Machine Learning infrastructure in which to develop your ML code, define your datasets, define your ML pipelines, train models, and deploy your models in production. This pipeline deployment is typically managed by your IT group responsible for ensuring that the subscription is able to create the infrastructure needed. The infarstructure is created by executing the Azure DevOps deploy-infra pipeline. Before doing this, you will customize environment files that define unique Azure resource groups and Azure ML workspaces for your project.
+
+To do this, go back to **Repos** and your ML project repo, in this example, `taxi-fare-regression`. You will see two files in the root directory, `config-infra-prod.yml` and `config-infra-dev.yml`.
+   
+   <p align="center">
+            <img src="./images/ado-new-mlrepo.png" alt="Complete ML repo" />
+   </p>
+
+Making sure you are in the **main** branch, click on `config-infra-prod.yml` to open it. 
+
+Under the Global section, you will see properties for `namespace`, `postfix`, and `location`.
+
+   ```
+   # Prod environment
+   variables:
+      # Global
+      ap_vm_image: ubuntu-20.04
+
+      namespace: mlopsv2 #Note: A namespace with many characters will cause storage account creation to fail due to storage account names having a limit of 24 characters.
+      postfix: 0001
+      location: eastus
+      environment: prod
+      enable_aml_computecluster: true
+   ```
+
+The two properties `namespace` and `postfix` will be used to construct a unique name for your Azure resource group, Azure ML workspace, and associated resources. The naming convention for your resource group will be `rg-<namespace>-<postfix>prod`. The name of the Azure ML workspace will be `mlw-<namespace>-<postfix>prod`. The `location` property will be the Azure region into which to provision these resources.
+   
+Edit `config-infra-prod.yml` to set the variables for your environment. You can clone the repo, edit the file, and push/PR to make the change or select **Edit** in the upper right of the screen to edit the file within Azure DevOps. If editing in place, change `namespace`, `postfix`, and `location` to your preferences and click **Commit**
+
+If the `enable_aml_computecluster` property is set to true, the infra deployment pipeline will pre-create Azure ML compute clusters for your training. In the case of CV or NLP scenarios, it will create both CPU-based and GPU-based compute clusters so ensure that your subscription has GPU compute available. 
+
+Now you are ready to run the infrastructure deployment pipeline. Open the **Pipelines** section again and select **New pipeline** in the upper right of the page.
+
+   <p align="center">
+         <img src="./images/ado-create-pipeline.png" alt="Create Pipeline"/>
+   </p>
+
+   - Select **Azure Repos Git**
+   - Select the **taxi-fare-regression** repository
+   - Select **Existing Azure Pipelines YAML file**
+   - Ensure the selected branch is **main**
+   - Select the `/infrastructure/pipelines/bicep-ado-deploy-infra.yml` file in the Path drop-down
+   - Click Continue 
+
+Now you will see the pipeline details.
+
+   <p align="center">
+         <img src="./images/ado-infra-pipeline-details.png" alt="Infra pipeline details"/>
+   </p>
+
+ Click **Run** to execute the pipeline. This will take a few minutes to finish. When complete, you can view the pipeline jobs and tasks by selecting **Pipelines** then **taxi-fare-regression** under **Recently run pipelines**. 
  
-## Inner Loop: Deploying Classical ML Model Development / Moving to Test Environment - Azure DevOps
+   <p align="center">
+         <img src="./images/ado-infra-pipeline-view.png" alt="Infra pipeline view"/>
+   </p>
+
+ The pipeline should create the following artifacts which you can view in your Azure subscription:
+
+   * Resource Group for your Workspace
+   * Azure Machine Learning Workspace and associated resources including Storage Account, Container Registry, Application Insights, and Keyvault 
+   * Inside the workspace, an AmlCompute cluster will be created
+   
+Your Azure Machine Learning infrastructure is now deployed and you are ready to deploy an ML model training pipeline.
+ 
+### Deploy Azure Machine Learning Model Training Pipeline
 ---
    Deploy Classical ML Model
    1. Go to ADO pipelines
@@ -467,14 +470,7 @@ Run Azure Infrastructure pipeline
 
    
    
-## Inner Loop: Checkpoint
-   
-   At this point, the infrastructure is configured and the Inner Loop of the MLOps Architecture is deployed. We are ready to move to our trained model to production.      
 
-   
-## Inner / Outer Loop: Moving to Production - Introduction
----
-         
    >**NOTE: This is an end-to-end machine learning pipeline which runs a linear regression to predict taxi fares in NYC. The pipeline is made up of components, each serving  different functions, which can be registered with the workspace, versioned, and reused with various inputs and outputs.**
 
    >**Prepare Data
@@ -498,8 +494,7 @@ Run Azure Infrastructure pipeline
    Input: Trained model and the deploy flag.
    Output: Registered model in Azure Machine Learning.**
    
-
-## Inner / Outer Loop: Moving to Production - Azure DevOps
+### Deploy Azure Machine Learning Model Training Pipeline
 ---
    Deploy ML model endpoint
    1. Go to ADO pipelines
@@ -549,7 +544,15 @@ Run Azure Infrastructure pipeline
    
   Now the Inner Loop is connected to the Outer of the MLOps Architecture and inference has been run.
 
-  
+  ### (Optional) Create a development branch
+
+   If you are deploying to explore the Taxi Fare Regression example, you may work with only the `main` branch to understand the components of the project, the pipelines, and workflow. If you wish to use trunk-based development, doing work in a development branch, merging to main and deploying from the main branch, you can create the dev branch now.
+   
+   From the new `taxi-fare-regression` repo, select the `main` branch drop-down and select **New branch**. Name the new branch `dev` and click **Create**. Your development work will be done in the `dev` branch and the development environment is deployed from this branch. The production environment is deployed from the `main` branch.
+
+   <p align="center">
+               <img src="./images/ado-create-dev-branch.png" alt="Create dev branch" width="50%" height="50%"/>
+   </p>
 
 
 ## Next Steps
