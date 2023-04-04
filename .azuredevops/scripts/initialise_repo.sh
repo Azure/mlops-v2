@@ -37,6 +37,7 @@ then
 fi
 
 rm -rf $project_type
+rm -rf mlops/github-actions
 
 mv infrastructure/$infrastructure_version $infrastructure_version
 rm -rf infrastructure
