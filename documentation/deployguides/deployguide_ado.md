@@ -33,7 +33,7 @@ Below are the three repositories that you will import. They each serve a differe
 | https://github.com/Azure/mlops-project-template | This repo contains templates for the supported ML scenarios and their associated ML and CI/CD pipelines. |
 | https://github.com/Azure/mlops-templates | This repo contains Azure ML interface helpers and infrastructure deployment templates. |
 
-
+---
    1. Navigate to [Azure DevOps](https://go.microsoft.com/fwlink/?LinkId=2014676&githubsi=true&clcid=0x409&WebUserId=2ecdcbf9a1ae497d934540f4edce2b7d) and the organization where you want to create the project. [Create a new organization](https://learn.microsoft.com/en-us/azure/devops/organizations/accounts/create-organization?view=azure-devops) for your project, if needed. 
    
    2. Create a new project named `mlops-v2`. 
@@ -104,6 +104,7 @@ You are done cloning and configuring the MLOps V2 Solution Accelerator. Next, yo
 In this section, you will create your ML project repository, set permissions to allow the solution accelerator to interact with your project, and create service principals so your Azure pipelines can interact with Azure Machine Learning.
 
 ### Creating the project repository
+---
 
  1. Open the **Repos** drop-down once more and select **New repository**. Create a new repository for your ML project. In this example, the repo is named `taxi-fare-regression`. The MLOps V2 templates will be used to populate this repo based on your  choices for ML scenario, Azure ML interface, and infrastructure provider.
 
@@ -120,6 +121,7 @@ In this section, you will create your ML project repository, set permissions to 
       </p>
 
 ### Setting project permissions
+---
 
 2. Next, set access permissions on your ML project repository. Open the **Project settings** at the bottom of the left hand navigation pane
 
@@ -138,6 +140,7 @@ In this section, you will create your ML project repository, set permissions to 
       </p>
   
 ### Initializing the new ML project repo
+---
 
 In this step, you will run an Azure DevOps pipeline, `initialise-project`, that will prompt you for the properties of the ML project you want to build including the ML scenario (classical, computer vision, or natural language processing), the interface you will use to interface with Azure ML (CLI or SDK), and the CI/CD tool and infrastructure provider your organization uses. When run, the pipeline will populate the empty repo you created in the previous steps with the correct elements of the template repos to build your project.
 
@@ -175,6 +178,7 @@ In this step, you will run an Azure DevOps pipeline, `initialise-project`, that 
       </p>
 
    ### Project Parameters
+---
 
    - **Azure DevOps Project Name** : This is the name of the Azure DevOps project you are running the pipeline from. In this case, `mlops-v2`.
    - **New Project Repository Name**: The name of your new project repository created in step 1. In this example, `taxi-fare-regression`.
@@ -196,18 +200,17 @@ In this step, you will run an Azure DevOps pipeline, `initialise-project`, that 
    
    After selecting the parameters, click **Run** at the bottom of the panel. The first run of the pipeline will prompt you to grant access to the repositories you created.
 
+   <p align="center">
+            <img src="./images/ado-pipeline-permissions.png" alt="Pipeline permit" />
+   </p>
 
-      <p align="center">
-               <img src="./images/ado-pipeline-permissions.png" alt="Pipeline permit" />
-      </p>
+   Click **View** to see the permissions waiting for review.
 
-      Click **View** to see the permissions waiting for review.
+   <p align="center">
+            <img src="./images/ado-pipeline-permit.png" alt="Pipeline permit" width="50%" height="50%"/>
+   </p>
 
-      <p align="center">
-               <img src="./images/ado-pipeline-permit.png" alt="Pipeline permit" width="50%" height="50%"/>
-      </p>
-
-      For each of the repos, click **Permit** waiting for review.
+   For each of the repos, click **Permit** waiting for review.
 
    The pipeline run should take a few minutes. When the pipeline run is complete and successful, go back to **Repos** and look at the contents of your ML project repo, `taxi-fare-regression`. The solution accelerator has populated the project repository according to your configuration selections. 
 
@@ -229,6 +232,7 @@ In this step, you will run an Azure DevOps pipeline, `initialise-project`, that 
 
  
 ### Create and Configure Service Principals and Connections
+---
 
 For Azure DevOps pipelines to create Azure Machine Learning infrastructure and deploy and execute Azure ML pipelines, it is necessary to create a an Azure service principal for each Azure ML environment (Dev and/or Prod) and configure Azure DevOps service connections using those service principals. These service princiapls can be created using one of the two methods below:
 
@@ -319,7 +323,8 @@ For Azure DevOps pipelines to create Azure Machine Learning infrastructure and d
 
 
 ### Create Service Connections
-   
+---
+
 Select **Project Settings** at the bottom left of the project page and select **Service connections**.
    
    <p align="left">
@@ -341,6 +346,7 @@ Complete the new service connection configuration using the information from you
 Name this service connection **Azure-ARM-Prod**.  Check **Grant access permission to all pipelines**. and click **Verify and save**.
 
 ### Create Azure DevOps Environment
+---
 
 The pipelines in each branch of your ML project repository will depend on an Azure DevOps environment. These environments should be created before deployment.
 
@@ -371,6 +377,7 @@ Depending on the options you chose when initializing the project, you should hav
 
 
 ### Deploy Azure Machine Learning Infrastructure
+---
 
 The first task for your ML project is to deploy Azure Machine Learning infrastructure in which to develop your ML code, define your datasets, define your ML pipelines, train models, and deploy your models in production. This pipeline deployment is typically managed by your IT group responsible for ensuring that the subscription is able to create the infrastructure needed. The infarstructure is created by executing the Azure DevOps deploy-infra pipeline. Before doing this, you will customize environment files that define unique Azure resource groups and Azure ML workspaces for your project.
 
@@ -384,7 +391,7 @@ Making sure you are in the **main** branch, click on `config-infra-prod.yml` to 
 
 Under the Global section, you will see properties for `namespace`, `postfix`, and `location`.
 
-   ```
+   ```bash
    # Prod environment
    variables:
       # Global
@@ -438,64 +445,40 @@ Your Azure Machine Learning infrastructure is now deployed and you are ready to 
  
 ### Deploy Azure Machine Learning Model Training Pipeline
 ---
-   Deploy Classical ML Model
-   1. Go to ADO pipelines
-   
-   ![ADO Pipelines](./images/ADO-pipelines.png)
 
-   2. Select "New Pipeline".
+This pipeline example uses an Azure DevOps pipeline to create and run an Azure Machine Learning pipeline that will perform the following steps:  
+
+* Register the training dataset in the new Azure Machine Learning workspace   
+* Prepare data for training  
+* Train a linear regression model to predict taxi fares  
+* Evaluate the model against the test dataset  
+* Register the model as an MLflow model in the workspace for later deployment
+
+To deploy the model training pipeline, open the **Pipelines** section again and select **New pipeline** in the upper right of the page
    
-   ![ADO Run1](./images/ADO-run1.png)
-   
-   3. Select "Azure Repos Git".
-   
-   ![ADO Where's your code](./images/ado-wheresyourcode.png)
-   
-   4. Select your /MLOps-Test repository
-   
-   ![ADO Run2](./images/ADO-run2.png)
-   
-   5. Select "Existing Azure Pipeline YAML File"
-   
-   ![ADO Run3](./images/ADO-run3.png)
+   - Select **Azure Repos Git**
+   - Select the **taxi-fare-regression** repository
+   - Select **Existing Azure Pipelines YAML file**
+   - Ensure the selected branch is **main**
+   - Select the `/mlops/devops-pipelines/deploy-model-training-pipeline.yml` file in the Path drop-down
+   - Click Continue 
+
+Now you will see the pipeline details.
+
+   <p align="center">
+         <img src="./images/ado-infra-pipeline-details.png" alt="Infra pipeline details"/>
+   </p>
+
+ Click **Run** to execute the pipeline. This will take a few minutes to finish. When complete, you can view the pipeline jobs and tasks by selecting **Pipelines** then **taxi-fare-regression** under **Recently run pipelines**. 
    
    6. Select "main" as a branch and choose '/mlops/devops-pipelines/deploy-model-training-pipeline.yml', then select "Continue".  
 
    ![ADO Run9](./images/ADO-run9.png)
 
-   7. Before running the pipeline, the repository location for the mlops-templates will need to be updated. Modify the **resources** section of the pipeline to match the image below
-
-   ![resourceRepoADO](./images/ado-pipeline-resourcesRepoADO.png)
-
-
-   
-   
-
-   >**NOTE: This is an end-to-end machine learning pipeline which runs a linear regression to predict taxi fares in NYC. The pipeline is made up of components, each serving  different functions, which can be registered with the workspace, versioned, and reused with various inputs and outputs.**
-
-   >**Prepare Data
-   This component takes multiple taxi datasets (yellow and green) and merges/filters the data, and prepare the train/val and evaluation datasets.
-   Input: Local data under ./data/ (multiple .csv files)
-   Output: Single prepared dataset (.csv) and train/val/test datasets.**
-
-   >**Train Model
-   This component trains a Linear Regressor with the training set.
-   Input: Training dataset
-   Output: Trained model (pickle format)**
-   
-   >**Evaluate Model
-   This component uses the trained model to predict taxi fares on the test set.
-   Input: ML model and Test dataset
-   Output: Performance of model and a deploy flag whether to deploy or not.
-   This component compares the performance of the model with all previous deployed models on the new test dataset and decides whether to promote or not model into production. Promoting model into production happens by registering the model in AML workspace.**
-
-   >**Register Model
-   This component scores the model based on how accurate the predictions are in the test set.
-   Input: Trained model and the deploy flag.
-   Output: Registered model in Azure Machine Learning.**
-   
 ### Deploy Azure Machine Learning Model Training Pipeline
 ---
+
+
    Deploy ML model endpoint
    1. Go to ADO pipelines
    
@@ -554,6 +537,29 @@ Your Azure Machine Learning infrastructure is now deployed and you are ready to 
                <img src="./images/ado-create-dev-branch.png" alt="Create dev branch" width="50%" height="50%"/>
    </p>
 
+
+   >**NOTE: This is an end-to-end machine learning pipeline which runs a linear regression to predict taxi fares in NYC. The pipeline is made up of components, each serving  different functions, which can be registered with the workspace, versioned, and reused with various inputs and outputs.**
+
+   >**Prepare Data
+   This component takes multiple taxi datasets (yellow and green) and merges/filters the data, and prepare the train/val and evaluation datasets.
+   Input: Local data under ./data/ (multiple .csv files)
+   Output: Single prepared dataset (.csv) and train/val/test datasets.**
+
+   >**Train Model
+   This component trains a Linear Regressor with the training set.
+   Input: Training dataset
+   Output: Trained model (pickle format)**
+   
+   >**Evaluate Model
+   This component uses the trained model to predict taxi fares on the test set.
+   Input: ML model and Test dataset
+   Output: Performance of model and a deploy flag whether to deploy or not.
+   This component compares the performance of the model with all previous deployed models on the new test dataset and decides whether to promote or not model into production. Promoting model into production happens by registering the model in AML workspace.**
+
+   >**Register Model
+   This component scores the model based on how accurate the predictions are in the test set.
+   Input: Trained model and the deploy flag.
+   Output: Registered model in Azure Machine Learning.**
 
 ## Next Steps
 ---
