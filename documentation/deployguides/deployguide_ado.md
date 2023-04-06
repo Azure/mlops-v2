@@ -1,6 +1,6 @@
 # Deployment Guide - Azure DevOps 
 
-This document will guide you through deploying the MLOps V2 project generator and example project using only Azure DevOps to host source repositories and pipelines.
+This document will guide you through using the MLOps V2 project generator to deploy a single-environment ("Prod") demo project using only Azure DevOps to host source repositories and pipelines. See notes at the end for guidance on multi-environment MLOps and adapting the pattern to your use case.
 
 **Prerequisites:**
 - One or more Azure subscription(s) based on whether you are deploying Prod only or Prod and Dev environments
@@ -214,9 +214,9 @@ In this step, you will run an Azure DevOps pipeline, `initialise-project`, that 
 
    The pipeline run should take a few minutes. When the pipeline run is complete and successful, go back to **Repos** and look at the contents of your ML project repo, `taxi-fare-regression`. The solution accelerator has populated the project repository according to your configuration selections. 
 
-      <p align="center">
-               <img src="./images/ado-new-mlrepo.png" alt="Pipeline permit" />
-      </p>
+   <p align="center">
+            <img src="./images/ado-new-mlrepo.png" alt="Pipeline permit" />
+   </p>
 
    The structure of the project repo is as follows:   
 
@@ -234,7 +234,7 @@ In this step, you will run an Azure DevOps pipeline, `initialise-project`, that 
 ### Create and Configure Service Principals and Connections
 ---
 
-For Azure DevOps pipelines to create Azure Machine Learning infrastructure and deploy and execute Azure ML pipelines, it is necessary to create a an Azure service principal for each Azure ML environment (Dev and/or Prod) and configure Azure DevOps service connections using those service principals. These service princiapls can be created using one of the two methods below:
+For Azure DevOps pipelines to create Azure Machine Learning infrastructure and deploy and execute Azure ML pipelines, it is necessary to create an Azure service principal for each Azure ML environment (Dev and/or Prod) and configure Azure DevOps service connections using those service principals. These service princiapls can be created using one of the two methods below:
 
 <details>
 <summary>Create Service Principal from Azure Cloud Shell</summary>
@@ -446,13 +446,18 @@ Your Azure Machine Learning infrastructure is now deployed and you are ready to 
 ### Deploy Azure Machine Learning Model Training Pipeline
 ---
 
-This pipeline example uses an Azure DevOps pipeline to create and run an Azure Machine Learning pipeline that will perform the following steps:  
+The solution accelerator includes code and data for a sample end-to-end machine learning pipeline which trains a linear regression model to predict taxi fares in NYC. The pipeline is made up of multiple steps for data prep, training, model evaluation, and model registration. Sample pipelines and workflows for the Computer Vision and NLP scenarios will have different steps.  
 
-* Register the training dataset in the new Azure Machine Learning workspace   
+In this section you will execute an Azure DevOps pipeline that will create and run an Azure Machine Learning pipeline. Together, they perform the following steps:
+
+* Connect to the Azure Machine Learning workspace created by the infrastructure deployment  
+* Create a compute cluster for training in the workspace   
+* Register the training dataset in the workspace   
 * Prepare data for training  
+* Registers a custom python environment with the packages required for this model  
 * Train a linear regression model to predict taxi fares  
-* Evaluate the model against the test dataset  
-* Register the model as an MLflow model in the workspace for later deployment
+* Evaluate the model on the test dataset against the performance of any previously-registered models  
+* If the new model performs better, register the model as an MLflow model in the workspace for later deployment
 
 To deploy the model training pipeline, open the **Pipelines** section again and select **New pipeline** in the upper right of the page
    
@@ -463,115 +468,132 @@ To deploy the model training pipeline, open the **Pipelines** section again and 
    - Select the `/mlops/devops-pipelines/deploy-model-training-pipeline.yml` file in the Path drop-down
    - Click Continue 
 
-Now you will see the pipeline details.
+Next you can see the pipeline details.
 
    <p align="center">
-         <img src="./images/ado-infra-pipeline-details.png" alt="Infra pipeline details"/>
+         <img src="./images/ado-training-pipeline-details.png" alt="Training pipeline details"/>
    </p>
 
- Click **Run** to execute the pipeline. This will take a few minutes to finish. When complete, you can view the pipeline jobs and tasks by selecting **Pipelines** then **taxi-fare-regression** under **Recently run pipelines**. 
-   
-   6. Select "main" as a branch and choose '/mlops/devops-pipelines/deploy-model-training-pipeline.yml', then select "Continue".  
-
-   ![ADO Run9](./images/ADO-run9.png)
-
-### Deploy Azure Machine Learning Model Training Pipeline
----
-
-
-   Deploy ML model endpoint
-   1. Go to ADO pipelines
-   
-   ![ADO Pipelines](./images/ADO-pipelines.png)
-
-   2. Select "New Pipeline".
-   
-   ![ADO Run1](./images/ADO-run1.png)
-   
-   3. Select "Azure Repos Git".
-   
-   ![ADO Where's your code](./images/ado-wheresyourcode.png)
-   
-   4. Select your /MLOps-Test repository! ("Empty" repository you created in 2.3)
-   
-   ![ADO Run2](./images/ADO-run2.png)
-   
-   5. Select "Existing Azure Pipeline YAML File"
-   
-   ![ADO Run3](./images/ADO-run3.png)
-   
-   6. Select "main" as a branch and choose:
-      For Classical Machine Learning:
-         Managed Batch Endpoint '/mlops/devops-pipelines/deploy-batch-endpoint-pipeline.yml'
-         Managed Online Endpoint '/mlops/devops-pipelines/deploy-online-endpoint-pipeline.yml'
-      For Computer Vision: 
-         Managed Online Endpoint '/mlops/devops-pipelines/deploy-batch-endpoint-pipeline.yml'
-      
-      Then select "Continue".  
-   
-   ![ADO Run10](./images/ADO-run10.png)
-
-   7. The resource repository will need to be modified to request the correct repository from your project. Modify the Repository section as shown below
-
-   ![resourceRepoADO](./images/ado-pipeline-resourcesRepoADO.png)
-   
-   8. Batch/Online endpoint names need to be unique, so please change [your endpointname] to another unique name and then select "Run".
-
-   ![ADO Run11](./images/ADO-batch-pipeline.png)
-   
-   **IMPORTANT: If the run fails due to an existing online endpoint name, recreate the pipeline as discribed above and change [your endpointname] to [your endpointname [random number]]"**
-   
-   9.  When the run completes, you will see:
-   
-   ![ADO Run12](./images/ADO-batch-pipeline-run.png)
-   
-  Now the Inner Loop is connected to the Outer of the MLOps Architecture and inference has been run.
-
-  ### (Optional) Create a development branch
-
-   If you are deploying to explore the Taxi Fare Regression example, you may work with only the `main` branch to understand the components of the project, the pipelines, and workflow. If you wish to use trunk-based development, doing work in a development branch, merging to main and deploying from the main branch, you can create the dev branch now.
-   
-   From the new `taxi-fare-regression` repo, select the `main` branch drop-down and select **New branch**. Name the new branch `dev` and click **Create**. Your development work will be done in the `dev` branch and the development environment is deployed from this branch. The production environment is deployed from the `main` branch.
+ Click **Run** to execute the pipeline. This will take several minutes to finish. When complete, you can view the pipeline jobs and tasks by selecting **Pipelines** then **taxi-fare-regression** under **Recently run pipelines**. The pipeline run will be tagged `#deploy-model-training-pipeline`. Drill down into the pipeline run to see the **DeployTrainingPipeline** job. Click on the job to see pipeline run details.
 
    <p align="center">
-               <img src="./images/ado-create-dev-branch.png" alt="Create dev branch" width="50%" height="50%"/>
+         <img src="./images/ado-training-pipeline-run.png" alt="Training pipeline run"/>
+   </p>
+   
+Now you can open your Azure Machine Learning workspace to see the training run artifacts. Open a browser to https://ml.azure.com and login with your Azure account. You should see your Azure Machine Learning workspace under the **Workspaces** tab on the left. Your workspace name will have a name built from the options you chose in the `config-infra-prod.yml` file with the format **mlw-(namespace)-(postfix)(environment)**. For example, **mlw-mlopsv2-0001prod**. Click on your workspace. You will be presented with the Azure ML Studio home page for the workspace showing your training pipeline jobs under **Recent jobs**.
+
+   <p align="center">
+         <img src="./images/ado-aml-recent-jobs.png" alt="AML recent jobs"/>
    </p>
 
+You can now explore the artifacts of the pipeline run from the workspace navigation menus on the left:  
+* Select **Data** to see and explore the registered `taxi-data` Data asset.  
+* Select **Jobs** to see and explore the `prod_taxi_fare_train_main` Experiment.  
+* Select **Pipelines** to see and explore the `prod_taxi_fare_run` pipeline run.  
+* Select **Environments** then **Custom environments** to see the custom `taxi-train-env` environment registered by the pipeline.  
+* Select **Models** to see the `taxi-model` registered by the training pipeline.  
+* Select **Compute** then **Compute clusters** to see the `cpu-cluster` created by the training pipeline.  
 
-   >**NOTE: This is an end-to-end machine learning pipeline which runs a linear regression to predict taxi fares in NYC. The pipeline is made up of components, each serving  different functions, which can be registered with the workspace, versioned, and reused with various inputs and outputs.**
+This section demonstrated end-to-end model training in Azure DevOps/Azure ML pipelines, creating all necessary assets as part of the pipeline. With a trained model registered in the Azure Machine Learning workspace, the next section will guide you through deploying the model to as either a real-time endpoint or batch scoring endpoint. 
 
-   >**Prepare Data
-   This component takes multiple taxi datasets (yellow and green) and merges/filters the data, and prepare the train/val and evaluation datasets.
-   Input: Local data under ./data/ (multiple .csv files)
-   Output: Single prepared dataset (.csv) and train/val/test datasets.**
-
-   >**Train Model
-   This component trains a Linear Regressor with the training set.
-   Input: Training dataset
-   Output: Trained model (pickle format)**
-   
-   >**Evaluate Model
-   This component uses the trained model to predict taxi fares on the test set.
-   Input: ML model and Test dataset
-   Output: Performance of model and a deploy flag whether to deploy or not.
-   This component compares the performance of the model with all previous deployed models on the new test dataset and decides whether to promote or not model into production. Promoting model into production happens by registering the model in AML workspace.**
-
-   >**Register Model
-   This component scores the model based on how accurate the predictions are in the test set.
-   Input: Trained model and the deploy flag.
-   Output: Registered model in Azure Machine Learning.**
-
-## Next Steps
+### Deploy Azure Machine Learning Model Deployment Pipeline
 ---
 
-This finishes the demo according to the architectual pattern: Azure Machine Learning Classical Machine Learning. Next you can dive into your Azure Machine Learning service in the Azure Portal and see the inference results of this example model. 
+In this section you will execute an Azure DevOps pipeline that will create and run an Azure Machine Learning pipeline that deploys your trained model to an endpoint. This can be a online managed (real-time) endpoint called by an application to score new data or a batch managed endpoint to score larger blocks of new data. In this example, there are two sample model deployment pipelines provided, one for online endpoint and one for batch endpoint. You can deploy one or the other or both.
 
-As elements of Azure Machine Learning are still in development, the following components are not part of this demo:
-- Secure Workspaces
-- Model Monitoring for Data/Model Drift
-- Automated Retraining
-- Model and Infrastructure triggers
+For each type of endpoint, the deployment steps are essentially the same:
 
-Interim it is recommended to schedule the deployment pipeline for development for complete model retraining on a timed trigger.
+* Connect to the Azure Machine Learning workspace created by the infrastructure deployment  
+* Create a new compute cluster (batch managed endpoint only)
+* Create an endpoint in Azure Machine Learning for the model deployment  
+* Create a deployment of the trained model on the new endpoint  
+* Update traffic allocation for the endpoint  
+* Test the deployment with sample data  
 
-For questions, please [submit an issue](https://github.com/Azure/mlops-v2/issues) or reach out to the development team at Microsoft.
+For batch managed endpoint deployments, a new compute cluster is created to process batch scoring requests. For online managed endpoints, the compute to process requests is managed by Azure Machine Learning.
+
+To deploy the model deployment pipeline, open the **Pipelines** section again and select **New pipeline** in the upper right of the page
+   
+   - Select **Azure Repos Git**
+   - Select the **taxi-fare-regression** repository
+   - Select **Existing Azure Pipelines YAML file**
+   - Ensure the selected branch is **main**
+   - Select `/mlops/devops-pipelines/deploy-online-endpoint-pipeline.yml` or `/mlops/devops-pipelines/deploy-batch-endpoint-pipeline.yml` in the Path drop-down depending on your choice
+   - Click Continue 
+
+ Again, from the pipeline details path, click **Run** to execute the pipeline. This will take several minutes to finish. When complete, you can view the pipeline jobs and tasks by selecting **Pipelines** then **taxi-fare-regression** under **Recently run pipelines**. The pipeline run will be tagged `#deploy-online-endpoint-pipeline` or `#deploy-batch-endpoint-pipeline`. Drill down into the pipeline run to see the **DeployOnlineEndpoint** or **DeployBatchEndpoint** job and click on the job to see pipeline run details.
+
+Once the deployment pipeline execution is complete, open your Azure Machine Learning workspace to see the deployed endpoints. Select **Endpoints** from the workspace navigation menu on the left. By default, you will see a list of deployed **Online endpoints**. If you chose to deploy the sample online endpoint pipeline, you should see your `taxi-online-(namespace)(postfix)prod` endpoint.
+
+   <p align="center">
+         <img src="./images/ado-online-endpoint.png" alt="Online endpoint"/>
+   </p>
+
+Click on this endpoint instance to explore the details of the online endpoint model deployment. 
+
+If you deployed the batch managed endpoint, select **Batch endpoints** on the **Endpoints** page to see your `taxi-batch-(namespace)(postfix)prod` endpoint. Click on this endpoint instance to explore the details of the batch endpoint model deployment. 
+
+   <p align="center">
+         <img src="./images/ado-batch-endpoint.png" alt="Batch endpoint"/>
+   </p>
+
+For the batch endpoint, you can also select **Compute** and ***Compute clusters** to see the cluster created to support batch request processing.
+
+   <p align="center">
+         <img src="./images/ado-batch-compute.png" alt="Batch endpoint" width="75%" height="75%"/>
+   </p>
+
+This section demonstrated use of a pipeline to deploy a trained model to a managed online or managed batch endpoint in Azure Machine Learning.
+
+The single-environment deployment of this MLOps solution accelerator is complete. See the next section for information on adapting this pattern to your use case and broader MLOps practices.
+
+# MLOps Next Steps
+
+To adapt this pattern to your use case and code, a guide to modifying files and pipelines in the ML project repo is below:
+
+### `/data`  
+
+In the `/data` directory, you can place your data to be registered with Azure ML. A `data.yml` file describing the dataset is used by the training pipeline in `/mlops/azureml/train/` and should be modified as needed for your data. Likewise, the training pipeline should be modified to refer to your dataset.
+
+### `/data-science/src`
+
+In this directory you will modify, add, or remove code for your data science workflow.
+
+### `/data-science/environment`  
+
+In this directory, modify `train-conda.yml` to define the python environment required by your model training.
+
+### `/infrastructure`  
+
+This directory contains the infrastructure template and infrastructure pipeline for your Azure ML environment. In general, it should not need modification but review by your IT and verification you can create the defined resources is recommended.
+
+### `/mlops/azureml/train`  
+
+This directory contains the Azure ML yaml definitions for your dataset (`data.yml`), your python environment (`train-env.yml`), and the Azure ML training pipeline itself (`pipeline.yml`). Modify these as necessary to correctly refer to your data, environment, and python code steps as needed.
+
+### `/mlops/azureml/deploy/batch` and `/mlops/azureml/deploy/online`  
+
+These directories contain the yaml definitions and Azure ML pipelines for deployment of your model endpoints. Modify these as needed for your endpoint and model type.
+
+### `/devops-pipelines`  
+
+This directory contains the Azure DevOps pipeline definitions for deployment of Azure ML model training and endpoint pipelines. In general, these should need minimal changes except for updating references to data and training pipelines.
+
+## Next Steps in MLOps
+
+This guide illustrated using Azure DevOps pipelines and Azure Machine Learning pipelines to adopt training automation, deployment, and repeatability for your data science workflow for a single Azure ML environment. Follow on MLOps practices may include the following:
+
+* By default, the Azure DevOps pipelines in this accelerator do not execute unless manually triggered. This is to avoid unnecesary automatic runs during initial deployment of the accelerator. However, you may want to modify the pipelines to enhance automation. A few examples:
+   * Modify the deployed [Azure ML model training pipeline to run on a schedule](https://learn.microsoft.com/en-us/azure/machine-learning/how-to-schedule-pipeline-job?tabs=cliv2)  
+   * Modify the manual trigger on the [Azure DevOps deploy-model-training-pipeline to trigger on a schedule](https://learn.microsoft.com/en-us/azure/devops/pipelines/process/scheduled-triggers?view=azure-devops&tabs=yaml)  
+   * Modify the Azure DevOps model deployment pipeline to [trigger upon successful completion of the model training pipeline](https://learn.microsoft.com/en-us/azure/devops/pipelines/process/pipeline-triggers?view=azure-devops) instead of a manual trigger
+
+* Trunk-based development using development and test/staging branches in Azure DevOps. Development and Production environments are typically separated. You may create an additional Dev branch in your project repo and deploy a development Azure ML environment from that. when code and model development in that environment is satisfactory, code and pipeline changes can be merged into the main branch and updates deployed to Prod. A `config-infra-dev.yml` example is provided in the project repo. To create this environment, repeat the steps in this guide from a dev branch in your ML project repo. Note that you should create a matching `dev` pipeline environment in Azure DevOps and new Azure service principal for an **Azure-ARM-Dev** service connection.
+
+* Future work on this MLOps solution accelerator will include:  
+   * Integration of the [Azure Machine Learning registries](https://learn.microsoft.com/en-us/azure/machine-learning/how-to-manage-registries?tabs=cli) allowing you to register models and other artifacts from your development environment then deploying them in production directly.
+   * Azure Machine Learning data drift monitoring
+   * Integrated feature store
+   * Deployment of secured Azure ML environments in a vnet
+   
+For questions, problems, or feature requests, please [submit an issue](https://github.com/Azure/mlops-v2/issues) or reach out to the development team at Microsoft.
