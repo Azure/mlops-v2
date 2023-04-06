@@ -1,5 +1,7 @@
 trigger: none
 
+name: Initialize ${{ parameters.repoName }} repo
+
 parameters:
   - name: adoProjectName
     displayName: Azure DevOps ProjectName
