@@ -8,16 +8,16 @@ This guide will help you through deploying all components required for [Feathr f
 - Azure subscription(s) based on if you are deploying Prod only or Prod and Dev environments
 - Ability to create Azure service principals to access / create Azure resources from Azure DevOps
 - Git bash, WSL, or another shell script editor on your local machine
-- Please follow the [Azure Devops guide](/documentation/deployguides/deployguide_ado.md) up until "Set up source repository with Azure DevOps" and then follow steps in this linked deployment guide
+- Please follow the [Azure Devops guide](/documentation/deployguides/deployguide_ado.md) up until right before "Set up source repository with Azure DevOps" and then follow steps in this linked deployment guide
 
 ## Repository setup and infrastructure deployment:
 
-- Clone the [MLops v2 repository and checkout the feature/featurestore_tf branch](https://github.com/Ritaja/mlops-v2/tree/feature/featurestore_tf)
-- The `sparse_checkout.sh` file is already configured for basic setup, please change the `project_name` and the `github_org_name` in the sparse_checkout file to match your project name (new project template that will be generated for you) and github org name (your github org name)
-- Run the `sparse_checkout.sh` file to create the new project template, the script tries to push the template to your github org, this will fail as we have not created a project yet matching the template.
-- Create a new project in your github org matching the project name you have provided in the sparse_checkout.sh file
-- make the following modification in the generated project (the generated project matches the `project_name` you have provided in the sparse_checkout.sh file): 
-    - start with `prefeaturestore.md` at the root folder of the generated project: adjust the values for `prefix`, `environment` and `postfix` make them unique to your project. Use short strings 3-4 characters long as these will be used to generate Azure resource names and some of the resources have contrainsts on the length of the name. 
+- Clone the [MLops v2 repository and checkout the feature/feathr branch](https://github.com/Azure/mlops-v2/tree/feature/feathr).
+- The `sparse_checkout.sh` file is already configured for basic setup, please change the `project_name` and the `github_org_name` in the sparse_checkout file to match your project name (new project template that will be generated for you) and github org name (your github org name).
+- Create a new repository in your github org matching the project name you have provided in the sparse_checkout.sh file.
+- Run the `sparse_checkout.sh` file to create the new project template, the script will push the template to your github org.
+- Make the following modification in the generated project (the generated project matches the `project_name` you have provided in the sparse_checkout.sh file): 
+    - Start with `prefeaturestore.md` at the root folder of the generated project: adjust the values for `prefix`, `environment` and `postfix` make them unique to your project. Use short strings 3-4 characters long as these will be used to generate Azure resource names and some of the resources have contrainsts on the length of the name. 
     - Follow through the instructions in `prefeaturestore.md` to create the AAD app registration for the Feathr App. 
     - Next: look into `config-infra-prod.yml` and `config-infra-dev.yml` and adjust the values for `namespace`, `environment`(you need to execute the steps in this file once for each environment you have, for now you could start with a single environment: dev) and `postfix` to match the values you have used in `prefeaturestore.md`. Adjust the values for `aad_client_id` and `priviledged_object_id` (this provides a convenient way to add a user to eleveted permissions in Synapse and Keyvault: required when you want to run featurestore client locally with your user account). To look up object_id for a user, use the following command: `az ad user show --id <user email address> --query id`. Adjust the `ado_service_connection_rg` and `ado_service_connection_aml_ws` to match the service connection name you provisioned in Azure DevOps in previous steps from the [Azure Devops guide](/documentation/deployguides/deployguide_ado.md).
     - Navigate to `infrastructure/devops-pipelines/tf-ado-deploy-infra.yml` and adjust: `name` to point to the repository having mlops-templates (use `Azure/mlops-templates` as value), change the `ref` to point to the `feature/feathr` branch.
