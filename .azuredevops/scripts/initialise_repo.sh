@@ -1,8 +1,9 @@
 repo_name=$1
 project_type=$2
 mlops_version=$3
+template_repo=$4
 #infrastructure_version=bicep #options: terraform / bicep 
-infrastructure_version=$4 #options: terraform / bicep 
+infrastructure_version=$5 #options: terraform / bicep 
 
 git config --global user.email "hosted.agent@dev.azure.com"
 git config --global user.name "Azure Pipeline"
@@ -10,13 +11,13 @@ git config --global user.name "Azure Pipeline"
 mkdir files_to_keep
 mkdir files_to_delete
 
-cd mlops-project-template
+cd $template_repo
 cp --parents -r infrastructure/$infrastructure_version ../files_to_keep
 cp --parents -r $project_type/$mlops_version ../files_to_keep
 cp config-infra-dev.yml ../files_to_keep
 cp config-infra-prod.yml ../files_to_keep
 cd ..
-mv mlops-project-template/* files_to_delete
+mv $template_repo/* files_to_delete
 
 cd $repo_name
 git checkout -b main
