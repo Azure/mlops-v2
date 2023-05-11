@@ -4,7 +4,7 @@ name: Initialize ${{ parameters.repoName }} repo
 
 parameters:
   - name: adoProjectName
-    displayName: Azure DevOps ProjectName
+    displayName: Azure DevOps Project Name
     type: string
 
   - name: repoName
