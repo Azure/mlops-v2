@@ -4,7 +4,7 @@ name: Initialize ${{ parameters.repoName }} repo
 
 parameters:
   - name: adoProjectName
-    displayName: Azure DevOps ProjectName
+    displayName: Azure DevOps Project Name
     type: string
 
   - name: repoName
@@ -15,6 +15,11 @@ parameters:
   #  displayName: MLOps Project Template's ADO project name
   #  type: string
   #  # default: [good idea to put your default here]
+
+  - name: mlopsRepoName
+    displayName: MLOps-V2 ADO Repository name
+    type: string
+    default: mlops-v2
 
   - name: mlOpsProjectRepoName
     displayName: MLOps Project Template's repo
@@ -68,16 +73,16 @@ stages:
             displayName: Run script to initialise your repo
             inputs:
               targetType: "filePath"
-              filePath: mlops-v2/.azuredevops/scripts/initialise_repo.sh
+              filePath: ${{ parameters.mlopsRepoName }}/.azuredevops/scripts/initialise_repo.sh
               arguments: >
-                ${{ parameters.repoName }} ${{ parameters.projectType }} ${{ parameters.mlopsVersion }} ${{ parameters.infrastructure_version}}
+                ${{ parameters.repoName }} ${{ parameters.projectType }} ${{ parameters.mlopsVersion }} ${{ parameters.mlOpsProjectRepoName }} ${{ parameters.infrastructure_version}}
 
 
           - task: Bash@3
             displayName: Run script to create pipelines in ADO
             inputs:
               targetType: "filePath"
-              filePath: mlops-v2/.azuredevops/scripts/create_ado_pipelines.sh
+              filePath: ${{ parameters.mlopsRepoName }}/.azuredevops/scripts/create_ado_pipelines.sh
               arguments: >
                 ${{ parameters.repoName }} ${{ parameters.adoProjectName }}
 
