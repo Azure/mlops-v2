@@ -1,0 +1,72 @@
+{
+	"name": "Notebook 1",
+	"properties": {
+		"nbformat": 4,
+		"nbformat_minor": 2,
+		"bigDataPool": {
+			"referenceName": "sparkpooldemo",
+			"type": "BigDataPoolReference"
+		},
+		"sessionProperties": {
+			"driverMemory": "28g",
+			"driverCores": 4,
+			"executorMemory": "28g",
+			"executorCores": 4,
+			"numExecutors": 2,
+			"conf": {
+				"spark.dynamicAllocation.enabled": "false",
+				"spark.dynamicAllocation.minExecutors": "2",
+				"spark.dynamicAllocation.maxExecutors": "2",
+				"spark.autotune.trackingId": "a821301d-77cf-42f2-98d9-65e85bf73a56"
+			}
+		},
+		"metadata": {
+			"saveOutput": true,
+			"enableDebugMode": false,
+			"kernelspec": {
+				"name": "synapse_pyspark",
+				"display_name": "Synapse PySpark"
+			},
+			"language_info": {
+				"name": "python"
+			},
+			"a365ComputeOptions": {
+				"id": "/subscriptions/6a89c234-644a-42a1-a06b-433ce3030bb9/resourceGroups/synapsedemo/providers/Microsoft.Synapse/workspaces/syndemo/bigDataPools/sparkpooldemo",
+				"name": "sparkpooldemo",
+				"type": "Spark",
+				"endpoint": "https://syndemo.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/sparkpooldemo",
+				"auth": {
+					"type": "AAD",
+					"authResource": "https://dev.azuresynapse.net"
+				},
+				"sparkVersion": "3.3",
+				"nodeCount": 10,
+				"cores": 4,
+				"memory": 28,
+				"automaticScaleJobs": false
+			},
+			"sessionKeepAliveTimeout": 30
+		},
+		"cells": [
+			{
+				"cell_type": "code",
+				"source": [
+					"import pyspark\n",
+					"from pyspark.sql import SparkSession\n",
+					"spark=SparkSession.builder.appName(\"parquetFile\").getOrCreate()\n",
+					"data =[(\"James \",\"\",\"Smith\",\"36636\",\"M\",3000),\n",
+					"              (\"Michael \",\"Rose\",\"\",\"40288\",\"M\",4000),\n",
+					"              (\"Robert \",\"\",\"Williams\",\"42114\",\"M\",4000),\n",
+					"              (\"Maria \",\"Anne\",\"Jones\",\"39192\",\"F\",4000),\n",
+					"              (\"Jen\",\"Mary\",\"Brown\",\"\",\"F\",-1)]\n",
+					"columns=[\"firstname\",\"middlename\",\"lastname\",\"dob\",\"gender\",\"salary\"]\n",
+					"df=spark.createDataFrame(data,columns)\n",
+					"df.write.mode(\"overwrite\").parquet(\"/tmp/output/people.parquet\")\n",
+					"\n",
+					""
+				],
+				"execution_count": 1
+			}
+		]
+	}
+}
