@@ -4,6 +4,7 @@ This document will guide you through using the MLOps V2 project generator to dep
 
 **Prerequisites:**
 - One or more Azure subscription(s) based on whether you are deploying Prod only or Prod and Dev environments
+     - **Important:** - As mentioned in the **Prerequisites** at the beginning [here](https://github.com/Azure/mlops-v2?tab=readme-ov-file#prerequisites), if you plan to use either a Free/Trial or similar learning purpose subscriptions, they might pose 'Usage + quotas' limitations in the default Azure region being used for deployment. Please read provided instructions carefully to succeessfully execute this deployment.
 - An Azure DevOps organization
 - Ability to create Azure service principals to access / create Azure resources from Azure DevOps
 - If using Terraform to create and manage infrastructure from Azure DevOps, install the [Terraform extension for Azure DevOps](https://marketplace.visualstudio.com/items?itemName=ms-devlabs.custom-terraform-tasks).
@@ -387,6 +388,17 @@ To do this, go back to **Repos** and your ML project repo, in this example, `tax
             <img src="./images/ado-new-mlrepo.png" alt="Complete ML repo" />
    </p>
 
+>**Important:**
+>> Note that `config-infra-prod.yml` and `config-infra-dev.yml` files use default region as **eastus** to deploy resource group and Azure ML Workspace. If you are using Free/Trial or similar learning purpose subscriptions, you must do one of the below  -
+> 1. If you decide to use **eastus** region, ensure that your subscription(s) have a quota/limit of up to 20 vCPUs for **Standard DSv2 Family vCPUs**. Visit Subscription page in Azure Portal as show below to validate this.
+        ![alt text](images/susbcriptionQuota.png)
+> 2. If not, you should change it to a region where **Standard DSv2 Family vCPUs** has a quota/limit of up to 20 vCPUs.
+> 3. You may also choose to change the region and compute type being used for deployment. To do this you have to change region in these two files, and additionally search for **STANDARD_DS3_V2** in below listed DevOps pipeline files and change this with a compute type that would work for your setup.
+>      * `mlops-templates/aml-cli-v2/mlops/devops-pipelines/deploy-model-training-pipeline.yml`
+>      * `mlops-project-template/classical/aml-cli-v2/mlops/devops-pipelines/deploy-batch-endpoint-pipeline.yml`
+>      * `/mlops-project-template/classical/aml-cli-v2/mlops/azureml/deploy/online/online-deployment.yml`
+> 4. Note in the path above that you need to navigate to the right repository (e.g. **mlops-templates**), and the right ML interface (e.g. **aml-cli-v2**).
+
 Making sure you are in the **main** branch, click on `config-infra-prod.yml` to open it. 
 
 Under the Global section, you will see properties for `namespace`, `postfix`, and `location`.
@@ -474,7 +486,16 @@ Next you can see the pipeline details.
          <img src="./images/ado-training-pipeline-details.png" alt="Training pipeline details"/>
    </p>
 
- Click **Run** to execute the pipeline. This will take several minutes to finish. When complete, you can view the pipeline jobs and tasks by selecting **Pipelines** then **taxi-fare-regression** under **Recently run pipelines**. The pipeline run will be tagged `#deploy-model-training-pipeline`. Drill down into the pipeline run to see the **DeployTrainingPipeline** job. Click on the job to see pipeline run details.
+ Click **Run** to execute the pipeline. This will take several minutes to finish. 
+
+    > **Important:**
+ >>
+ >* It is noted that, with Free/Trial and other learning purpose susbscriptions pipeline execution might take up to 90 minutes.  
+ >* In case, your model training pipeline execution in DevOps fails after running for a long period of time, but you have validated that a model is registred in Model Registry, it confirms that your model training is Azure ML was successful.
+ >* This issue with longer running pipelines in Azure DevOps has been reported and is being tracked by product teams.
+
+ 
+ When complete, you can view the pipeline jobs and tasks by selecting **Pipelines** then **taxi-fare-regression** under **Recently run pipelines**. The pipeline run will be tagged `#deploy-model-training-pipeline`. Drill down into the pipeline run to see the **DeployTrainingPipeline** job. Click on the job to see pipeline run details.
 
    <p align="center">
          <img src="./images/ado-training-pipeline-run.png" alt="Training pipeline run"/>
