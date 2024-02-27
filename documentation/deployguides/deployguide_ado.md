@@ -488,7 +488,7 @@ Next you can see the pipeline details.
 
  Click **Run** to execute the pipeline. This will take several minutes to finish. 
 
-    > **Important:**
+**Important:**
  >>
  >* It is noted that, with Free/Trial and other learning purpose susbscriptions pipeline execution might take up to 90 minutes.  
  >* In case, your model training pipeline execution in DevOps fails after running for a long period of time, but you have validated that a model is registred in Model Registry, it confirms that your model training is Azure ML was successful.
