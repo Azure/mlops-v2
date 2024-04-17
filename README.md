@@ -27,6 +27,7 @@ It accomplishes these goals with a template-based approach for end-to-end data s
 ## Prerequisites
 
 1. An Azure subscription. If you don't have an Azure subscription, [create a free account](https://azure.microsoft.com/en-us/free/machine-learning/search/?OCID=AIDcmm5edswduu_SEM_822a7351b5b21e0f1ffe102c9ca9e99f:G:s&ef_id=822a7351b5b21e0f1ffe102c9ca9e99f:G:s&msclkid=822a7351b5b21e0f1ffe102c9ca9e99f) before you begin.
+    * **Important** - If you use either a Free/Trial, or similar learning purpose subscriptions like Visual Studio Premium with MSDN, some provisioning tasks might not run as expected due to limitations imposed on 'Usage + quotas' on your subscription. To help you succeed, we have provided specific instructions before provisioning throughout the guide, and you are highly advised to read those instructions carefully
 2. For Azure DevOps-based deployments and projects:
     * [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli) with `azure-devops` extension.
     * [Terraform extension for Azure DevOps](https://marketplace.visualstudio.com/items?itemName=ms-devlabs.custom-terraform-tasks) if you are using Terraform to spin up infrastructure
