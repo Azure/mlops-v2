@@ -472,10 +472,12 @@ In this section you will execute an Azure DevOps pipeline that will create and r
 * If the new model performs better, register the model as an MLflow model in the workspace for later deployment
 
 <details>
-<summary>**Create Compute Instances with SystemAssigned/UserAssigned/No Managed Identity**</summary>
+<summary><strong>Create Compute Instances with SystemAssigned/UserAssigned/No Managed Identity</strong></summary>
+<br>
 
+In order to create a compute instance with or without managed identity, you can leverage the `/mlops-templates/templates/python-sdk-v2/create-compute-instance.yml` located within the **mlops-templates** repository. 
 
-In order to create a compute instance with or without managed identity, you can leverage the `/mlops-templates/templates/python-sdk-v2/create-compute-instance.yml` located within the **mlops-templates** repository. If you want to create a compute instance without a managed identity reference, you can add the following snippet with your own parameters to the `/mlops/devops-pipelines/deploy-model-training-pipeline.yml` pipeline definition:
+If you want to create a **compute instance without a managed identity** reference, you can add the following snippet with your own parameters to the `/mlops/devops-pipelines/deploy-model-training-pipeline.yml` pipeline definition:
 
    ``` yaml
     - template: templates/python-sdk-v2/create-compute-instance.yml@mlops-templates
@@ -486,7 +488,7 @@ In order to create a compute instance with or without managed identity, you can 
         description: compute instance a
    ```
 
-In order to create a system-assigned managed identity and assign it your compute instance during creation, the above snippet can be adjusted as follows:
+In order to **create a system-assigned managed identity** and assign it your compute instance during creation, the above snippet can be adjusted as follows:
 
    ``` yaml
     - template: templates/python-sdk-v2/create-compute-instance.yml@mlops-templates
@@ -498,7 +500,7 @@ In order to create a system-assigned managed identity and assign it your compute
         identity_type: SystemAssigned
    ```
 
-Lastly, to leveraged a user-assigned managed identity for your compute, the following snippet can be used and adjusted as needed:
+Lastly, to leverage a **user-assigned managed identity** for your compute, the following snippet can be used and adjusted as needed:
 
    ``` yaml
     - template: templates/python-sdk-v2/create-compute-instance.yml@mlops-templates
