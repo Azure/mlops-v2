@@ -472,7 +472,8 @@ In this section you will execute an Azure DevOps pipeline that will create and r
 * If the new model performs better, register the model as an MLflow model in the workspace for later deployment
 
 <details>
-<summary>Create Compute Instances with SystemAssigned/UserAssigned/No Managed Identity</summary>
+<summary>**Create Compute Instances with SystemAssigned/UserAssigned/No Managed Identity**</summary>
+
 
 In order to create a compute instance with or without managed identity, you can leverage the `/mlops-templates/templates/python-sdk-v2/create-compute-instance.yml` located within the **mlops-templates** repository. If you want to create a compute instance without a managed identity reference, you can add the following snippet with your own parameters to the `/mlops/devops-pipelines/deploy-model-training-pipeline.yml` pipeline definition:
 
@@ -509,7 +510,7 @@ Lastly, to leveraged a user-assigned managed identity for your compute, the foll
         identity_type: UserAssigned
         user_assigned_identity: e12c9326-0618-4036-a0a7-ad3bb396dc97
    ```
-   
+
 </details>
 
 To deploy the model training pipeline, open the **Pipelines** section again and select **New pipeline** in the upper right of the page
