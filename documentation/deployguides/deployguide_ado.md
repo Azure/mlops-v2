@@ -463,13 +463,57 @@ The solution accelerator includes code and data for a sample end-to-end machine 
 In this section you will execute an Azure DevOps pipeline that will create and run an Azure Machine Learning pipeline. Together, they perform the following steps:
 
 * Connect to the Azure Machine Learning workspace created by the infrastructure deployment  
-* Create a compute cluster for training in the workspace   
+* Create a compute cluster for training in the workspace (refer to section below to create compute instances with or without managed identity)
 * Register the training dataset in the workspace   
 * Prepare data for training  
 * Registers a custom python environment with the packages required for this model  
 * Train a linear regression model to predict taxi fares  
 * Evaluate the model on the test dataset against the performance of any previously-registered models  
 * If the new model performs better, register the model as an MLflow model in the workspace for later deployment
+
+<details>
+<summary><strong>Create Compute Instances with SystemAssigned/UserAssigned/No Managed Identity</strong></summary>
+<br>
+
+In order to create a compute instance with or without managed identity, you can leverage the `/mlops-templates/templates/python-sdk-v2/create-compute-instance.yml` located within the **mlops-templates** repository. 
+
+If you want to create a **compute instance without a managed identity** reference, you can add the following snippet with your own parameters to the `/mlops/devops-pipelines/deploy-model-training-pipeline.yml` pipeline definition:
+
+   ``` yaml
+    - template: templates/python-sdk-v2/create-compute-instance.yml@mlops-templates
+      parameters:
+        instance_name: compute-instance-a
+        size: Standard_DS3_v2
+        location: canadacentral
+        description: compute instance a
+   ```
+
+In order to **create a system-assigned managed identity** and assign it your compute instance during creation, the above snippet can be adjusted as follows:
+
+   ``` yaml
+    - template: templates/python-sdk-v2/create-compute-instance.yml@mlops-templates
+      parameters:
+        instance_name: compute-instance-a
+        size: Standard_DS3_v2
+        location: canadacentral
+        description: compute instance a
+        identity_type: SystemAssigned
+   ```
+
+Lastly, to leverage a **user-assigned managed identity** for your compute, the following snippet can be used and adjusted as needed:
+
+   ``` yaml
+    - template: templates/python-sdk-v2/create-compute-instance.yml@mlops-templates
+      parameters:
+        instance_name: compute-instance-a
+        size: Standard_DS3_v2
+        location: canadacentral
+        description: compute instance a
+        identity_type: UserAssigned
+        user_assigned_identity: e12c9326-0618-4036-a0a7-ad3bb396dc97
+   ```
+
+</details>
 
 To deploy the model training pipeline, open the **Pipelines** section again and select **New pipeline** in the upper right of the page
    
