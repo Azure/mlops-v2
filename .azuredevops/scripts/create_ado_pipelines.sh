@@ -1,6 +1,6 @@
 repo_name=$1
 project_name=$2
-path_to_infrastructure_pipelines=infrastructure/pipelines
+path_to_infrastructure_pipelines=infrastructure/devops-pipelines
 path_to_mlops_pipelines=mlops/devops-pipelines
 
 cd $repo_name
@@ -9,11 +9,11 @@ az pipelines folder create \
     --path $repo_name \
     --project $project_name
 
-az pipelines folder create
+az pipelines folder create \
     --path $repo_name/infrastructure \
     --project $project_name
 
-az pipelines folder create
+az pipelines folder create \
     --path $repo_name/mlops \
     --project $project_name
 
