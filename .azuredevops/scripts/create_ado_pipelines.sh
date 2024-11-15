@@ -9,11 +9,11 @@ az pipelines folder create \
     --path $repo_name \
     --project $project_name
 
-az pipelines folder create
+az pipelines folder create \
     --path $repo_name/infrastructure \
     --project $project_name
 
-az pipelines folder create
+az pipelines folder create \
     --path $repo_name/mlops \
     --project $project_name
 
