@@ -1,0 +1,231 @@
+name: Initialize Repository
+
+on:
+  workflow_dispatch:
+    inputs:
+      github_org_name:
+        type: string
+        required: true
+        description: 'GitHub Org Name'
+      repo_name:
+        type: string
+        required: true
+        description: 'New Project Repository Name'
+      mlops_lifecycle_repo_name:
+        default: aiops
+        type: string
+        description: 'Lifecycle Repository name'
+      mlops_project_template_repo_name:
+        default: aiops-project-template
+        type: string
+        description: 'Project Templates repo'
+      project_type:
+        default: classical
+        description: 'ML Project Type'
+        required: true
+        type: choice
+        options:
+          - classical
+          - cv
+          - nlp
+      mlops_interface:
+        default: aml-cli-v2
+        description: 'MLOps Interface'
+        required: true
+        type: choice
+        options:
+          - aml-cli-v2
+          - python-sdk-v1
+          - python-sdk-v2
+          - rai-aml-cli-v2
+      infrastructure_provisioner:
+        default: terraform
+        description: 'Infrastructure Provisioner'
+        required: true
+        type: choice
+        options:
+          - bicep
+          - terraform
+      infrastructure_provider:
+        default: Azure
+        description: 'Infrastructure Provider'
+        required: true
+        type: choice
+        options:
+          - Azure
+          - AWS
+          - Google
+      orchestration_tool:
+        default: github-actions
+        description: 'Orchestration Tool'
+        required: true
+        type: choice
+        options:
+          - github-actions
+          - azure-devops
+      project_name:
+        type: string
+        required: false
+        description: 'ADO Project Name'
+
+jobs:
+  Initialise_Repository:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout MLOps Lifecycle repository
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ inputs.github_org_name }}/${{ inputs.mlops_lifecycle_repo_name }}
+          path: ${{ inputs.mlops_lifecycle_repo_name }}
+
+      - name: Checkout MLOps project template repository
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ inputs.github_org_name }}/${{ inputs.mlops_project_template_repo_name }}
+          path: ${{ inputs.mlops_project_template_repo_name }}
+
+      - name: Initialise your repository
+        run: | 
+          # Create necessary directories
+          mkdir files_to_keep
+          mkdir files_to_delete
+          mkdir -p ${{ inputs.repo_name }}
+
+          # Copy necessary files from the template repository
+          cd ${{ inputs.mlops_project_template_repo_name }}
+          cp --parents -r infrastructure/${{ inputs.infrastructure_provisioner }} ../files_to_keep
+          cp --parents -r ${{ inputs.project_type }}/${{ inputs.mlops_interface }} ../files_to_keep
+          cp config-infra-dev.yml ../files_to_keep
+          cp config-infra-prod.yml ../files_to_keep
+          cd ..
+          mv ${{ inputs.mlops_project_template_repo_name }}/* files_to_delete
+
+          rm -rf ${{ inputs.repo_name }}/*
+          mv files_to_keep/* ${{ inputs.repo_name }}
+          cd ${{ inputs.repo_name }}
+
+          # Move files to appropriate level
+          mv ${{ inputs.project_type }}/${{ inputs.mlops_interface }}/data-science data-science
+          mv ${{ inputs.project_type }}/${{ inputs.mlops_interface }}/mlops mlops
+          mv ${{ inputs.project_type }}/${{ inputs.mlops_interface }}/data data
+
+          if [[ "${{ inputs.mlops_interface }}" == "python-sdk-v1" ]]; then
+            mv ${{ inputs.project_type }}/${{ inputs.mlops_interface }}/config-aml.yml config-aml.yml
+          fi
+
+          rm -rf ${{ inputs.project_type }}
+
+          mv infrastructure/${{ inputs.infrastructure_provisioner }} ${{ inputs.infrastructure_provisioner }}
+          rm -rf infrastructure
+          mv ${{ inputs.infrastructure_provisioner }} infrastructure
+
+          if [[ "${{ inputs.orchestration_tool }}" == "github-actions" ]]; then
+            mkdir -p .github/workflows/mlops/ .github/workflows/infrastructure/
+            mv mlops/github-actions/* .github/workflows/mlops/
+            mv infrastructure/github-actions/* .github/workflows/infrastructure/
+            rm -rf mlops/github-actions
+            rm -rf infrastructure/github-actions
+          elif [[ "${{ inputs.orchestration_tool }}" == "azure-devops" ]]; then
+            rm -rf mlops/github-actions
+            rm -rf infrastructure/github-actions
+          fi
+          
+          # Configure Git
+          git init -b main
+          git config user.email "github-action@github.com"
+          git config user.name "GitHub Action"
+          git add . 
+          git commit -m 'initial commit'
+
+          # Check if the GitHub repository exists and create it if it doesn't
+          echo "Checking if the GitHub Repository exists..."
+          echo "${{ secrets.PERSONAL_ACCESS_TOKEN }}" | gh auth login --with-token
+          if gh repo view ${{ inputs.github_org_name }}/${{ inputs.repo_name }} > /dev/null 2>&1; then
+            echo "Repository ${{ inputs.repo_name }} exists."
+          else
+            echo "Repository ${{ inputs.repo_name }} does not exist. Creating it."
+            gh repo create ${{ inputs.github_org_name }}/${{ inputs.repo_name }} --private --source=. --remote=upstream --push
+          fi
+          
+      # - name: Create GitHub Actions workflows for MLOps and Infrastructure
+      #   if: inputs.orchestration_tool == 'github-actions'
+      #   run: |
+      #     path_to_infrastructure_pipelines=infrastructure/github-actions
+      #     path_to_mlops_pipelines=mlops/github-actions
+
+      #     # Create pipeline folders
+      #     mkdir -p .github/workflows/${{ inputs.repo_name }}/infrastructure
+      #     mkdir -p .github/workflows/${{ inputs.repo_name }}/mlops
+
+      #     # Create MLOps Pipelines
+      #     mlops_pipeline_files=$(ls $path_to_mlops_pipelines)
+      #     for file in $mlops_pipeline_files
+      #     do
+      #         gh workflow create --repo "${{ inputs.github_org_name }}/${{ inputs.repo_name }}" \
+      #           --content "$path_to_mlops_pipelines/$file" \
+      #           --description "Automatically created pipeline for MLOps $file" \
+      #           --name "${file%.*}"
+      #     done
+
+      #     # Create Infrastructure Pipelines
+      #     infra_pipeline_files=$(ls $path_to_infrastructure_pipelines)
+      #     for file in $infra_pipeline_files
+      #     do
+      #         gh workflow create --repo "${{ inputs.github_org_name }}/${{ inputs.repo_name }}" \
+      #           --content "$path_to_infrastructure_pipelines/$file" \
+      #           --description "Automatically created pipeline for infra $file" \
+      #           --name "${file%.*}"
+      #     done
+
+      # - name: Create Azure DevOps Pipelines for MLOps and Infrastructure
+      #   if: inputs.orchestration_tool == 'azure-devops'
+      #   run: |
+      #     az login --service-principal -u ${{ secrets.AZURE_CLIENT_ID }} -p ${{ secrets.AZURE_CLIENT_SECRET }} --tenant ${{ secrets.AZURE_TENANT_ID }}
+      #     repo_name=${{ inputs.repo_name }}
+      #     project_name=${{ inputs.project_name }}
+      #     organization_name=${{ secrets.AZURE_ORGANIZATION_NAME }}
+      #     path_to_infrastructure_pipelines=infrastructure/devops-pipelines
+      #     path_to_mlops_pipelines=mlops/devops-pipelines
+          
+      #     # Check if Azure DevOps project exists and create if it doesn't
+      #     echo "Checking if the Azure DevOps Project exists..."
+      #     project_exists=$(az devops project list --organization "https://dev.azure.com/${organization_name}" --output tsv --query "value[?name=='${project_name}'].name")
+      #     if [ -z "$project_exists" ]; then
+      #       echo "Project ${project_name} does not exist. Creating it."
+      #       az devops project create --name "${project_name}" --organization "https://dev.azure.com/${organization_name}"
+      #     else
+      #       echo "Project ${project_name} already exists."
+      #     fi
+          
+      #     # Create MLOps Pipelines
+      #     mlops_pipeline_files=$(ls $path_to_mlops_pipelines)
+      #     for file in $mlops_pipeline_files
+      #     do
+      #         az pipelines create \
+      #           --name ${file%.*} \
+      #           --description "Automatically created pipeline for MLOps $file" \
+      #           --project $project_name \
+      #           --organization "https://dev.azure.com/${organization_name}" \
+      #           --repository ${{ inputs.repo_name }} \
+      #           --branch main \
+      #           --yml-path $path_to_mlops_pipelines/$file \
+      #           --repository-type tfsgit \
+      #           --skip-first-run true
+      #     done
+
+      #     # Create Infrastructure Pipelines
+      #     infra_pipeline_files=$(ls $path_to_infrastructure_pipelines)
+      #     for file in $infra_pipeline_files
+      #     do
+      #         az pipelines create \
+      #           --name ${file%.*} \
+      #           --description "Automatically created pipeline for infra $file" \
+      #           --project $project_name \
+      #           --organization "https://dev.azure.com/${organization_name}" \
+      #           --repository ${{ inputs.repo_name }} \
+      #           --branch main \
+      #           --yml-path $path_to_infrastructure_pipelines/$file \
+      #           --repository-type tfsgit \
+      #           --skip-first-run true
+      #     done
