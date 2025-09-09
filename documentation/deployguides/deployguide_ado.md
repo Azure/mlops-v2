@@ -91,7 +91,7 @@ Below are the three repositories that you will import. They each serve a differe
          <img src="./images/ado-manage-security.png" alt="ADO Manage Security" width="50%" height="50%"/>
       </p>
 
-      Select the "`<projectname> Build Service`" account for your project under the Users section. Change the permission for **Edit build pipeline** to **Allow**
+      Select the "`<projectname> Build Service`" account for your project under the Users section. Change the permissions for **Edit build pipeline** and **Create build pipeline** to **Allow**
 
       <p align="center">
             <img src="./images/ado-add-pipelinesSecurity.png" alt="ADO Pipeline Security"/>
