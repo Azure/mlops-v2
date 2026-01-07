@@ -193,7 +193,6 @@ In this step, you will run an Azure DevOps pipeline, `initialise-project`, that 
      - Choose **nlp** for natural language  projects
    - **MLOps Interface**: Select the interface to the Azure ML platform, either CLI or SDK.
      - Choose **aml-cli-v2** for the Azure ML CLI v2 interface. This is supported for all ML project types.
-     - Choose **python-sdk-v1** to use the Azure ML python SDK v1 for training and deployment of your model. This is supported for Classical and CV project types.
      - Choose **python-sdk-v2** to use the Azure ML python SDK v2 for training and deployment of your model. This is supported for Classical and NLP project types.
      - Choose **rai-aml-cli-v2** to use the Responsible AI cli tools for training and deployment of your model. This is supported only for Classical project types at this time.
 
