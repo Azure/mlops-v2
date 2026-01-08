@@ -342,13 +342,15 @@ Select **Project Settings** at the bottom left of the project page and select **
 Select **Create service connection**
 
 * For service, select **Azure Resource Manager** and **Next**  
-* For authentication method, select **Service principal (manual)** and **Next**  
-
-Complete the new service connection configuration using the information from your tenant, subscription, and the service principal you created for Prod.
+* For identity type, select **App registration (automatic)** 
+* For Credential, select  **Workload identity Federation**
+* for Subscription, select your subscription from the drop-down and select **Save**
 
    <p align="left">
-      <img src="./images/ado-service-principal-manual.png" alt="Service connection" width="35%" height="35%"/>
-   </p>
+      <img src="./images/ado-service-principal-automatic.png" alt="Service connection" width="35%" height="35%"/>
+   </p>  
+
+Complete the new service connection configuration using the information from your tenant, subscription, and the service principal you created for Prod.
 
 Name this service connection **Azure-ARM-Prod**.  Check **Grant access permission to all pipelines**. and click **Verify and save**.
 
