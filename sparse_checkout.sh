@@ -62,6 +62,10 @@ if [[ "$orchestration" == "azure-devops" ]]
 then
   echo "azure-devops"
   rm -rf mlops/github-actions
+  if [ -d "infrastructure/devops-pipelines" ]; then
+    mv infrastructure/devops-pipelines/* infrastructure/
+    rm -rf infrastructure/devops-pipelines
+  fi
   rm -rf infrastructure/github-actions
 fi
 
