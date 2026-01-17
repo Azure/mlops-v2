@@ -235,16 +235,18 @@ If using WSL, complete all setup within the Unix environment:
 
 >**Important:**
 >> Note that `config-infra-prod.yml` and `config-infra-dev.yml` files use default region as **eastus** to deploy resource group and Azure ML Workspace. If you are using Free/Trial or similar learning purpose subscriptions, you must do one of the below  -
-> 1. If you decide to use **eastus** region, ensure that your subscription(s) have a quota/limit of up to 20 vCPUs for **Standard Dsv5 Family vCPUs** (or **Standard DSv2 Family vCPUs** for older deployments). Visit Subscription page in Azure Portal as shown below to validate this.
+> 1. If you decide to use **eastus** region, ensure that your subscription(s) have a quota/limit of up to 64 vCPUs for **Standard DSv3 Family vCPUs**. The default compute cluster uses **STANDARD_D16S_V3** (16 vCPUs per node, up to 4 nodes = 64 vCPUs max). Visit Subscription page in Azure Portal as shown below to validate this.
         ![alt text](images/susbcriptionQuota.png)
-> 2. If not, you should change it to a region where **Standard Dsv5 Family vCPUs** has a quota/limit of up to 20 vCPUs.
-> 3. You may also choose to change the region and compute type being used for deployment. The default compute is now **STANDARD_D4S_V5** (5th generation, improved performance). To change this, search for **STANDARD_D4S_V5** in the following pipeline files and change to a compute type that works for your setup:
->      - `mlops-templates/aml-cli-v2/mlops/devops-pipelines/deploy-model-training-pipeline.yml`
+> 2. If not, you should change it to a region where **Standard DSv3 Family vCPUs** has sufficient quota.
+> 3. You can easily change the VM SKU by editing the `aml_compute_sku` parameter in your config file:
+>      - `config-infra-prod.yml` or `config-infra-dev.yml` - set `aml_compute_sku: <YOUR_SKU>` (e.g., `STANDARD_D4S_V3`)
+>      - This works for both Bicep and Terraform deployments
+> 4. For ML pipeline compute (separate from infrastructure), you may need to edit:
+>      - `mlops-templates/aml-cli-v2/mlops/devops-pipelines/deploy-model-training-pipeline.yml` - for ML pipeline compute
 >      - `mlops-project-template/classical/aml-cli-v2/mlops/devops-pipelines/deploy-batch-endpoint-pipeline.yml`
 >      - `mlops-project-template/classical/aml-cli-v2/mlops/azureml/deploy/online/online-deployment.yml`
-> 4. Note in the path above that you need to navigate to the right repository (e.g. **mlops-templates**), and the right ML interface (e.g. **aml-cli-v2**).
 >
-> **Note**: This modernized version uses **Standard_D4s_v5** (5th generation) instead of the older **Standard_DS3_v2** (3rd generation) for better performance and efficiency.
+> **Note**: The default infrastructure SKU is **STANDARD_D16S_V3** (3rd generation). ML pipelines may use different SKUs like **Standard_D4s_v5**. Adjust based on your quota and requirements.
 
    Edit each file to configure a namespace, postfix string, Azure location, and environment for deploying your Dev and Prod Azure ML environments. Default values and settings in the files are show below:
 
@@ -254,10 +256,11 @@ If using WSL, complete all setup within the Unix environment:
    > location: eastus  
    > environment: dev  
    > enable_aml_computecluster: true  
-   > enable_monitoring: false  
+   > enable_monitoring: false
+   > aml_compute_sku: STANDARD_D16S_V3  # VM SKU for AML compute cluster
    >```
    
-   The first four values are used to create globally unique names for your Azure environment and contained resources. Edit these values to your liking then save, commit, push, or pr to update these files in the project repository.
+   The first four values are used to create globally unique names for your Azure environment and contained resources. The `aml_compute_sku` parameter allows you to customize the VM size for your AML compute cluster (default: `STANDARD_D16S_V3`). Edit these values to your liking then save, commit, push, or pr to update these files in the project repository.
 
 2. **Configure Terraform Variables (Required for GitHub Actions Permissions)**
 
@@ -270,6 +273,7 @@ If using WSL, complete all setup within the Unix environment:
    environment: "dev"  
    enable_aml_computecluster: true
    enable_monitoring: false
+   aml_compute_sku: "STANDARD_D16S_V3"  # VM SKU for AML compute cluster
 
    # REQUIRED: GitHub Actions service principal object ID for CI/CD permissions
    # Get this value from Step 5.3a above:
