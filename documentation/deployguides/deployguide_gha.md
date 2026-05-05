@@ -1,39 +1,63 @@
 # Deployment Guide using Github Repositories Workflows
 
-## Technical requirements
+## Technical Requirements
 
-- Github as the source control repository
-- Github Actions as the DevOps orchestration tool
-- [GitHub client](https://cli.github.com/)
-- [Azure CLI ](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli)
-- The [Terraform extension for Azure DevOps](https://marketplace.visualstudio.com/items?itemName=ms-devlabs.custom-terraform-tasks) if you are using Azure DevOps + Terraform to spin up infrastructure
-- One or more Azure subscription(s) based on whether you are deploying Prod only or Prod and Dev environments
-     - **Important** - As mentioned in the **Prerequisites** at the beginning [here](https://github.com/Azure/mlops-v2?tab=readme-ov-file#prerequisites), if you plan to use either a Free/Trial or similar learning purpose subscriptions, they might pose 'Usage + quotas' limitations in the default Azure region being used for deployment. Please read provided instructions carefully to succeessfully execute this deployment.
-- Azure service principals to access / create Azure resources from Azure DevOps or Github Actions (or the ability to create them)
-- Git bash, [WSL](https://learn.microsoft.com/en-us/windows/wsl/install) or another shell script runner on your local machine
--  When using WSL, 
-   -  make sure to completely work in the context of the unix env (cloning of the repo, defining the file paths,...). You can then connect to this environment with VSCode (if that is your editor) if you install the ["Remote - SSH"](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-ssh) extension
-   - dos2unix: `sudo apt-get install dos2unix`
-   - set up GitHub cli (mentioned above) (or via `sudo apt-get install gh`)
-    - Login to GitHub: `gh auth login`
-    - Config Git locally: `git config --global user.email "you@example.com"` and `git config --global user.name "Your Name"`
-    - 
->**Note:**
->
->**Git version 2.27 or newer is required. See [these instructions](https://github.com/cli/cli/blob/trunk/docs/install_linux.md#debian-ubuntu-linux-raspberry-pi-os-apt) to upgrade.**
+### Source Control and DevOps
+- **GitHub** as the source control repository
+- **GitHub Actions** as the CI/CD orchestration tool
+- [GitHub CLI](https://cli.github.com/) installed locally
 
+### Azure Tools
+- [Azure CLI](https://learn.microsoft.com/cli/azure/install-azure-cli) installed locally
+- One or more Azure subscriptions (separate subscriptions recommended for Dev and Prod environments)
+   - **Important**: Free/Trial subscriptions may have quota limitations. Review the [Prerequisites](https://github.com/Azure/mlops-v2?tab=readme-ov-file#prerequisites) carefully before deployment.
+- Azure service principal with permissions to create and manage resources
+
+### Infrastructure as Code (Optional)
+- [Terraform extension for Azure DevOps](https://marketplace.visualstudio.com/items?itemName=ms-devlabs.custom-terraform-tasks) (only if using Azure DevOps with Terraform)
+
+### Local Development Environment
+- **Shell environment**: Git Bash, [WSL](https://learn.microsoft.com/windows/wsl/install), or equivalent Unix shell
+
+### WSL-Specific Setup (If Using Windows Subsystem for Linux)
+If using WSL, complete all setup within the Unix environment:
+
+1. **Install required tools**:
+    ```bash
+    sudo apt-get update
+    sudo apt-get install dos2unix gh
+    ```
+
+2. **Configure GitHub CLI**:
+    ```bash
+    gh auth login
+    ```
+
+3. **Configure Git**:
+    ```bash
+    git config --global user.email "you@example.com"
+    git config --global user.name "Your Name"
+    ```
+
+4. **VSCode integration** (optional):
+    - Install the [Remote - SSH](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-ssh) extension
+    - Connect VSCode to your WSL environment for seamless editing
+
+> **Note**: Clone repositories and define all file paths within the WSL environment to avoid cross-platform compatibility issues.
+
+
+> **Important**: Git version 2.51 or newer is required. See [upgrade instructions](https://github.com/cli/cli/blob/trunk/docs/install_linux.md#debian-ubuntu-linux-raspberry-pi-os-apt) if needed.
    
 
 ## Configure The GitHub Environment
 ---
 
-
 1. **Replicate MLOps-V2 Template Repositories in your GitHub organization**  
-   Go to https://github.com/Azure/mlops-templates/fork to fork the mlops templates repo into your Github org. This repo has reusable mlops code that can be used across multiple projects. 
+   Go to https://github.com/Azure/mlops-templates/fork to fork the mlops templates repo into your Github org. This repo has reusable mlops code that can be used across multiple projects.
 
    ![image](./images/gh-fork.png)
 
-   Go to https://github.com/Azure/mlops-project-template/generate to create a repository in your Github org using the mlops-project-template. This is the monorepo that you will use to pull example projects from in a later step. 
+   Go to https://github.com/Azure/mlops-project-template/generate to create a repository in your Github org using the mlops-project-template. This is the monorepo that you will use to pull example projects from in a later step.
 
    ![image](./images/gh-generate.png)
 
@@ -41,14 +65,14 @@
    On your local machine, select or create a root directory (ex: 'mlprojects') to hold your project repository as well as the mlops-v2 repository. Change to this directory.
 
    Clone the mlops-v2 repository to this directory. This provides the documentation and the `sparse_checkout.sh` script. This repository and folder will be used to bootstrap your projects:  
-   `# git clone https://github.com/Azure/mlops-v2.git` 
+   `# git clone https://github.com/Azure/mlops-v2.git`
 
 3. **Configure and run sparse checkout**  
    From your local project root directory, open the `/mlops-v2/sparse_checkout.sh` for editing. Edit the following variables as needed to select the infastructure management tool used by your organization, the type of Open this file in an editor and set the following variables:
    
    >**Note:**
-> When running the script through a  "vanilla" WSL, then you'll most likely get strange errors... In that case it might suffice to use dos2unix on the file
-> (in WSL) run; `dos2unix sparse_checkout.sh` (in the mlops-v2 repo folder)
+   > When running the script through a  "vanilla" WSL, then you'll most likely get strange errors... In that case it might suffice to use dos2unix on the file
+   > (in WSL) run; `dos2unix sparse_checkout.sh` (in the mlops-v2 repo folder)
    
 
    * **infrastructure_version** selects the tool that will be used to deploy cloud resources.
@@ -89,8 +113,6 @@
    ```
    Currently, the following pipelines are supported:
    - classical 
-   - cv (computer-vision) 
-   - nlp (natural language processing)
 
 4. **Run sparse checkout**  
    The `sparse_checkout.sh` script will use ssh to authenticate to your GitHub organization. If this is not yet configured in your environment, follow the steps below or refer to the documentation at  [GitHub Key Setup](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent).
@@ -124,7 +146,7 @@
 
    This step creates an Azure AD application with federated credentials and GitHub secrets to allow the GitHub Action workflows to authenticate using OpenID Connect (OIDC) and create/interact with Azure Machine Learning Workspace resources.
 
-   **IMPORTANT**: This solution now uses OIDC workload identity federation instead of client secrets for enhanced security. No client secrets are stored or managed.
+   >**IMPORTANT**: This solution now uses OIDC workload identity federation instead of client secrets for enhanced security. No client secrets are stored or managed.
 
    **Step 5.1: Create Azure AD Application**
 
@@ -213,16 +235,18 @@
 
 >**Important:**
 >> Note that `config-infra-prod.yml` and `config-infra-dev.yml` files use default region as **eastus** to deploy resource group and Azure ML Workspace. If you are using Free/Trial or similar learning purpose subscriptions, you must do one of the below  -
-> 1. If you decide to use **eastus** region, ensure that your subscription(s) have a quota/limit of up to 20 vCPUs for **Standard Dsv5 Family vCPUs** (or **Standard DSv2 Family vCPUs** for older deployments). Visit Subscription page in Azure Portal as shown below to validate this.
+> 1. If you decide to use **eastus** region, ensure that your subscription(s) have a quota/limit of up to 64 vCPUs for **Standard DSv3 Family vCPUs**. The default compute cluster uses **STANDARD_D16S_V3** (16 vCPUs per node, up to 4 nodes = 64 vCPUs max). Visit Subscription page in Azure Portal as shown below to validate this.
         ![alt text](images/susbcriptionQuota.png)
-> 2. If not, you should change it to a region where **Standard Dsv5 Family vCPUs** has a quota/limit of up to 20 vCPUs.
-> 3. You may also choose to change the region and compute type being used for deployment. The default compute is now **STANDARD_D4S_V5** (5th generation, improved performance). To change this, search for **STANDARD_D4S_V5** in the following pipeline files and change to a compute type that works for your setup:
->      - `mlops-templates/aml-cli-v2/mlops/devops-pipelines/deploy-model-training-pipeline.yml`
+> 2. If not, you should change it to a region where **Standard DSv3 Family vCPUs** has sufficient quota.
+> 3. You can easily change the VM SKU by editing the `aml_compute_sku` parameter in your config file:
+>      - `config-infra-prod.yml` or `config-infra-dev.yml` - set `aml_compute_sku: <YOUR_SKU>` (e.g., `STANDARD_D4S_V3`)
+>      - This works for both Bicep and Terraform deployments
+> 4. For ML pipeline compute (separate from infrastructure), you may need to edit:
+>      - `mlops-templates/aml-cli-v2/mlops/devops-pipelines/deploy-model-training-pipeline.yml` - for ML pipeline compute
 >      - `mlops-project-template/classical/aml-cli-v2/mlops/devops-pipelines/deploy-batch-endpoint-pipeline.yml`
->      - `/mlops-project-template/classical/aml-cli-v2/mlops/azureml/deploy/online/online-deployment.yml`
-> 4. Note in the path above that you need to navigate to the right repository (e.g. **mlops-templates**), and the right ML interface (e.g. **aml-cli-v2**).
+>      - `mlops-project-template/classical/aml-cli-v2/mlops/azureml/deploy/online/online-deployment.yml`
 >
-> **Note**: This modernized version uses **Standard_D4s_v5** (5th generation) instead of the older **Standard_DS3_v2** (3rd generation) for better performance and efficiency.
+> **Note**: The default infrastructure SKU is **STANDARD_D16S_V3** (3rd generation). ML pipelines may use different SKUs like **Standard_D4s_v5**. Adjust based on your quota and requirements.
 
    Edit each file to configure a namespace, postfix string, Azure location, and environment for deploying your Dev and Prod Azure ML environments. Default values and settings in the files are show below:
 
@@ -232,40 +256,58 @@
    > location: eastus  
    > environment: dev  
    > enable_aml_computecluster: true  
-   > enable_monitoring: false  
+   > enable_monitoring: false
+   > aml_compute_sku: STANDARD_D16S_V3  # VM SKU for AML compute cluster
    >```
    
-   The first four values are used to create globally unique names for your Azure environment and contained resources. Edit these values to your liking then save, commit, push, or pr to update these files in the project repository.
+   The first four values are used to create globally unique names for your Azure environment and contained resources. The `aml_compute_sku` parameter allows you to customize the VM size for your AML compute cluster (default: `STANDARD_D16S_V3`). Edit these values to your liking then save, commit, push, or pr to update these files in the project repository.
 
 2. **Configure Terraform Variables (Required for GitHub Actions Permissions)**
 
-   In your project repository, edit the `infrastructure/terraform/terraform.tfvars` file to add the GitHub Actions service principal object ID from Step 5.3a:
+   In your project repository, copy the `infrastructure/terraform/terraform.tfvars.example` file and rename it to `terraform.tfvars`. Then edit the file to add the GitHub Actions service principal object ID from Step 5.3a:
 
-   ```hcl
-   namespace = "taxi"
-   postfix = "10005"
-   environment = "prod"  # or "dev" for dev branch
-   location = "eastus"
-   enable_aml_computecluster = true
-   enable_monitoring = false
-   
+   ```bash
+   namespace: mlopsv2
+   postfix: "0001"
+   location: "eastus"
+   environment: "dev"  
+   enable_aml_computecluster: true
+   enable_monitoring: false
+   aml_compute_sku: "STANDARD_D16S_V3"  # VM SKU for AML compute cluster
+
    # REQUIRED: GitHub Actions service principal object ID for CI/CD permissions
    # Get this value from Step 5.3a above:
    # az ad sp show --id <app_id> --query id -o tsv
    github_actions_service_principal_id = "your-service-principal-object-id"
+
+   # VNet and Private Endpoints Configuration
+   # Set to true to enable network isolation with private endpoints
+   enable_private_endpoints = false
+
+   # VNet address space (only used if enable_private_endpoints = true)
+   # Ensure the address space is large enough for your needs:
+   # - Private endpoints: ~20 IPs (one per service per subnet)
+   # - Compute instances/cluster nodes: 1 IP per node
+   # Example: 10.0.0.0/16 provides 65,536 addresses
+   vnet_address_space               = "10.0.0.0/16"
+   training_subnet_address_prefix   = "10.0.0.0/24"    # For compute cluster nodes (254 hosts)
+   endpoints_subnet_address_prefix  = "10.0.1.0/24"    # For private endpoints (254 hosts)
    ```
 
    **Configuration Guidelines**:
    - **namespace**: Short name for your project (keep it concise to avoid storage account name length limits)
-   - **postfix**: Unique identifier (e.g., "10005"). If redeploying after deletion, use a different postfix to avoid Azure ML workspace soft-delete conflicts (see note below)
+   - **postfix**: Unique identifier (e.g., "0001"). If redeploying after deletion, use a different postfix to avoid Azure ML workspace soft-delete conflicts (see note below)
    - **environment**: "dev" or "prod" (should match your branch context)
    - **location**: Azure region (default: "eastus")
    - **github_actions_service_principal_id**: Service principal object ID from Step 5.3a (NOT the app ID)
 
-   This configuration enables Terraform to automatically grant the GitHub Actions service principal the required permissions to:
-   - Register datasets in Azure ML
-   - Upload data to the workspace storage account
-   - Execute training pipelines that access data
+   This configuration enables Terraform to automatically:
+   - Grant the GitHub Actions service principal the required permissions to:
+     - Register datasets in Azure ML
+     - Upload data to the workspace storage account
+     - Execute training pipelines that access data in the storage account
+   - Configure Network Security Groups with Azure ML required rules
+   - Create private DNS zones for name resolution within the VNet
 
    These permissions (Storage Blob Data Reader and Storage Blob Data Contributor) will be automatically assigned to the Azure ML workspace storage account during infrastructure deployment.
 
@@ -276,9 +318,10 @@
    > **Alternative**: If your organization doesn't allow OIDC, you can use a client secret instead. However, this requires storing and managing secrets, which increases security risks. See [GitHub's documentation on secrets](https://docs.github.com/en/actions/security-guides/encrypted-secrets) for more information.
 
    > **Note**: The `github_actions_service_principal_id` must be the **object ID**, not the application ID. You can retrieve it using:
-   > ```bash
-   > az ad sp show --id <APPLICATION_ID> --query id -o tsv
-   > ```
+
+   ```bash
+   az ad sp show --id <APPLICATION_ID> --query id -o tsv
+   ```
 
 2.1. **(Optional) Configure Virtual Network and Private Endpoints**
 
@@ -289,9 +332,9 @@
    - Compliance requirements mandating private connectivity
    - Sensitive data workloads requiring additional security
 
-   **To enable network isolation**, add the following to your `infrastructure/terraform/terraform.tfvars`:
+   **To enable network isolation**, add the following to your `infrastructure/terraform/terraform.tfvars.sample`:
 
-   ```hcl
+   ```bash
    # Enable VNet and private endpoints for network isolation
    enable_private_endpoints = true
 
@@ -311,20 +354,14 @@
    - All Azure ML resources communicate through private IPs
    - Public network access restricted on storage, Key Vault, and Container Registry
    - Deployment time increases by ~5 minutes
-   - Additional cost: ~$51/month for private endpoints
 
-   **For detailed information**, see the comprehensive [VNet Implementation Guide](https://github.com/Azure/mlops-project-template/blob/main/infrastructure/terraform/VNET_IMPLEMENTATION.md) which includes:
-   - Architecture diagrams and network topology
-   - Security configuration details
-   - IP address planning guidelines
-   - Testing and troubleshooting procedures
-   - Cost considerations
 
    > **Note**: For initial evaluation and development environments, you can leave `enable_private_endpoints = false` (default). The infrastructure will deploy with public network access, which simplifies setup and reduces costs. You can always enable private endpoints later when moving to production.
 
-3. **Deploy Azure Machine Learning Infrastructure**   > Note:
+3. **Deploy Azure Machine Learning Infrastructure**  
+   > Note:
    >
-   > The enable_monitoring flag in these files defaults to False. Enabling this flag will add additional elements to the deployment to support Azure ML monitoring based on https://github.com/microsoft/AzureML-Observability. This will include an ADX cluster and increase the deployment time and cost of the MLOps solution.
+   > The _enable_monitoring_ flag in these files defaults to False. Enabling this flag will add additional elements to the deployment to support Azure ML monitoring based on https://github.com/microsoft/AzureML-Observability. This will include an ADX cluster and increase the deployment time and cost of the MLOps solution.
    
 3. **Deploy Azure Machine Learning Infrastructure**
 
@@ -350,50 +387,62 @@
 
 ## Sample Training and Deployment Scenario
 
-The solution accelerator includes code and data for a sample end-to-end machine learning pipeline which runs a linear regression to predict taxi fares in NYC. The pipeline is made up of components, each serving  different functions, which can be registered with the workspace, versioned, and reused with various inputs and outputs. Sample pipelines and workflows for the Computer Vision and NLP scenarios will have different steps and deployment steps.
+The solution accelerator includes code and data for a sample end-to-end machine learning pipeline which runs a linear regression to predict taxi fares in NYC. The pipeline is made up of components, each serving different functions, which can be registered with the workspace, versioned, and reused with various inputs and outputs. Sample pipelines and workflows for the Computer Vision and NLP scenarios will have different steps and deployment steps.
 
 This training pipeline contains the following steps:
 
-**Prepare Data**  
-This component takes multiple taxi datasets (yellow and green) and merges/filters the data, and prepare the train/val and evaluation datasets.  
-Input: Local data under ./data/ (multiple .csv files)  
-Output: Single prepared dataset (.csv) and train/val/test datasets.
+### Pipeline Components
 
-**Train Model**  
-This component trains a Linear Regressor with the training set.  
-Input: Training dataset  
-Output: Trained model (pickle format)  
-   
-**Evaluate Model**  
-   This component uses the trained model to predict taxi fares on the test set.  
-   Input: ML model and Test dataset  
-   Output: Performance of model and a deploy flag whether to deploy or not.  
-   This component compares the performance of the model with all previous deployed models on the new test dataset and decides whether to promote or not model into production. Promoting model into production happens by registering the model in AML workspace.
+**Prepare Data**
 
-**Register Model**  
-   This component scores the model based on how accurate the predictions are in the test set.  
-   Input: Trained model and the deploy flag.  
-   Output: Registered model in Azure Machine Learning.  
+This component takes multiple taxi datasets (yellow and green) and merges/filters the data, and prepares the train/val and evaluation datasets.
+
+- **Input**: Local data under `./data/` (multiple `.csv` files)
+- **Output**: Single prepared dataset (`.csv`) and train/val/test datasets
+
+**Train Model**
+
+This component trains a Linear Regressor with the training set.
+
+- **Input**: Training dataset
+- **Output**: Trained model (pickle format)
+
+**Evaluate Model**
+
+This component uses the trained model to predict taxi fares on the test set.
+
+- **Input**: ML model and test dataset
+- **Output**: Performance of model and a deploy flag whether to deploy or not
+
+This component compares the performance of the model with all previous deployed models on the new test dataset and decides whether to promote the model into production. Promoting the model into production happens by registering the model in the AML workspace.
+
+**Register Model**
+
+This component scores the model based on how accurate the predictions are in the test set.
+
+- **Input**: Trained model and the deploy flag
+- **Output**: Registered model in Azure Machine Learning
 
 ## Deploying the Model Training Pipeline to the Test Environment
 
-Next, you will deploy the model training pipeline to your new Azure Machine Learning workspace. This pipeline will create a compute cluster instance, register a training environment defining the necessary Docker image and python packages, register a training dataset, then start the training pipeline described in the last section. When the job is complete, the trained model will be registered in the Azure ML workspace and be available for deployment.
+Next, you will deploy the model training pipeline to your new Azure Machine Learning workspace. This pipeline will create a compute cluster instance, register a training environment defining the necessary Docker image and Python packages, register a training dataset, then start the training pipeline described in the previous section. When the job is complete, the trained model will be registered in the Azure ML workspace and be available for deployment.
 
-In your GitHub project repository (ex: taxi-fare-regression), select **Actions**  
- 
-   ![GH-actions](./images/gh-actions.png)
-      
-Select the **deploy-model-training-pipeline** from the workflows listed on the left and the click **Run Workflow** to execute the model training workflow. This will take several minutes to run, depending on the compute size. 
+In your GitHub project repository (ex: taxi-fare-regression), select **Actions**
 
-   ![Pipeline Run](./images/gh-training-pipeline.png)
-   
-   Once completed, a successful run will register the model in the Azure Machine Learning workspace. 
+![GH-actions](./images/gh-actions.png)
 
- >**Note**: If you want to check the output of each individual step, for example to view output of a failed run, click a job output, and then click each step in the job to view any output of that step. 
+Select the **deploy-model-training-pipeline** from the workflows listed on the left and click **Run Workflow** to execute the model training workflow. This will take several minutes to run, depending on the compute size.
 
-   ![Training Step](./images/gh-training-step.png)
+![Pipeline Run](./images/gh-training-pipeline.png)
 
-With the trained model registered in the Azure Machine learning workspace, you are ready to deploy the model for scoring.
+Once completed, a successful run will register the model in the Azure Machine Learning workspace.
+
+> **Note**: If you want to check the output of each individual step, for example to view output of a failed run, click a job output, and then click each step in the job to view any output of that step.
+
+![Training Step](./images/gh-training-step.png)
+
+With the trained model registered in the Azure Machine Learning workspace, you are ready to deploy the model for scoring.
+
 
 ## Deploying the Trained Model in Dev
 
