@@ -59,6 +59,8 @@ stages:
     jobs:
       - job: InitialiseProjectJob
         displayName: Checkout repos, initialise your new one and create pipelines
+        pool:
+          vmImage: ubuntu-latest
         steps:
           - checkout: self
             persistCredentials: false

@@ -644,6 +644,44 @@ These directories contain the yaml definitions and Azure ML pipelines for deploy
 
 This directory contains the Azure DevOps pipeline definitions for deployment of Azure ML model training and endpoint pipelines. In general, these should need minimal changes except for updating references to data and training pipelines.
 
+## Troubleshooting
+
+The following issues are commonly encountered on a fresh Azure DevOps organization.
+
+### "No hosted parallelism has been purchased or granted"
+
+By default, new Azure DevOps organizations have **zero** parallel jobs on Microsoft-hosted agents. The infrastructure pipeline will queue indefinitely until a free grant is approved.
+
+**Resolution:** Submit the free-tier parallelism request form: <https://aka.ms/azpipelines-parallelism-request>. Approval is typically granted within 2–3 business days. If you need to deploy immediately, configure a [self-hosted agent](https://learn.microsoft.com/azure/devops/pipelines/agents/agents).
+
+### "TF402455: Pushes to this branch are not permitted" or pipelines never appear
+
+The user account creating the pipelines (typically the project administrator running `initialise-project`) must have **Create build pipeline** permission on the project.
+
+**Resolution:** In Azure DevOps, navigate to **Project Settings → Permissions → Contributors** (or your group), and ensure **Create build pipeline** is set to *Allow*.
+
+### "A pipeline with name `deploy-...` already exists" on retry
+
+If the `initialise-project` pipeline fails partway through and you re-run it, the second run will fail because pipelines and folders from the first attempt still exist.
+
+**Resolution:** Before retrying, delete:
+
+1. The pipelines folder in **Pipelines → Pipelines** named after your repo.
+2. The repository created in **Repos** for the project.
+3. The corresponding `infrastructure/` folder if the infra pipeline partially executed and created resources in Azure — clean these up via the Azure portal or `az group delete`.
+
+### "No image label found to route agent pool Azure Pipelines. Pool: Azure Pipelines, Image: ubuntu-20.04"
+
+`ubuntu-20.04` was retired from the Microsoft-hosted agent pool. This affects older versions of `mlops-project-template` cloned before May 2026.
+
+**Resolution:** Update to the latest `mlops-project-template` (uses `ubuntu-latest`), or in your project repo replace `vmImage: ubuntu-20.04` with `vmImage: ubuntu-latest` in all `mlops/devops-pipelines/*.yml` and `infrastructure/.../*.yml` files.
+
+### `az pipelines create` fails with "Could not queue the build" during `initialise-project`
+
+The default agent queue association may not be established on a brand-new project.
+
+**Resolution:** The `create_ado_pipelines.sh` script now resolves the queue ID dynamically. If you use a self-hosted pool, set `AGENT_POOL_NAME` in the `initialise-project` pipeline variables before running.
+
 ## Next Steps in MLOps
 
 This guide illustrated using Azure DevOps pipelines and Azure Machine Learning pipelines to adopt training automation, deployment, and repeatability for your data science workflow for a single Azure ML environment. Follow on MLOps practices may include the following:
