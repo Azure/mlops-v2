@@ -41,7 +41,6 @@ parameters:
     default: aml-cli-v2
     values:
       - aml-cli-v2
-      - python-sdk-v1
       - python-sdk-v2
       - rai-aml-cli-v2
 

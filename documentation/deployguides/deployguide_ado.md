@@ -7,7 +7,10 @@ This document will guide you through using the MLOps V2 project generator to dep
      - **Important:** - As mentioned in the **Prerequisites** at the beginning [here](https://github.com/Azure/mlops-v2?tab=readme-ov-file#prerequisites), if you plan to use either a Free/Trial or similar learning purpose subscriptions, they might pose 'Usage + quotas' limitations in the default Azure region being used for deployment. Please read provided instructions carefully to succeessfully execute this deployment.
 - An Azure DevOps organization
 - Ability to create Azure service principals to access / create Azure resources from Azure DevOps
-- If using Terraform to create and manage infrastructure from Azure DevOps, install the [Terraform extension for Azure DevOps](https://marketplace.visualstudio.com/items?itemName=ms-devlabs.custom-terraform-tasks).
+- If using Terraform to create and manage infrastructure from Azure DevOps:
+  - Install the [Terraform extension for Azure DevOps](https://marketplace.visualstudio.com/items?itemName=ms-devlabs.custom-terraform-tasks)
+  - **This modernized version requires Terraform v1.10.0 or higher** with azurerm provider ~> 4.52.0
+- **Python 3.11 or higher** for local development and testing
 
 
 # Steps to Deploy
@@ -190,7 +193,6 @@ In this step, you will run an Azure DevOps pipeline, `initialise-project`, that 
      - Choose **nlp** for natural language  projects
    - **MLOps Interface**: Select the interface to the Azure ML platform, either CLI or SDK.
      - Choose **aml-cli-v2** for the Azure ML CLI v2 interface. This is supported for all ML project types.
-     - Choose **python-sdk-v1** to use the Azure ML python SDK v1 for training and deployment of your model. This is supported for Classical and CV project types.
      - Choose **python-sdk-v2** to use the Azure ML python SDK v2 for training and deployment of your model. This is supported for Classical and NLP project types.
      - Choose **rai-aml-cli-v2** to use the Responsible AI cli tools for training and deployment of your model. This is supported only for Classical project types at this time.
 
@@ -235,7 +237,11 @@ In this step, you will run an Azure DevOps pipeline, `initialise-project`, that 
 ### Create and Configure Service Principals and Connections
 ---
 
-For Azure DevOps pipelines to create Azure Machine Learning infrastructure and deploy and execute Azure ML pipelines, it is necessary to create an Azure service principal for each Azure ML environment (Dev and/or Prod) and configure Azure DevOps service connections using those service principals. These service princiapls can be created using one of the two methods below:
+For Azure DevOps pipelines to create Azure Machine Learning infrastructure and deploy and execute Azure ML pipelines, it is necessary to create an Azure service principal for each Azure ML environment (Dev and/or Prod) and configure Azure DevOps service connections using those service principals.
+
+> **Security Best Practice**: Azure DevOps now supports **workload identity federation** as a more secure alternative to service principal secrets. Workload identity federation uses OpenID Connect (OIDC) to establish trust without storing long-lived secrets. For production deployments, consider using workload identity federation instead of the service principal methods described below. See [Microsoft's documentation](https://learn.microsoft.com/en-us/azure/devops/pipelines/library/connect-to-azure#create-an-azure-resource-manager-service-connection-using-workload-identity-federation) for setup instructions.
+
+These service principals can be created using one of the two methods below:
 
 <details>
 <summary>Create Service Principal from Azure Cloud Shell</summary>
@@ -336,13 +342,15 @@ Select **Project Settings** at the bottom left of the project page and select **
 Select **Create service connection**
 
 * For service, select **Azure Resource Manager** and **Next**  
-* For authentication method, select **Service principal (manual)** and **Next**  
-
-Complete the new service connection configuration using the information from your tenant, subscription, and the service principal you created for Prod.
+* For identity type, select **App registration (automatic)** 
+* For Credential, select  **Workload identity Federation**
+* for Subscription, select your subscription from the drop-down and select **Save**
 
    <p align="left">
-      <img src="./images/ado-service-principal-manual.png" alt="Service connection" width="35%" height="35%"/>
-   </p>
+      <img src="./images/ado-service-principal-automatic.png" alt="Service connection" width="35%" height="35%"/>
+   </p>  
+
+Complete the new service connection configuration using the information from your tenant, subscription, and the service principal you created for Prod.
 
 Name this service connection **Azure-ARM-Prod**.  Check **Grant access permission to all pipelines**. and click **Verify and save**.
 
@@ -390,14 +398,18 @@ To do this, go back to **Repos** and your ML project repo, in this example, `tax
 
 >**Important:**
 >> Note that `config-infra-prod.yml` and `config-infra-dev.yml` files use default region as **eastus** to deploy resource group and Azure ML Workspace. If you are using Free/Trial or similar learning purpose subscriptions, you must do one of the below  -
-> 1. If you decide to use **eastus** region, ensure that your subscription(s) have a quota/limit of up to 20 vCPUs for **Standard DSv2 Family vCPUs**. Visit Subscription page in Azure Portal as show below to validate this.
+> 1. If you decide to use **eastus** region, ensure that your subscription(s) have a quota/limit of up to 64 vCPUs for **Standard DSv3 Family vCPUs**. The default compute cluster uses **STANDARD_D16S_V3** (16 vCPUs per node, up to 4 nodes = 64 vCPUs max). Visit Subscription page in Azure Portal as shown below to validate this.
         ![alt text](images/susbcriptionQuota.png)
-> 2. If not, you should change it to a region where **Standard DSv2 Family vCPUs** has a quota/limit of up to 20 vCPUs.
-> 3. You may also choose to change the region and compute type being used for deployment. To do this you have to change region in these two files, and additionally search for **STANDARD_DS3_V2** in below listed DevOps pipeline files and change this with a compute type that would work for your setup.
->      * `mlops-templates/aml-cli-v2/mlops/devops-pipelines/deploy-model-training-pipeline.yml`
+> 2. If not, you should change it to a region where **Standard DSv3 Family vCPUs** has sufficient quota.
+> 3. You can easily change the VM SKU by editing the `aml_compute_sku` parameter in your config file:
+>      * `config-infra-prod.yml` or `config-infra-dev.yml` - set `aml_compute_sku: <YOUR_SKU>` (e.g., `STANDARD_D4S_V3`)
+>      * This works for both Bicep and Terraform deployments
+> 4. For ML pipeline compute (separate from infrastructure), you may need to edit:
+>      * `mlops-templates/aml-cli-v2/mlops/devops-pipelines/deploy-model-training-pipeline.yml` - for ML pipeline compute
 >      * `mlops-project-template/classical/aml-cli-v2/mlops/devops-pipelines/deploy-batch-endpoint-pipeline.yml`
 >      * `/mlops-project-template/classical/aml-cli-v2/mlops/azureml/deploy/online/online-deployment.yml`
-> 4. Note in the path above that you need to navigate to the right repository (e.g. **mlops-templates**), and the right ML interface (e.g. **aml-cli-v2**).
+>
+> **Note**: The default infrastructure SKU is **STANDARD_D16S_V3** (3rd generation). ML pipelines may use different SKUs like **Standard_D4s_v5**. Adjust based on your quota and requirements.
 
 Making sure you are in the **main** branch, click on `config-infra-prod.yml` to open it. 
 
@@ -483,7 +495,7 @@ If you want to create a **compute instance without a managed identity** referenc
     - template: templates/python-sdk-v2/create-compute-instance.yml@mlops-templates
       parameters:
         instance_name: compute-instance-a
-        size: Standard_DS3_v2
+        size: Standard_D4s_v5
         location: canadacentral
         description: compute instance a
    ```
@@ -494,7 +506,7 @@ In order to **create a system-assigned managed identity** and assign it your com
     - template: templates/python-sdk-v2/create-compute-instance.yml@mlops-templates
       parameters:
         instance_name: compute-instance-a
-        size: Standard_DS3_v2
+        size: Standard_D4s_v5
         location: canadacentral
         description: compute instance a
         identity_type: SystemAssigned
@@ -506,7 +518,7 @@ Lastly, to leverage a **user-assigned managed identity** for your compute, the f
     - template: templates/python-sdk-v2/create-compute-instance.yml@mlops-templates
       parameters:
         instance_name: compute-instance-a
-        size: Standard_DS3_v2
+        size: Standard_D4s_v5
         location: canadacentral
         description: compute instance a
         identity_type: UserAssigned
